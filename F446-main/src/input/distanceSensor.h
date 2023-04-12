@@ -1,3 +1,8 @@
+/** distanceSensor.h
+ * VL53L0Xからの情報を監視します。
+ * XIAOと繋がっているuartのポインタを渡して初期化すること。
+ */
+
 #ifndef _DISTANCE_SENSOR_H
 #define _DISTANCE_SENSOR_H
 
