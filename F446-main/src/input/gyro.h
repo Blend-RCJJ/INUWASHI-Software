@@ -1,6 +1,12 @@
+/** gyro.h
+ * ジャイロ読むよ
+ * 次の機体ではセンサー変えるかも？
+ */
+
 #ifndef _GYRO_H
 #define _GYRO_H
-#include "Arduino.h"
+
+#include <Arduino.h>
 
 #include <SPI.h>
 #include <Wire.h>
