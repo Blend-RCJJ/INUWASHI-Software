@@ -1,43 +1,41 @@
-#include "servo.h"
+#include "serialServo.h"
 
-SMS_STS serialServo;
+SMS_STS sts3032;
 
-extern HardwareSerial uart1;
-
-SERVO::SERVO(HardwareSerial *ptr) {
+SERIAL_SERVO::SERIAL_SERVO(HardwareSerial *ptr) {
     serialPtr = ptr;
     serialPtr->begin(baudRate);
-    serialServo.pSerial = serialPtr;
+    sts3032.pSerial = serialPtr;
 
-    // serialServo.WheelMode(1);
+    // sts3032.WheelMode(1);
     for (int i = 1; i <= 4; i++) {
-        serialServo.unLockEprom(i);
-        serialServo.EnableTorque(i, 1);
-        serialServo.LockEprom(i);
+        sts3032.unLockEprom(i);
+        sts3032.EnableTorque(i, 1);
+        sts3032.LockEprom(i);
     }
 
-    serialServo.unLockEprom(5);
-    serialServo.EnableTorque(5, 1);
-    serialServo.LockEprom(5);
+    sts3032.unLockEprom(5);
+    sts3032.EnableTorque(5, 1);
+    sts3032.LockEprom(5);
 }
 
-void SERVO::directDrive(int id, int percent, int acceleration) {
+void SERIAL_SERVO::directDrive(int id, int percent, int acceleration) {
     if (id != 4) {
         int sendData;
         sendData = percent * maximumSpeed / 100;
         sendData = constrain(sendData, -maximumSpeed, maximumSpeed);
 
-        serialServo.WriteSpe(id + 1, sendData, acceleration);
+        sts3032.WriteSpe(id + 1, sendData, acceleration);
     } else {
         int sendData;
         sendData = percent * 80;
         sendData = constrain(sendData, -8000, 8000);
 
-        serialServo.WriteSpe(5, sendData, acceleration);
+        sts3032.WriteSpe(5, sendData, acceleration);
     }
 }
 
-void SERVO::driveAngularVelocity(int velocity, int angularVelocity) {
+void SERIAL_SERVO::driveAngularVelocity(int velocity, int angularVelocity) {
     int data[2];
     data[0] = angularVelocity - velocity;
     data[1] = angularVelocity + velocity;
@@ -59,7 +57,7 @@ void SERVO::driveAngularVelocity(int velocity, int angularVelocity) {
     // directDrive(4, 10);
 }
 
-void SERVO::drive(int velocity, int angle, int gyro) {
+void SERIAL_SERVO::drive(int velocity, int angle, int gyroDeg) {
     const double Kp = -2.5;
 
     // 0-360変換
@@ -68,7 +66,7 @@ void SERVO::drive(int velocity, int angle, int gyro) {
     }
     angle %= 360;
 
-    int angularVelocity = gyro - angle;
+    int angularVelocity = gyroDeg - angle;
 
     //-180から180変換
     while (angularVelocity < 0) {
@@ -87,6 +85,6 @@ void SERVO::drive(int velocity, int angle, int gyro) {
     }
 }
 
-void SERVO::stop(void) {
+void SERIAL_SERVO::stop(void) {
     driveAngularVelocity(0, 0);
 }

@@ -1,0 +1,39 @@
+#ifndef _CORE_H_
+#define _CORE_H_
+
+#include "Arduino.h"
+
+#include "./input/input.h"
+#include "./output/output.h"
+
+#include <Wire.h>
+
+HardwareSerial uart3(PC5, PB10);
+
+void initUART(void) {
+    uart3.begin(115200);
+}
+
+void initI2C(void) {
+    Wire.setSDA(PB9);
+    Wire.setSCL(PB8);
+    Wire.begin();
+}
+
+void initDevice(void) {
+    buzzer.bootSound();
+
+    initI2C();
+    initUART();
+
+    loadcell.init();
+
+    buzzer.bootSound();
+
+    delay(1000);
+
+    gyro.init();
+    gyro.setOffset();
+}
+
+#endif

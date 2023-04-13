@@ -46,7 +46,7 @@
 #define RAS_ 1865
 #define SHI_ 1976
 
-class BUZZER {
+class SPEAKER {
    public:
     Output pin = PB6;
 
@@ -58,7 +58,7 @@ class BUZZER {
     void bootSound(void);
     void beat(int freq, double beat);
 
-   private:
+    void matsukenShogun(void);
 };
 
 #endif

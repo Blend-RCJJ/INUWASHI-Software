@@ -1,18 +1,23 @@
-#ifndef _SERVO_H
-#define _SERVO_H
+#ifndef _SERIAL_SERVO_H
+#define _SERIAL_SERVO_H
 
-#include <Arduino.h>
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
+#include "WProgram.h"
+#endif
 
 #include "./SCServo/SCServo.h"
-class SERVO {
+
+class SERIAL_SERVO {
    public:
-    SERVO(HardwareSerial *ptr);
+    SERIAL_SERVO(HardwareSerial *ptr);
     HardwareSerial *serialPtr;
 
     const int maximumSpeed = 7000;
     const int baudRate = 1000000;
     void directDrive(int id, int percent, int acceleration = 0);
-    void drive(int velocity, int angle, int gyro);
+    void drive(int velocity, int angle, int gyroDeg);
     void driveAngularVelocity(int velocity, int angularVelocity);
 
     void stop(void);
