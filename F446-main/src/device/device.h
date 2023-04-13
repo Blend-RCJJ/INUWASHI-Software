@@ -30,10 +30,11 @@ void initDevice(void) {
     initUART();
 
     loadcell.init();
-    buzzer.bootSound();
 
     gyro.init();
     gyro.setOffset();
+
+    buzzer.bootSound();
 }
 
 #endif
