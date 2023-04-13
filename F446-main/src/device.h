@@ -1,10 +1,11 @@
 #ifndef _CORE_H_
 #define _CORE_H_
 
-#include "Arduino.h"
+#include <Arduino.h>
+#include <Wire.h>
 
 #include "./input/input.h"
-#include "./output/output.h"
+#include "./actuator/actuator.h"
 
 HardwareSerial uart1(PA10, PA9);
 HardwareSerial uart3(PC5, PB10);
@@ -29,10 +30,7 @@ void initDevice(void) {
     initUART();
 
     loadcell.init();
-
     buzzer.bootSound();
-
-    delay(1000);
 
     gyro.init();
     gyro.setOffset();

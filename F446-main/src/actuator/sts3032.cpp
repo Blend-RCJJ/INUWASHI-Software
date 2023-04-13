@@ -1,4 +1,4 @@
-#include "serialServo.h"
+#include "sts3032.h"
 
 SMS_STS serialServo;
 

@@ -5,15 +5,13 @@
 
 // ヘッダファイルの読み込み
 
-#include "Arduino.h"
+#include <Arduino.h>
+#include <EEPROM.h>
 
 #include "./kit/RTOS-Kit.h"
 RTOS_Kit app;
 
-#include "./core.h"
-
-HardwareSerial uart5(PD2, PC12);
-// STS3032 faewfaewa(&uart5);
+#include "./device.h"
 
 void setup() {
     initDevice();
@@ -23,5 +21,7 @@ void setup() {
 
 void loop() {
     gyro.read();
-    uart1.println(gyro.deg);
+    uart1.println(millis());
+
+    servo.drive(100, 0);
 }
