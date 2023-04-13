@@ -9,9 +9,10 @@ STS3032::STS3032(HardwareSerial *ptr) {
     serialPtr->begin(baudRate);
     serialServo.pSerial = serialPtr;
 
-    // serialServo.WheelMode(1);
+    
     for (int i = 1; i <= 4; i++) {
         serialServo.unLockEprom(i);
+        serialServo.WheelMode(i);
         serialServo.EnableTorque(i, 1);
         serialServo.LockEprom(i);
     }

@@ -13,11 +13,19 @@ RTOS_Kit app;
 
 #include "./device/device.h"
 
+#include "./app/rtosMain.h"
+
 void setup() {
     initDevice();
+
+    app.create(mainApp);
+    app.start(mainApp);
+
+    app.startRTOS();
 }
 
 void loop() {
-    gyro.read();
-    servo.drive(100, 0);
+    /** ここには何も書かない
+     * RTOS管理下にあるので書いても意味ないです
+     */
 }
