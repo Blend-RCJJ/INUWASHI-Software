@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 
-#include "./input/input.h"
+#include "./sensor/sensor.h"
 #include "./actuator/actuator.h"
 
 HardwareSerial uart1(PA10, PA9);

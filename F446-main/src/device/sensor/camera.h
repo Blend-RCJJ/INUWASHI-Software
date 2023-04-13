@@ -5,11 +5,7 @@
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
+#include <Arduino.h>
 
 #define VICTIM_H 'H'
 #define VICTIM_U 'U'

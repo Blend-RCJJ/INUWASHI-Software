@@ -6,11 +6,7 @@
 #ifndef _GYRO_H_
 #define _GYRO_H_
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
+#include <Arduino.h>
 
 #include <SPI.h>
 #include <Wire.h>

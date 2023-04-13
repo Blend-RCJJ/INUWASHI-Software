@@ -11,17 +11,13 @@
 #include "./kit/RTOS-Kit.h"
 RTOS_Kit app;
 
-#include "./device.h"
+#include "./device/device.h"
 
 void setup() {
     initDevice();
-
-    uart1.println("hello world");
 }
 
 void loop() {
     gyro.read();
-    uart1.println(millis());
-
     servo.drive(100, 0);
 }

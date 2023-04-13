@@ -6,11 +6,7 @@
 #ifndef _DISTANCE_SENSOR_H_
 #define _DISTANCE_SENSOR_H_
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
+#include <Arduino.h>
 
 class DISTANCE_SENSOR {
    public:

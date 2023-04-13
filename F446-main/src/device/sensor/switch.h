@@ -1,13 +1,9 @@
 #ifndef _SWITCH_H_
 #define _SWITCH_H_
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
+#include <Arduino.h>
 
-#include "../kit/IO-Kit.h"
+#include "../../kit/IO-Kit.h"
 
 class SWITCH {
    public:

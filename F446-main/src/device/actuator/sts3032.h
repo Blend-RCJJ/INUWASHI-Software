@@ -1,14 +1,10 @@
 #ifndef _STS3032_H_
 #define _STS3032_H_
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
+#include <Arduino.h>
 
 #include "./SCServo/SCServo.h"
-#include "../input/gyro.h"
+#include "../sensor/gyro.h"
 
 extern GYRO gyro;
 

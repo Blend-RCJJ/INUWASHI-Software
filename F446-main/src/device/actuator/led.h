@@ -5,11 +5,7 @@
 #ifndef _LED_H_
 #define _LED_H_
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
+#include <Arduino.h>
 
 #include <Adafruit_NeoPixel.h>
 
