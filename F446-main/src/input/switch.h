@@ -1,5 +1,5 @@
-#ifndef _SWITCH_H
-#define _SWITCH_H
+#ifndef _SWITCH_H_
+#define _SWITCH_H_
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"

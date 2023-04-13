@@ -1,15 +1,19 @@
 #include "buzzer.h"
 
-void SPEAKER::setFrequency(int freq) {
+BUZZER::BUZZER(Output *pinPtr) {
+    this->pinPtr = pinPtr;
+}
+
+void BUZZER::setFrequency(int freq) {
     analogWriteFrequency(freq);
-    pin = 0.5;
+    pinPtr->setPWM(128);
 }
 
-void SPEAKER::mute(void) {
-    pin = 0;
+void BUZZER::mute(void) {
+    pinPtr->setPWM(0);
 }
 
-void SPEAKER::bootSound(void) {
+void BUZZER::bootSound(void) {
     setFrequency(440);
     delay(100);
     setFrequency(880);
@@ -17,7 +21,7 @@ void SPEAKER::bootSound(void) {
     mute();
 }
 
-void SPEAKER::beat(int freq, double beat) {
+void BUZZER::beat(int freq, double beat) {
     int interval = 2;
     if (freq == 0) {
         mute();
@@ -30,7 +34,7 @@ void SPEAKER::beat(int freq, double beat) {
 }
 
 // this is the function that plays 暴れん坊将軍
-void SPEAKER::matsukenShogun(void) {
+void BUZZER::matsukenShogun(void) {
     bpm = 170;
     int counter = 0;
 SHOGUN_INTRO:

@@ -1,5 +1,5 @@
-#ifndef _FLOOR_SENSOR_H
-#define _FLOOR_SENSOR_H
+#ifndef _FLOOR_SENSOR_H_
+#define _FLOOR_SENSOR_H_
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"

@@ -1,5 +1,5 @@
-#ifndef _BUZZER_H
-#define _BUZZER_H
+#ifndef _BUZZER_H_
+#define _BUZZER_H_
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
@@ -46,9 +46,10 @@
 #define RAS_ 1865
 #define SHI_ 1976
 
-class SPEAKER {
+class BUZZER {
    public:
-    Output pin = PB6;
+    Output *pinPtr;
+    BUZZER(Output *pinPtr);
 
     int bpm = 170;
 

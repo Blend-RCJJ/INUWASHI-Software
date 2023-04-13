@@ -3,8 +3,8 @@
  * XIAOと繋がっているuartのポインタを渡して初期化すること。
  */
 
-#ifndef _DISTANCE_SENSOR_H
-#define _DISTANCE_SENSOR_H
+#ifndef _DISTANCE_SENSOR_H_
+#define _DISTANCE_SENSOR_H_
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"

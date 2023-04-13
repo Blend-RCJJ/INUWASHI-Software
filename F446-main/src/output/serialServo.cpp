@@ -1,41 +1,43 @@
 #include "serialServo.h"
 
-SMS_STS sts3032;
+SMS_STS serialServo;
 
-SERIAL_SERVO::SERIAL_SERVO(HardwareSerial *ptr) {
+extern HardwareSerial uart1;
+
+STS3032::STS3032(HardwareSerial *ptr) {
     serialPtr = ptr;
     serialPtr->begin(baudRate);
-    sts3032.pSerial = serialPtr;
+    serialServo.pSerial = serialPtr;
 
-    // sts3032.WheelMode(1);
+    // serialServo.WheelMode(1);
     for (int i = 1; i <= 4; i++) {
-        sts3032.unLockEprom(i);
-        sts3032.EnableTorque(i, 1);
-        sts3032.LockEprom(i);
+        serialServo.unLockEprom(i);
+        serialServo.EnableTorque(i, 1);
+        serialServo.LockEprom(i);
     }
 
-    sts3032.unLockEprom(5);
-    sts3032.EnableTorque(5, 1);
-    sts3032.LockEprom(5);
+    serialServo.unLockEprom(5);
+    serialServo.EnableTorque(5, 1);
+    serialServo.LockEprom(5);
 }
 
-void SERIAL_SERVO::directDrive(int id, int percent, int acceleration) {
+void STS3032::directDrive(int id, int percent, int acceleration) {
     if (id != 4) {
         int sendData;
         sendData = percent * maximumSpeed / 100;
         sendData = constrain(sendData, -maximumSpeed, maximumSpeed);
 
-        sts3032.WriteSpe(id + 1, sendData, acceleration);
+        serialServo.WriteSpe(id + 1, sendData, acceleration);
     } else {
         int sendData;
         sendData = percent * 80;
         sendData = constrain(sendData, -8000, 8000);
 
-        sts3032.WriteSpe(5, sendData, acceleration);
+        serialServo.WriteSpe(5, sendData, acceleration);
     }
 }
 
-void SERIAL_SERVO::driveAngularVelocity(int velocity, int angularVelocity) {
+void STS3032::driveAngularVelocity(int velocity, int angularVelocity) {
     int data[2];
     data[0] = angularVelocity - velocity;
     data[1] = angularVelocity + velocity;
@@ -57,7 +59,7 @@ void SERIAL_SERVO::driveAngularVelocity(int velocity, int angularVelocity) {
     // directDrive(4, 10);
 }
 
-void SERIAL_SERVO::drive(int velocity, int angle, int gyroDeg) {
+void STS3032::drive(int velocity, int angle) {
     const double Kp = -2.5;
 
     // 0-360変換
@@ -66,7 +68,7 @@ void SERIAL_SERVO::drive(int velocity, int angle, int gyroDeg) {
     }
     angle %= 360;
 
-    int angularVelocity = gyroDeg - angle;
+    int angularVelocity = gyro.deg - angle;
 
     //-180から180変換
     while (angularVelocity < 0) {
@@ -85,6 +87,31 @@ void SERIAL_SERVO::drive(int velocity, int angle, int gyroDeg) {
     }
 }
 
-void SERIAL_SERVO::stop(void) {
+void STS3032::stop(void) {
     driveAngularVelocity(0, 0);
+}
+
+void STS3032::rescueKit(int num, int position) {
+    sumOfRescueKit += num;
+    for (int i = 0; i < num; i++) {
+        if (position == 1) {  // 左
+            directDrive(4, -100);
+            delay(300);
+            directDrive(4, 0);
+            delay(50);
+            directDrive(4, 100);
+            delay(130);
+            directDrive(4, 0);
+            delay(200);
+        } else {
+            directDrive(4, 100);
+            delay(300);
+            directDrive(4, 0);
+            delay(50);
+            directDrive(4, -100);
+            delay(130);
+            directDrive(4, 0);
+            delay(200);
+        }
+    }
 }

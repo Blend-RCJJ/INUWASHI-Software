@@ -2,8 +2,8 @@
  * カメラの入力監視を行います。一つのカメラに一つのインスタンスって感じ。ちょっと修正したい。
  */
 
-#ifndef _CAMERA_H
-#define _CAMERA_H
+#ifndef _CAMERA_H_
+#define _CAMERA_H_
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"

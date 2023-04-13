@@ -3,8 +3,8 @@
  * 次の機体ではセンサー変えるかも？
  */
 
-#ifndef _GYRO_H
-#define _GYRO_H
+#ifndef _GYRO_H_
+#define _GYRO_H_
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"

@@ -2,8 +2,8 @@
  * 仕様は一旦保留のため空にしておきます
  */
 
-#ifndef _LED_H
-#define _LED_H
+#ifndef _LED_H_
+#define _LED_H_
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"

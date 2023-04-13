@@ -12,16 +12,11 @@ RTOS_Kit app;
 
 #include "./core.h"
 
-HardwareSerial uart1(PA10, PA9);
-
-extern HardwareSerial uart1;
+HardwareSerial uart5(PD2, PC12);
+// STS3032 faewfaewa(&uart5);
 
 void setup() {
     initDevice();
-
-    uart1.setRx(PA10);
-    uart1.setTx(PA9);
-    uart1.begin(115200);
 
     uart1.println("hello world");
 }

@@ -1,5 +1,5 @@
-#ifndef _LOADCELL_H
-#define _LOADCELL_H
+#ifndef _LOADCELL_H_
+#define _LOADCELL_H_
 
 #if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
