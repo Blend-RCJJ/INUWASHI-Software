@@ -1,13 +1,9 @@
-#ifndef _BUZZER_H
-#define _BUZZER_H
+#ifndef _BUZZER_H_
+#define _BUZZER_H_
 
-#if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
+#include <Arduino.h>
 
-#include "../kit/IO-Kit.h"
+#include "../../kit/IO-Kit.h"
 
 #define _DO 262
 #define _DOS 277
@@ -48,7 +44,8 @@
 
 class BUZZER {
    public:
-    Output pin = PB6;
+    Output *pinPtr;
+    BUZZER(Output *pinPtr);
 
     int bpm = 170;
 
@@ -58,7 +55,7 @@ class BUZZER {
     void bootSound(void);
     void beat(int freq, double beat);
 
-   private:
+    void matsukenShogun(void);
 };
 
 #endif

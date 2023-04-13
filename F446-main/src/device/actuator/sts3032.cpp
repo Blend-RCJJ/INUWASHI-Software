@@ -1,18 +1,19 @@
-#include "servo.h"
+#include "sts3032.h"
 
 SMS_STS serialServo;
 
 extern HardwareSerial uart1;
 
-SERVO::SERVO(HardwareSerial *ptr) {
+STS3032::STS3032(HardwareSerial *ptr) {
     serialPtr = ptr;
     serialPtr->begin(baudRate);
     serialServo.pSerial = serialPtr;
 
-    // serialServo.WheelMode(1);
     for (int i = 1; i <= 4; i++) {
         serialServo.unLockEprom(i);
+        serialServo.WheelMode(i);
         serialServo.EnableTorque(i, 1);
+        serialServo.writeByte(i, SMS_STS_MODE, 1);
         serialServo.LockEprom(i);
     }
 
@@ -21,7 +22,7 @@ SERVO::SERVO(HardwareSerial *ptr) {
     serialServo.LockEprom(5);
 }
 
-void SERVO::directDrive(int id, int percent, int acceleration) {
+void STS3032::directDrive(int id, int percent, int acceleration) {
     if (id != 4) {
         int sendData;
         sendData = percent * maximumSpeed / 100;
@@ -37,7 +38,7 @@ void SERVO::directDrive(int id, int percent, int acceleration) {
     }
 }
 
-void SERVO::driveAngularVelocity(int velocity, int angularVelocity) {
+void STS3032::driveAngularVelocity(int velocity, int angularVelocity) {
     int data[2];
     data[0] = angularVelocity - velocity;
     data[1] = angularVelocity + velocity;
@@ -59,7 +60,7 @@ void SERVO::driveAngularVelocity(int velocity, int angularVelocity) {
     // directDrive(4, 10);
 }
 
-void SERVO::drive(int velocity, int angle, int gyro) {
+void STS3032::drive(int velocity, int angle) {
     const double Kp = -2.5;
 
     // 0-360変換
@@ -68,7 +69,7 @@ void SERVO::drive(int velocity, int angle, int gyro) {
     }
     angle %= 360;
 
-    int angularVelocity = gyro - angle;
+    int angularVelocity = gyro.deg - angle;
 
     //-180から180変換
     while (angularVelocity < 0) {
@@ -87,6 +88,31 @@ void SERVO::drive(int velocity, int angle, int gyro) {
     }
 }
 
-void SERVO::stop(void) {
+void STS3032::stop(void) {
     driveAngularVelocity(0, 0);
+}
+
+void STS3032::rescueKit(int num, int position) {
+    sumOfRescueKit += num;
+    for (int i = 0; i < num; i++) {
+        if (position == 1) {  // 左
+            directDrive(4, -100);
+            delay(300);
+            directDrive(4, 0);
+            delay(50);
+            directDrive(4, 100);
+            delay(130);
+            directDrive(4, 0);
+            delay(200);
+        } else {
+            directDrive(4, 100);
+            delay(300);
+            directDrive(4, 0);
+            delay(50);
+            directDrive(4, -100);
+            delay(130);
+            directDrive(4, 0);
+            delay(200);
+        }
+    }
 }
