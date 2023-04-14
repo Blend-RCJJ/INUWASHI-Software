@@ -2,14 +2,16 @@
 #define _RTOS_MAIN_H_
 
 #include "../device/device.h"
+#include "./rtosIO.h"
 
 extern RTOS_Kit app;
 
 void mainApp(App) {
-    gyro.read();
-    servo.drive(100, 0);
-
-    app.delay(10);
+    app.start(sensorReadingApp);
+    app.start(servoApp);
+    
+    while (1) {
+    }
 }
 
 #endif
