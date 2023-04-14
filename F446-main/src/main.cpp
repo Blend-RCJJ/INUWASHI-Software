@@ -6,21 +6,25 @@
 // ヘッダファイルの読み込み
 
 #include <Arduino.h>
-#include <EEPROM.h>
 
 #include "./kit/RTOS-Kit.h"
 RTOS_Kit app;
 
 #include "./device/device.h"
-
 #include "./app/rtosMain.h"
+#include "./app/rtosIO.h"
 
 void setup() {
     initDevice();
 
-    app.create(mainApp);
-    app.start(mainApp);
+    // 処理系統
+    app.create(mainApp, firstPriority);
 
+    // 入出力系統
+    app.create(sensorApp, secondPriority);
+    app.create(servoApp, secondPriority);
+
+    app.start(mainApp);
     app.startRTOS();
 }
 

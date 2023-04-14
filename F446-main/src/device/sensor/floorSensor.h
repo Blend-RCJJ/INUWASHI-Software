@@ -10,6 +10,10 @@ class FLOOR_SENSOR {
     int greenVal;
     int blueVal;
 
+    void read(void){
+        // FIXME: 未実装
+    };
+
    private:
 };
 
