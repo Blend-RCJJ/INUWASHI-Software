@@ -12,7 +12,7 @@ void sensorApp(App) {
         ui.read();
         tof.read();
         gyro.read();
-        // camera.read(); //FIXME: sポインタの設定違う
+        // camera.read(); //FIXME: ポインタの設定違う
         loadcell.read();
         floorSensor.read();
 
