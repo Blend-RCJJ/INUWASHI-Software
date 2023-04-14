@@ -10,8 +10,6 @@ void mainApp(App) {
     app.start(sensorApp);
     app.start(servoApp);
 
-    servo.suspend = false;  // サーボ起動
-
     while (1) {
         servo.suspend = !ui.toggle;
 
