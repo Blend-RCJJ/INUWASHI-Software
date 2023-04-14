@@ -21,7 +21,7 @@ void setup() {
     app.create(mainApp, firstPriority);
 
     // 入出力系統
-    app.create(sensorReadingApp, secondPriority);
+    app.create(sensorApp, secondPriority);
     app.create(servoApp, secondPriority);
 
     app.start(mainApp);

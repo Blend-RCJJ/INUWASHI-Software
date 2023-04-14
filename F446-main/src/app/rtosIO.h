@@ -7,27 +7,34 @@ extern RTOS_Kit app;
 
 const int period = 10;  // 制御周期
 
-void sensorReadingApp(App) {
-    ui.read();
-    tof.read();
-    gyro.read();
-    camera.read();
-    loadcell.read();
-    floorSensor.read();
+void sensorApp(App) {
+    while (1) {
+        ui.read();
+        tof.read();
+        gyro.read();
+        // camera.read(); //FIXME: sポインタの設定違う
+        loadcell.read();
+        floorSensor.read();
 
-    app.delay(period);
+        app.delay(period);
+    }
 }
 
 void servoApp(App) {
-    if (servo.suspend == true) {
-        if (servo.isAngleCorrectionEnabled == true) {
-            servo.drive(servo.velocity, servo.angle);
+    while (1) {
+        if (!servo.suspend) {
+            if (servo.isAngleCorrectionEnabled) {
+                servo.drive(servo.velocity, servo.angle);
+            } else {
+                servo.driveAngularVelocity(servo.velocity,
+                                           servo.angularVelocity);
+            }
         } else {
-            servo.driveAngularVelocity(servo.velocity, servo.angularVelocity);
+            servo.stop();
         }
-    }
 
-    app.delay(period);
+        app.delay(period);
+    }
 }
 
 #endif
