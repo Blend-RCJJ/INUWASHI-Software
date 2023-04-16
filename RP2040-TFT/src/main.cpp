@@ -11,10 +11,7 @@
 #define TFT_MISO 16  // SDI(MOSI)
 #define TFT_SCK 18   // SCK
 
-Adafruit_SPIDevice tftSPI =
-    Adafruit_SPIDevice(TFT_CS, TFT_SCK, TFT_MISO, TFT_MOSI);
-
-Adafruit_ILI9341 tft = Adafruit_ILI9341(&tftSPI, TFT_DC, TFT_CS, TFT_RST);
+Adafruit_ILI9341 tft = Adafruit_ILI9341(&SPI, TFT_DC, TFT_CS, TFT_RST);
 
 unsigned long testFillScreen() {
     unsigned long start = micros();
