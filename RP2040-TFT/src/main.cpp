@@ -10,6 +10,8 @@
 #include "./img/samba.h"
 #include "./img/blend.h"
 
+#include <XPT2046_Touchscreen.h>
+
 #define ARR_SIZE 76800
 
 // SPI0の場合
@@ -19,6 +21,10 @@
 #define TFT_MOSI 19  // SDI(MOSI)
 #define TFT_MISO 16  // SDI(MOSI)
 #define TFT_SCK 18   // SCK
+
+#define TOUCH_CS 20
+
+XPT2046_Touchscreen ts(TOUCH_CS);
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(&SPI, TFT_DC, TFT_CS, TFT_RST);
 
@@ -37,24 +43,38 @@ void showImage(const uint16_t *imagePtr) {
 
 void setup() {
     Serial.begin(115200);
-    tft.begin(100000000);
+    tft.begin(10000000);
     tft.setRotation(1);
 
-    // 頑張って起動してるっぽい仕草
-    showImage(image_data_blend);
-    delay(3000);
+    ts.begin();
+    ts.setRotation(3);
+
+    delay(100);
 }
 
 void loop(void) {
-    showImage(image_data_shirokuma);
-    delay(1000);
+    boolean bTouch = ts.touched();
+    static bool _status = false;
+    if (bTouch == true) {
+        TS_Point tPoint = ts.getPoint();
 
-    showImage(image_data_shirosuke);
-    delay(1000);
+        Serial.print("x:");
+        Serial.print(tPoint.x);
+        Serial.print("\ty:");
+        Serial.println(tPoint.y);
 
-    showImage(image_data_samba);
-    delay(1000);
+        showImage(image_data_matsuken);
+    } else {
+        showImage(image_data_samba);
+    }
 
-    showImage(image_data_matsuken);
-    delay(1000);
+    if (_status != bTouch) {
+        if (bTouch == true) {
+            showImage(image_data_matsuken);
+        } else {
+            showImage(image_data_samba);
+        }
+
+        _status = bTouch;
+    }
 }
