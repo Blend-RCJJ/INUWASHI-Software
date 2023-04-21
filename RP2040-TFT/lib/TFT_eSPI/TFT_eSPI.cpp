@@ -1268,7 +1268,7 @@ void TFT_eSPI::setCallback(getColorCallback getCol)
 
 /***************************************************************************************
 ** Function name:           read rectangle (for SPI Interface II i.e. IM [3:0] = "1101")
-** Description:             Read 565 pixel colours from a defined area
+** Description:             Rea pixel colours from a defined area
 ***************************************************************************************/
 void TFT_eSPI::readRect(int32_t x, int32_t y, int32_t w, int32_t h, uint16_t *data)
 {
