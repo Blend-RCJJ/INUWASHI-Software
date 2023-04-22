@@ -52,7 +52,7 @@
 // "Sketch_with_tft_setup" generic example.
 #if !defined __has_include
   #if !defined(DISABLE_ALL_LIBRARY_WARNINGS)
-    #warning Compiler does not support __has_include, so sketches cannot define the setup
+    // #warning Compiler does not support __has_include, so sketches cannot define the setup
   #endif
 #else
   #if __has_include(<tft_setup.h>)
@@ -150,7 +150,7 @@
     #if TFT_MISO != -1
       #undef TFT_MISO
       #define TFT_MISO -1
-      #warning TFT_MISO set to -1
+    //   #warning TFT_MISO set to -1
     #endif
   #endif
 #endif  
@@ -960,14 +960,14 @@ class TFT_eSPI : public Print { friend class TFT_eSprite; // Sprite class has ac
 #ifdef TOUCH_CS
   #if defined (TFT_PARALLEL_8_BIT) || defined (RP2040_PIO_INTERFACE)
     #if !defined(DISABLE_ALL_LIBRARY_WARNINGS)
-      #error >>>>------>> Touch functions not supported in 8/16 bit parallel mode or with RP2040 PIO.
+    //   #error >>>>------>> Touch functions not supported in 8/16 bit parallel mode or with RP2040 PIO.
     #endif
   #else
     #include "Extensions/Touch.h"        // Loaded if TOUCH_CS is defined by user
   #endif
 #else
     #if !defined(DISABLE_ALL_LIBRARY_WARNINGS)
-      #warning >>>>------>> TOUCH_CS pin not defined, TFT_eSPI touch functions will not be available!
+    //   #warning >>>>------>> TOUCH_CS pin not defined, TFT_eSPI touch functions will not be available!
     #endif
 #endif
 
