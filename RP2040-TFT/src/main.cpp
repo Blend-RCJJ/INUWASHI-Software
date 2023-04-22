@@ -67,7 +67,7 @@ void loop() {
 
         tft.setCursor(0, 0);
         tft.setTextColor(TFT_RED);
-        tft.setTextSize(8);ｆｆ
+        tft.setTextSize(8);
         tft.print(p.x);
         tft.setCursor(0, 15 * 4);
         tft.print(p.y);
