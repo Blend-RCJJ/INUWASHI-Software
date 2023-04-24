@@ -1,5 +1,5 @@
 # INUWASHI-Software
 
-![アートボード 1](https://user-images.githubusercontent.com/47915291/234067645-4a249e56-7850-4792-9f6f-76bdc1c758ee.png)
+![inuwashi-software](https://user-images.githubusercontent.com/47915291/234068618-a54763d4-f8af-40d6-95e4-c189a96f8ecc.png)
 
 ボルドーで美味しいもの食べたい
