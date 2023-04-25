@@ -19,6 +19,8 @@ void setup() {
 
     // 処理系統
     app.create(mainApp, firstPriority);
+    app.create(rightWallApp);
+    app.create(leftWallApp);
 
     // 入出力系統
     app.create(sensorApp, secondPriority);

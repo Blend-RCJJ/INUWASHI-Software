@@ -2,6 +2,7 @@
 #define _RTOS_IO_H_
 
 #include "../device/device.h"
+#include "../kit/RTOS-Kit.h"
 
 extern RTOS_Kit app;
 
