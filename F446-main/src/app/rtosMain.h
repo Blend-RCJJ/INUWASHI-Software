@@ -8,12 +8,17 @@
 extern RTOS_Kit app;
 
 #define SPEED 50
-#define PERIOD 10
 #define WAIT 500
 #define FORWARD 2300
 
+bool NorthWall = false;
+bool EastWall  = false;
+bool SouthWall = false;
+bool WestWall  = false;
+
 void rightWallApp(App);
 void leftWallApp(App);
+void absoluteDirection(App);
 
 void mainApp(App) {
     app.start(sensorApp);
@@ -36,7 +41,7 @@ void rightWallApp(App) {
     while (1) {
         servo.velocity = SPEED;
         servo.suspend  = false;
-        app.delay(PERIOD);
+        app.delay(period);
 
         if (tof.val[3] > 300 && tof.val[4] > 250 &&
             !gyro.slope) {  // 右壁が消えた時の処理
@@ -67,7 +72,7 @@ void rightWallApp(App) {
 void leftWallApp(App) {
     while (1) {
         servo.velocity = SPEED;
-        app.delay(PERIOD);
+        app.delay(period);
 
         if (tof.val[9] > 300 && tof.val[8] > 250 &&
             !gyro.slope) {  // 左壁が消えた時の処理
@@ -91,6 +96,111 @@ void leftWallApp(App) {
             servo.suspend = false;
             servo.angle += 90;
             app.delay(WAIT);
+        }
+    }
+}
+
+void absoluteDirectionApp(App) {  // 絶対方位で壁を見るApp
+    while (1) {
+        app.delay(100);
+        if (gyro.deg > 350 || gyro.deg < 10) {
+            if (tof.val[0] > 230) {
+                NorthWall = false;
+            } else {
+                NorthWall = true;
+            }
+
+            if (tof.val[3] > 230) {
+                EastWall = false;
+            } else {
+                EastWall = true;
+            }
+
+            if (tof.val[6] > 230) {
+                SouthWall = false;
+            } else {
+                SouthWall = true;
+            }
+
+            if (tof.val[9] > 230) {
+                WestWall = false;
+            } else {
+                WestWall = true;
+            }
+        } else if (gyro.deg > 80 && gyro.deg < 100) {
+            if (tof.val[9] > 230) {
+                NorthWall = false;
+            } else {
+                NorthWall = true;
+            }
+
+            if (tof.val[0] > 230) {
+                EastWall = false;
+            } else {
+                EastWall = true;
+            }
+
+            if (tof.val[3] > 230) {
+                SouthWall = false;
+            } else {
+                SouthWall = true;
+            }
+
+            if (tof.val[6] > 230) {
+                WestWall = false;
+            } else {
+                WestWall = true;
+            }
+        } else if (gyro.deg > 170 && gyro.deg < 190) {
+            if (tof.val[6] > 230) {
+                NorthWall = false;
+            } else {
+                NorthWall = true;
+            }
+
+            if (tof.val[9] > 230) {
+                EastWall = false;
+            } else {
+                EastWall = true;
+            }
+
+            if (tof.val[0] > 230) {
+                SouthWall = false;
+            } else {
+                SouthWall = true;
+            }
+
+            if (tof.val[3] > 230) {
+                WestWall = false;
+            } else {
+                WestWall = true;
+            }
+        } else if (gyro.deg > 260 && gyro.deg < 280) {
+            if (tof.val[3] > 230) {
+                NorthWall = false;
+            } else {
+                NorthWall = true;
+            }
+
+            if (tof.val[6] > 230) {
+                EastWall = false;
+            } else {
+                EastWall = true;
+            }
+
+            if (tof.val[9] > 230) {
+                SouthWall = false;
+            } else {
+                SouthWall = true;
+            }
+
+            if (tof.val[0] > 230) {
+                WestWall = false;
+            } else {
+                WestWall = true;
+            }
+        } else {
+            app.delay(period * 10);  // A*との兼ね合いで制御周期落としてる
         }
     }
 }
