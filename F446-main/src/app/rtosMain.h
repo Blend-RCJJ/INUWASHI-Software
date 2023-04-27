@@ -10,6 +10,12 @@ extern RTOS_Kit app;
 #define SPEED 50
 #define WAIT 500
 #define FORWARD 2300
+#define NORTH 0
+#define EAST 1
+#define SOUTH 2
+#define WEST 3
+#define MAX_DISTANCE 800
+#define FEEDBACK 30000  // 帰還開始時間(ms)
 
 bool NorthWall = false;
 bool EastWall  = false;
@@ -204,5 +210,108 @@ void absoluteDirectionApp(App) {  // 絶対方位で壁を見るApp
         }
     }
 }
+
+// void Astar(App) {  // FIXME 自己位置推定ないから動きません
+//     app.delay(WAIT);
+//     int Ndistance = MAX_DISTANCE;
+//     int Edistance = MAX_DISTANCE;
+//     int Sdistance = MAX_DISTANCE;
+//     int Wdistance = MAX_DISTANCE;  // 値の初期化(最大値に設定)
+//     bool status   = true;
+//     app.delay(WAIT);
+//     const int initialWall[4] = {(NorthWall), (EastWall), (SouthWall),
+//                                 (WestWall)};  //(0,0)の壁の状態を記憶
+//     while (1) {
+//         app.delay(100);
+//         if (millis() > FEEDBACK && servo.velocity == 50) {
+//             if (status) {
+//                 servo.velocity = 0;
+//                 app.stop(rightWallApp);
+//                 app.stop(leftWallApp);
+//                 app.delay(WAIT);
+//                 status = false;
+//             }
+//             app.delay(period);
+//         MEASURE_DISTANCE:  // 最短経路の算出
+//             if (!location.x && !location.y && initialWall[NORTH] == NorthWall &&
+//                 initialWall[EAST] == EastWall &&
+//                 initialWall[SOUTH] == SouthWall &&
+//                 initialWall[WEST] ==
+//                     WestWall) {  //(0,0)かつスタート時の壁情報と一致
+//                 servo.velocity = 0;
+//                 servo.suspend  = true;
+//                 app.stop(servoApp);
+//                 app.delay(20000);
+//             }
+
+//             if (!NorthWall) {
+//                 Ndistance = location.x * location.x +
+//                             (location.y + 1) * (location.y + 1);
+//             } else {
+//                 Ndistance = MAX_DISTANCE;
+//             }
+//             if (!EastWall) {
+//                 Edistance = (location.x + 1) * (location.x + 1) +
+//                             location.y * location.y;
+//             } else {
+//                 Edistance = MAX_DISTANCE;
+//             }
+//             if (!SouthWall) {
+//                 Sdistance = location.x * location.x +
+//                             (location.y - 1) * (location.y - 1);
+//             } else {
+//                 Sdistance = MAX_DISTANCE;
+//             }
+//             if (!WestWall) {
+//                 Wdistance = (location.x - 1) * (location.x - 1) +
+//                             location.y * location.y;
+//             } else {
+//                 Wdistance = MAX_DISTANCE;
+//             }
+//         MOVE_COORDINATE
+//             :  // FIXME
+//                // 1マスぴったり進む方法が確立されていない&坂道来た時どうする？
+//             if (Ndistance < Edistance && Ndistance < Sdistance &&
+//                 Ndistance < Wdistance) {
+//                 servo.angle    = 0;
+//                 servo.velocity = 50;
+//                 app.delay(2900);
+//                 servo.velocity = 0;
+//                 app.delay(1000);
+//                 SouthWall = true;
+//                 goto MEASURE_DISTANCE;
+
+//             } else if (Sdistance < Edistance && Sdistance < Wdistance) {
+//                 servo.angle    = 180;
+//                 servo.velocity = 50;
+//                 app.delay(2900);
+//                 servo.velocity = 0;
+//                 app.delay(1000);
+//                 NorthWall = true;
+//                 goto MEASURE_DISTANCE;
+
+//             } else if (Edistance < Wdistance) {
+//                 servo.angle    = 90;
+//                 servo.velocity = 50;
+//                 app.delay(2900);
+//                 servo.velocity = 0;
+//                 app.delay(1000);
+//                 WestWall = true;
+//                 goto MEASURE_DISTANCE;
+
+//             } else {
+//                 servo.angle    = 270;
+//                 servo.velocity = 50;
+//                 app.delay(2900);
+//                 servo.velocity = 0;
+//                 app.delay(1000);
+//                 EastWall = true;
+//                 goto MEASURE_DISTANCE;
+//             }
+//         } else {
+//             app.delay(10);
+//         }
+//     }
+// }
 
 #endif
