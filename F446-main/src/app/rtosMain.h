@@ -20,17 +20,23 @@ extern RTOS_Kit app;
 bool NorthWall = false;
 bool EastWall  = false;
 bool SouthWall = false;
-bool WestWall  = false;
+bool WestWall = false;  // NOTE 絶対方位とA*で使うのでグローバル変数にしてます
+const int radius = 20;
 
 void rightWallApp(App);
 void leftWallApp(App);
 void absoluteDirection(App);
+void monitorApp(App);
+void adjustmentApp(App);
 
 void mainApp(App) {
     app.start(sensorApp);
+    // app.start(monitorApp);
     app.start(servoApp);
-    // app.start(rightWallApp);
-    app.start(leftWallApp);
+    app.start(adjustmentApp);
+    app.start(rightWallApp);
+    // app.start(leftWallApp);
+    // app.start(monitorApp);
 
     while (1) {
         // servo.suspend = !ui.toggle;
@@ -211,7 +217,7 @@ void absoluteDirectionApp(App) {  // 絶対方位で壁を見るApp
     }
 }
 
-// void Astar(App) {  // FIXME 自己位置推定ないから動きません
+// void AstarApp(App) {  // FIXME 自己位置推定ないから動きません
 //     app.delay(WAIT);
 //     int Ndistance = MAX_DISTANCE;
 //     int Edistance = MAX_DISTANCE;
@@ -233,7 +239,8 @@ void absoluteDirectionApp(App) {  // 絶対方位で壁を見るApp
 //             }
 //             app.delay(period);
 //         MEASURE_DISTANCE:  // 最短経路の算出
-//             if (!location.x && !location.y && initialWall[NORTH] == NorthWall &&
+//             if (!location.x && !location.y && initialWall[NORTH] == NorthWall
+//             &&
 //                 initialWall[EAST] == EastWall &&
 //                 initialWall[SOUTH] == SouthWall &&
 //                 initialWall[WEST] ==
@@ -270,7 +277,8 @@ void absoluteDirectionApp(App) {  // 絶対方位で壁を見るApp
 //             }
 //         MOVE_COORDINATE
 //             :  // FIXME
-//                // 1マスぴったり進む方法が確立されていない&坂道来た時どうする？
+//                //
+//                1マスぴったり進む方法が確立されていない&坂道来た時どうする？
 //             if (Ndistance < Edistance && Ndistance < Sdistance &&
 //                 Ndistance < Wdistance) {
 //                 servo.angle    = 0;
@@ -313,5 +321,25 @@ void absoluteDirectionApp(App) {  // 絶対方位で壁を見るApp
 //         }
 //     }
 // }
+
+void monitorApp(App) {
+    while (1) {
+        uart3.print(radius + tof.val[9]);
+        uart3.print(" ");
+        uart3.println(0.8660254038 * (radius + tof.val[8]));
+        app.delay(500);
+    }
+}
+
+void adjustmentApp(App) {
+    while (1) {
+        app.delay(period);
+        if(tof.val[3] < 230){
+            if(radius + tof.val[3] + 20 < 0.8660254038 * (radius + tof.val[2])){//√3/2
+                servo.correctingAngle += 1;//一度ずつ補正
+            }
+        }
+    }
+}
 
 #endif

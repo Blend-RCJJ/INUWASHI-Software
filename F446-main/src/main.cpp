@@ -22,6 +22,8 @@ void setup() {
     app.create(rightWallApp);
     app.create(leftWallApp);
     app.create(absoluteDirectionApp);
+    app.create(monitorApp);
+    app.create(adjustmentApp);
 
     // 入出力系統
     app.create(sensorApp, secondPriority);
