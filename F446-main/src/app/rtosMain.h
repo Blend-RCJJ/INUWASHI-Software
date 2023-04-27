@@ -334,9 +334,12 @@ void monitorApp(App) {
 void adjustmentApp(App) {
     while (1) {
         app.delay(period);
-        if(tof.val[3] < 230){
+        if(tof.val[3] < 230 && tof.val[2] < 265){
             if(radius + tof.val[3] + 20 < 0.8660254038 * (radius + tof.val[2])){//√3/2
                 servo.correctingAngle += 1;//一度ずつ補正
+            }
+            if(radius + tof.val[3] - 20 > 0.8660254038 * (radius + tof.val[2])){
+                servo.correctingAngle -= 1;
             }
         }
     }
