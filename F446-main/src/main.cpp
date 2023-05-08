@@ -10,15 +10,19 @@
 #include "./kit/RTOS-Kit.h"
 RTOS_Kit app;
 
-#include "./device/device.h"
-#include "./app/rtosMain.h"
 #include "./app/rtosIO.h"
+#include "./app/rtosMain.h"
+#include "./device/device.h"
 
 void setup() {
     initDevice();
 
     // 処理系統
     app.create(mainApp, firstPriority);
+    app.create(rightWallApp);
+    app.create(leftWallApp);
+    app.create(absoluteDirectionApp);
+    app.create(monitorApp);
 
     // 入出力系統
     app.create(sensorApp, secondPriority);

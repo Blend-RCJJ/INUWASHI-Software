@@ -2,6 +2,7 @@
 #define _RTOS_IO_H_
 
 #include "../device/device.h"
+#include "../kit/RTOS-Kit.h"
 
 extern RTOS_Kit app;
 
@@ -24,7 +25,8 @@ void servoApp(App) {
     while (1) {
         if (!servo.suspend) {
             if (servo.isAngleCorrectionEnabled) {
-                servo.drive(servo.velocity, servo.angle);
+                servo.drive(servo.velocity,
+                            servo.angle + servo.isCorrectingAngle);
             } else {
                 servo.driveAngularVelocity(servo.velocity,
                                            servo.angularVelocity);
