@@ -28,15 +28,15 @@ void leftWallApp(App);
 void absoluteDirection(App);
 void monitorApp(App);
 void adjustmentApp(App);
+void DepthFirstSearchApp(App);
 
 void mainApp(App) {
     app.start(sensorApp);
     // app.start(monitorApp);
     app.start(servoApp);
-    // app.start(adjustmentApp);
     app.start(rightWallApp);
+    app.start(DepthFirstSearchApp);
     // app.start(leftWallApp);
-    // app.start(monitorApp);
 
     while (1) {
         // servo.suspend = !ui.toggle;
@@ -84,7 +84,7 @@ void rightWallApp(App) {
         } else if (tof.val[3] < 230 && tof.val[2] < 265) {
             if (radius + tof.val[3] + 30 <
                 0.8660254038 * (radius + tof.val[2])) {  // √3/2(tofが30°間隔)
-                servo.isCorrectingAngle += 1;              // 一度ずつ補正
+                servo.isCorrectingAngle += 1;            // 一度ずつ補正
             }
             if (radius + tof.val[3] - 30 >
                 0.8660254038 * (radius + tof.val[2])) {
@@ -125,10 +125,10 @@ void leftWallApp(App) {
 
         if (tof.val[9] < 120) {
             servo.isCorrectingAngle = 3;
-        } else if (tof.val[9] < 230 && tof.val[8] < 265) {
+        } else if (tof.val[9] < 230 && tof.val[10] < 265) {
             if (radius + tof.val[9] + 30 <
                 0.8660254038 * (radius + tof.val[8])) {  // √3/2
-                servo.isCorrectingAngle += 1;              // 一度ずつ補正
+                servo.isCorrectingAngle += 1;            // 一度ずつ補正
             }
             if (radius + tof.val[3] - 30 >
                 0.8660254038 * (radius + tof.val[8])) {
@@ -357,8 +357,26 @@ void monitorApp(App) {
     }
 }
 
-void DepthFirstSearch(App){
-    app.delay(period);
+void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録する変数
+                                 // "JCT"
+    bool oldstatus = false;
+    app.delay(WAIT);
+    while (1) {
+        app.delay(period);
+        if (tof.val[0] < 180 && tof.val[3] < 180 && tof.val[9] < 180) {
+            oldstatus = true;
+        }
+        if (oldstatus) {
+            app.stop(rightWallApp);
+            servo.suspend = true;
+            app.delay(WAIT * 3);
+            servo.suspend = false;
+            servo.angle += 180;
+            app.delay(WAIT * 3);
+            app.start(leftWallApp);
+            oldstatus = false;
+        }  // 前方+左右に壁があったら反転して左壁追従
+    }
 }
 
 #endif
