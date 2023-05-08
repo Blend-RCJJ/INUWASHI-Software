@@ -25,7 +25,8 @@ void servoApp(App) {
     while (1) {
         if (!servo.suspend) {
             if (servo.isAngleCorrectionEnabled) {
-                servo.drive(servo.velocity, servo.angle + servo.correctingAngle);
+                servo.drive(servo.velocity,
+                            servo.angle + servo.isCorrectingAngle);
             } else {
                 servo.driveAngularVelocity(servo.velocity,
                                            servo.angularVelocity);
