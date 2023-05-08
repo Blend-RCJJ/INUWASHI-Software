@@ -33,7 +33,7 @@ void mainApp(App) {
     app.start(sensorApp);
     // app.start(monitorApp);
     app.start(servoApp);
-    app.start(adjustmentApp);
+    // app.start(adjustmentApp);
     app.start(rightWallApp);
     // app.start(leftWallApp);
     // app.start(monitorApp);
@@ -78,6 +78,19 @@ void rightWallApp(App) {
             servo.angle -= 90;
             app.delay(WAIT);
         }
+
+        if (tof.val[3] < 120) {
+            servo.isCorrectingAngle = -3;  // 接近しすぎたら離れる
+        } else if (tof.val[3] < 230 && tof.val[2] < 265) {
+            if (radius + tof.val[3] + 30 <
+                0.8660254038 * (radius + tof.val[2])) {  // √3/2(tofが30°間隔)
+                servo.isCorrectingAngle += 1;              // 一度ずつ補正
+            }
+            if (radius + tof.val[3] - 30 >
+                0.8660254038 * (radius + tof.val[2])) {
+                servo.isCorrectingAngle -= 1;
+            }
+        }
     }
 }
 
@@ -108,6 +121,19 @@ void leftWallApp(App) {
             servo.suspend = false;
             servo.angle += 90;
             app.delay(WAIT);
+        }
+
+        if (tof.val[9] < 120) {
+            servo.isCorrectingAngle = 3;
+        } else if (tof.val[9] < 230 && tof.val[8] < 265) {
+            if (radius + tof.val[9] + 30 <
+                0.8660254038 * (radius + tof.val[8])) {  // √3/2
+                servo.isCorrectingAngle += 1;              // 一度ずつ補正
+            }
+            if (radius + tof.val[3] - 30 >
+                0.8660254038 * (radius + tof.val[8])) {
+                servo.isCorrectingAngle -= 1;
+            }
         }
     }
 }
@@ -331,18 +357,8 @@ void monitorApp(App) {
     }
 }
 
-void adjustmentApp(App) {
-    while (1) {
-        app.delay(period);
-        if(tof.val[3] < 230 && tof.val[2] < 265){
-            if(radius + tof.val[3] + 20 < 0.8660254038 * (radius + tof.val[2])){//√3/2
-                servo.correctingAngle += 1;//一度ずつ補正
-            }
-            if(radius + tof.val[3] - 20 > 0.8660254038 * (radius + tof.val[2])){
-                servo.correctingAngle -= 1;
-            }
-        }
-    }
+void DepthFirstSearch(App){
+    app.delay(period);
 }
 
 #endif
