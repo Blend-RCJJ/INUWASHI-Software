@@ -9,7 +9,7 @@ XPT2046_Touchscreen ts(20);
 #include "img/shirosuke.h"
 #include "img/shirokuma.h"
 #include "img/samba.h"
-#include "img/top2.h"
+#include "img/top3.h"
 #include "img/led.h"
 #include "img/matsuken.h"
 
