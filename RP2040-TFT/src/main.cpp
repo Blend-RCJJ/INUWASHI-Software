@@ -6,12 +6,19 @@ TFT_eSPI tft = TFT_eSPI();
 XPT2046_Touchscreen ts(20);
 
 #include "img/blend.h"
-#include "img/shirosuke.h"
-#include "img/shirokuma.h"
-#include "img/samba.h"
-#include "img/top3.h"
-#include "img/led.h"
-#include "img/matsuken.h"
+#include "ui-kit/00-top.h"
+#include "ui-kit/01-camera.h"
+#include "ui-kit/02-led.h"
+#include "ui-kit/03-motor.h"
+#include "ui-kit/04-load.h"
+#include "ui-kit/05-tof.h"
+#include "ui-kit/06-floor.h"
+// #include "img/shirosuke.h"
+// #include "img/shirokuma.h"
+// #include "img/samba.h"
+// #include "img/top3.h"
+// #include "img/led.h"
+// #include "img/matsuken.h"
 
 #define ARR_SIZE 76800
 
@@ -33,10 +40,6 @@ void showBootImage(void) {
 
     showImage(image_data_blend);
     delay(500);
-    showImage(image_data_shirokuma);
-    delay(500);
-    showImage(image_data_shirosuke);
-    delay(500);
 }
 
 void setup() {
@@ -47,6 +50,8 @@ void setup() {
 
     ts.begin();
     ts.setRotation(3);
+
+    showBootImage();
 }
 
 int mode = 0;
@@ -64,18 +69,18 @@ void loop() {
 
     if (bTouch) {
         if (!oldTouch && mode == 0) {
-            if (abs(3000 - p.x) < 500 && abs(3000 - p.y) < 500) {
-                mode = 1;
-            } else if (abs(1000 - p.x) < 500 && abs(3000 - p.y) < 500) {
-                mode = 2;
-            } else if (abs(2000 - p.x) < 500 && abs(3000 - p.y) < 500) {
-                mode = 3;
-            } else if (abs(1000 - p.x) < 500 && abs(1600 - p.y) < 500) {
+            if (abs(1000 - p.x) < 500 && abs(3000 - p.y) < 500) {
                 mode = 4;
-            } else if (abs(2000 - p.x) < 500 && abs(1600 - p.y) < 500) {
+            } else if (abs(2000 - p.x) < 500 && abs(3000 - p.y) < 500) {
                 mode = 5;
-            } else if (abs(3000 - p.x) < 500 && abs(1600 - p.y) < 500) {
+            } else if (abs(3000 - p.x) < 500 && abs(3000 - p.y) < 500) {
                 mode = 6;
+            } else if (abs(1000 - p.x) < 500 && abs(1600 - p.y) < 500) {
+                mode = 1;
+            } else if (abs(2000 - p.x) < 500 && abs(1600 - p.y) < 500) {
+                mode = 2;
+            } else if (abs(3000 - p.x) < 500 && abs(1600 - p.y) < 500) {
+                mode = 3;
             }
         }
         
@@ -107,25 +112,25 @@ void loop() {
 
         switch (mode) {
             case 0:
-                showImage(image_data_top);
+                showImage(image_data_00top);
                 break;
             case 1:
-                showImage(image_data_led);
+                showImage(image_data_01camera);
                 break;
             case 2:
-                showImage(image_data_samba);
+                showImage(image_data_02led);
                 break;
             case 3:
-                showImage(image_data_shirokuma);
+                showImage(image_data_03motor);
                 break;
             case 4:
-                showImage(image_data_blend);
+                showImage(image_data_04load);
                 break;
             case 5:
-                showImage(image_data_shirosuke);
+                showImage(image_data_05tof);
                 break;
             case 6:
-                showImage(image_data_matsuken);
+                showImage(image_data_06floor);
                 break;
         }
 
