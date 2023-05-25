@@ -4,6 +4,7 @@
 #include "../device/device.h"
 #include "../kit/RTOS-Kit.h"
 #include "./rtosIO.h"
+#include "./rtosLocation.h"
 
 extern RTOS_Kit app;
 
@@ -18,7 +19,7 @@ extern RTOS_Kit app;
 #define FEEDBACK 30000  // 帰還開始時間(ms)
 
 bool NorthWall = false;
-bool EastWall  = false;
+bool EastWall = false;
 bool SouthWall = false;
 bool WestWall = false;  // NOTE 絶対方位とA*で使うのでグローバル変数にしてます
 const int radius = 20;
@@ -31,20 +32,21 @@ void adjustmentApp(App);
 
 void mainApp(App) {
     app.start(sensorApp);
-    // app.start(monitorApp);
     app.start(servoApp);
-    // app.start(adjustmentApp);
-    app.start(rightWallApp);
-    // app.start(leftWallApp);
-    // app.start(monitorApp);
+    // app.start(rightWallApp);
+    // app.start(locationApp);
+    app.start(monitorApp);
 
     while (1) {
-        // servo.suspend = !ui.toggle;
+        if(ui.toggle){
+            app.start(rightWallApp);
+            app.start(locationApp);
+        } else {
+            app.stop(rightWallApp);
+            app.stop(locationApp);
 
-        // servo.angle = 0;
-        // servo.velocity = 100;
-
-        // uart1.println(millis());  // NOTE: 生死確認
+            servo.suspend = true;
+        }
         app.delay(period);
     }
 }
@@ -52,27 +54,27 @@ void mainApp(App) {
 void rightWallApp(App) {
     while (1) {
         servo.velocity = SPEED;
-        servo.suspend  = false;
+        servo.suspend = false;
         app.delay(period);
 
         if (tof.val[3] > 300 && tof.val[4] > 250 &&
             !gyro.slope) {  // 右壁が消えた時の処理
             servo.velocity = 0;
-            servo.suspend  = true;
+            servo.suspend = true;
             app.delay(WAIT);
             servo.suspend = false;
             servo.angle += 90;
             servo.velocity = 0;
-            servo.suspend  = true;
+            servo.suspend = true;
             app.delay(WAIT);
-            servo.suspend  = false;
+            servo.suspend = false;
             servo.velocity = SPEED;
             app.delay(FORWARD);  // 次のタイルまで前進
         }
 
         if (tof.val[0] < 140 && !gyro.slope) {  // 前に壁が来た時の処理
             servo.velocity = 0;
-            servo.suspend  = true;
+            servo.suspend = true;
             app.delay(WAIT);
             servo.suspend = false;
             servo.angle -= 90;
@@ -84,7 +86,7 @@ void rightWallApp(App) {
         } else if (tof.val[3] < 230 && tof.val[2] < 265) {
             if (radius + tof.val[3] + 30 <
                 0.8660254038 * (radius + tof.val[2])) {  // √3/2(tofが30°間隔)
-                servo.isCorrectingAngle += 1;              // 一度ずつ補正
+                servo.isCorrectingAngle += 1;            // 一度ずつ補正
             }
             if (radius + tof.val[3] - 30 >
                 0.8660254038 * (radius + tof.val[2])) {
@@ -102,21 +104,21 @@ void leftWallApp(App) {
         if (tof.val[9] > 300 && tof.val[8] > 250 &&
             !gyro.slope) {  // 左壁が消えた時の処理
             servo.velocity = 0;
-            servo.suspend  = true;
+            servo.suspend = true;
             app.delay(WAIT);
             servo.suspend = false;
             servo.angle -= 90;
             servo.velocity = 0;
-            servo.suspend  = true;
+            servo.suspend = true;
             app.delay(WAIT);
-            servo.suspend  = false;
+            servo.suspend = false;
             servo.velocity = SPEED;
             app.delay(FORWARD);  // 次のタイルまで前進
         }
 
         if (tof.val[0] < 140 && !gyro.slope) {  // 前に壁が来た時の処理
             servo.velocity = 0;
-            servo.suspend  = true;
+            servo.suspend = true;
             app.delay(WAIT);
             servo.suspend = false;
             servo.angle += 90;
@@ -128,7 +130,7 @@ void leftWallApp(App) {
         } else if (tof.val[9] < 230 && tof.val[8] < 265) {
             if (radius + tof.val[9] + 30 <
                 0.8660254038 * (radius + tof.val[8])) {  // √3/2
-                servo.isCorrectingAngle += 1;              // 一度ずつ補正
+                servo.isCorrectingAngle += 1;            // 一度ずつ補正
             }
             if (radius + tof.val[3] - 30 >
                 0.8660254038 * (radius + tof.val[8])) {
@@ -350,14 +352,23 @@ void absoluteDirectionApp(App) {  // 絶対方位で壁を見るApp
 
 void monitorApp(App) {
     while (1) {
-        uart3.print(radius + tof.val[9]);
-        uart3.print(" ");
-        uart3.println(0.8660254038 * (radius + tof.val[8]));
+        // uart3.print(radius + tof.val[9]);
+        // uart3.print(" ");
+        // uart3.println(0.8660254038 * (radius + tof.val[8]));
+
+        uart3.print(location.coordinateX);
+        uart3.print("\t");
+        uart3.print(location.coordinateY);
+        uart3.print("\t");
+        uart3.print(location.x);
+        uart3.print("\t");
+        uart3.println(location.y);
+
         app.delay(500);
     }
 }
 
-void DepthFirstSearch(App){
+void DepthFirstSearch(App) {
     app.delay(period);
 }
 
