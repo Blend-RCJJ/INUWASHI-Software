@@ -22,11 +22,12 @@ void setup() {
     app.create(rightWallApp);
     app.create(leftWallApp);
     app.create(absoluteDirectionApp);
-    app.create(monitorApp);
+    app.create(locationApp, firstPriority);
 
     // 入出力系統
     app.create(sensorApp, secondPriority);
     app.create(servoApp, secondPriority);
+    app.create(monitorApp);
 
     app.start(mainApp);
     app.startRTOS();
