@@ -65,8 +65,6 @@ void rightWallApp(App) {
         servo.suspend  = false;
         isRightWallApp = true;
         DFS            = false;
-        virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] =
-            true;  // 仮想壁
         app.delay(period);
 
         if (tof.val[0] < 140 && !gyro.slope) {  // 前に壁が来た時の処理
@@ -569,22 +567,36 @@ void monitorApp(App) {
 
 void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録する変数
                                  // "JCT"
-    bool oldstatus = false;
+    static bool JCT[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
+    static int oldmillis                            = 0;
     app.delay(WAIT);
     while (1) {
+        virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] =
+            true;  // 仮想壁
         app.delay(period);
-        if (tof.val[0] < 180 && tof.val[3] < 180 && tof.val[9] < 180) {
-            oldstatus = true;
+
+        if (tof.val[0] > 450 && (tof.val[3] > 230 || tof.val[9] > 230)) {
+            JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
+            oldmillis                                             = millis();
         }
-        if (oldstatus) {
+        if (!isRightWallApp &&
+            JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] &&
+            (tof.val[3] > 230 || tof.val[9] > 230)) {
+            servo.velocity = 0;
+            servo.stop();
+            app.stop(leftWallApp);
+            app.delay(WAIT);
+            app.start(rightWallApp);
+        }
+
+        if (tof.val[0] < 180 && tof.val[3] < 180 && tof.val[9] < 180) {
             app.stop(rightWallApp);
             servo.suspend = true;
-            app.delay(WAIT * 3);
+            app.delay(500);
             servo.suspend = false;
             servo.angle += 180;
             app.delay(WAIT * 3);
             app.start(leftWallApp);
-            oldstatus = false;
         }  // 前方+左右に壁があったら反転して左壁追従
     }
 }
