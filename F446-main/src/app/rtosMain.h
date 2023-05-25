@@ -16,13 +16,14 @@ extern RTOS_Kit app;
 #define SOUTH 2
 #define WEST 3
 #define MAX_DISTANCE 800
-#define FEEDBACK 30000  // 帰還開始時間(ms)
+#define FEEDBACK 15000  // 帰還開始時間(ms)
 
 bool NorthWall = false;
 bool EastWall  = false;
 bool SouthWall = false;
 bool WestWall = false;  // NOTE 絶対方位とA*で使うのでグローバル変数にしてます
-const int radius = 20;
+const int radius    = 20;
+bool isRightWallApp = false;
 
 void rightWallApp(App);
 void leftWallApp(App);
@@ -31,6 +32,7 @@ void monitorApp(App);
 void adjustmentApp(App);
 void DepthFirstSearchApp(App);
 void AstarApp(App);
+void adjustmentApp(App);
 
 void mainApp(App) {
     app.start(sensorApp);
@@ -39,8 +41,7 @@ void mainApp(App) {
     app.start(rightWallApp);
     app.start(DepthFirstSearchApp);
     app.start(AstarApp);
-    // app.start(leftWallApp);
-
+    app.start(adjustmentApp);
     while (1) {
         if (ui.toggle) {
             app.start(rightWallApp);
@@ -56,9 +57,11 @@ void mainApp(App) {
 }
 
 void rightWallApp(App) {
+    app.delay(WAIT);
     while (1) {
         servo.velocity = SPEED;
         servo.suspend  = false;
+        isRightWallApp = true;
         app.delay(period);
 
         if (tof.val[3] > 300 && tof.val[4] > 250 &&
@@ -84,19 +87,6 @@ void rightWallApp(App) {
             servo.angle -= 90;
             app.delay(WAIT);
         }
-
-        if (tof.val[3] < 120) {
-            servo.isCorrectingAngle = -3;  // 接近しすぎたら離れる
-        } else if (tof.val[3] < 230 && tof.val[2] < 265) {
-            if (radius + tof.val[3] + 30 <
-                0.8660254038 * (radius + tof.val[2])) {  // √3/2(tofが30°間隔)
-                servo.isCorrectingAngle += 1;            // 一度ずつ補正
-            }
-            if (radius + tof.val[3] - 30 >
-                0.8660254038 * (radius + tof.val[2])) {
-                servo.isCorrectingAngle -= 1;
-            }
-        }
     }
 }
 
@@ -104,6 +94,7 @@ void leftWallApp(App) {
     while (1) {
         servo.velocity = SPEED;
         servo.suspend  = false;
+        isRightWallApp = false;
         app.delay(period);
 
         if (tof.val[9] > 300 && tof.val[8] > 250 &&
@@ -128,21 +119,6 @@ void leftWallApp(App) {
             servo.suspend = false;
             servo.angle += 90;
             app.delay(WAIT);
-        }
-
-        if (tof.val[9] < 120) {
-            servo.isCorrectingAngle = 3;
-        } else if (tof.val[9] < 230 && tof.val[10] < 265) {
-            if (radius + tof.val[9] + 25 <
-                0.8660254038 *
-                    (radius +
-                     tof.val[8])) {  // √3/2　//NOTE 新機体は1/√2(0.7071067812)
-                servo.isCorrectingAngle += 1;  // 一度ずつ補正
-            }
-            if (radius + tof.val[9] - 25 >
-                0.8660254038 * (radius + tof.val[8])) {
-                servo.isCorrectingAngle -= 1;
-            }
         }
     }
 }
@@ -252,7 +228,43 @@ void absoluteDirectionApp(App) {  // 絶対方位で壁を見るApp
     }
 }
 
-void AstarApp(App) {  // FIXME 自己位置推定ないから動きません
+void adjustmentApp(App) {
+    while (1) {
+        app.delay(period);
+        if (isRightWallApp) {
+            if (tof.val[3] < 120) {
+                servo.isCorrectingAngle = -3;  // 接近しすぎたら離れる
+            } else if (tof.val[3] < 230 && tof.val[2] < 265) {
+                if (radius + tof.val[3] + 30 <
+                    0.8660254038 *
+                        (radius + tof.val[2])) {   // √3/2(tofが30°間隔)
+                    servo.isCorrectingAngle += 1;  // 一度ずつ補正
+                }
+                if (radius + tof.val[3] - 30 >
+                    0.8660254038 * (radius + tof.val[2])) {
+                    servo.isCorrectingAngle -= 1;
+                }
+            }
+        } else {
+            if (tof.val[9] < 120) {
+                servo.isCorrectingAngle = 3;
+            } else if (tof.val[9] < 230 && tof.val[10] < 265) {
+                if (radius + tof.val[9] + 25 <
+                    0.8660254038 *
+                        (radius + tof.val[8])) {  // √3/2　//NOTE
+                                                  // 新機体は1/√2(0.7071067812)
+                    servo.isCorrectingAngle += 1;  // 一度ずつ補正
+                }
+                if (radius + tof.val[9] - 25 >
+                    0.8660254038 * (radius + tof.val[8])) {
+                    servo.isCorrectingAngle -= 1;
+                }
+            }
+        }
+    }
+}
+
+void AstarApp(App) {  // NOTE 動いた
     app.delay(WAIT);
     int Ndistance = MAX_DISTANCE;
     int Edistance = MAX_DISTANCE;
@@ -267,10 +279,13 @@ void AstarApp(App) {  // FIXME 自己位置推定ないから動きません
         if (millis() > FEEDBACK && servo.velocity == 50) {
             if (status) {
                 servo.velocity = 0;
+                servo.suspend = true;
                 app.stop(rightWallApp);
                 app.stop(leftWallApp);
                 app.stop(DepthFirstSearchApp);
+                app.stop(adjustmentApp);
                 app.delay(WAIT);
+                servo.suspend = false;
                 status = false;
             }
             app.delay(period);
@@ -318,18 +333,18 @@ void AstarApp(App) {  // FIXME 自己位置推定ないから動きません
                 Ndistance < Wdistance) {
                 servo.angle    = 0 + servo.isCorrectingAngle;
                 servo.velocity = 50;
-                app.delay(2900);
+                app.delay(FORWARD);
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.delay(WAIT);
                 servo.suspend = false;
-                SouthWall     = true;
+                SouthWall     = true;//後方に仮想壁
                 goto MEASURE_DISTANCE;
 
             } else if (Sdistance < Edistance && Sdistance < Wdistance) {
                 servo.angle    = 180 + servo.isCorrectingAngle;
                 servo.velocity = 50;
-                app.delay(2900);
+                app.delay(FORWARD);
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.delay(WAIT);
@@ -340,7 +355,7 @@ void AstarApp(App) {  // FIXME 自己位置推定ないから動きません
             } else if (Edistance < Wdistance) {
                 servo.angle    = 90 + servo.isCorrectingAngle;
                 servo.velocity = 50;
-                app.delay(2900);
+                app.delay(FORWARD);
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.delay(WAIT);
@@ -351,7 +366,7 @@ void AstarApp(App) {  // FIXME 自己位置推定ないから動きません
             } else {
                 servo.angle    = 270 + servo.isCorrectingAngle;
                 servo.velocity = 50;
-                app.delay(2900);
+                app.delay(FORWARD);
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.delay(WAIT);
@@ -360,7 +375,7 @@ void AstarApp(App) {  // FIXME 自己位置推定ないから動きません
                 goto MEASURE_DISTANCE;
             }
         } else {
-            app.delay(10);
+            app.delay(period);
         }
     }
 }
