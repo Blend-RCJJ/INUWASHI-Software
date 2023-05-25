@@ -32,7 +32,7 @@ void DepthFirstSearchApp(App);
 
 void mainApp(App) {
     app.start(sensorApp);
-    // app.start(monitorApp);
+    app.start(monitorApp);
     app.start(servoApp);
     app.start(rightWallApp);
     app.start(DepthFirstSearchApp);
@@ -97,6 +97,7 @@ void rightWallApp(App) {
 void leftWallApp(App) {
     while (1) {
         servo.velocity = SPEED;
+        servo.suspend  = false;
         app.delay(period);
 
         if (tof.val[9] > 300 && tof.val[8] > 250 &&
@@ -126,11 +127,11 @@ void leftWallApp(App) {
         if (tof.val[9] < 120) {
             servo.isCorrectingAngle = 3;
         } else if (tof.val[9] < 230 && tof.val[10] < 265) {
-            if (radius + tof.val[9] + 30 <
-                0.8660254038 * (radius + tof.val[8])) {  // √3/2
+            if (radius + tof.val[9] + 25 <
+                0.8660254038 * (radius + tof.val[8])) {  // √3/2　//NOTE 新機体は1/√2(0.7071067812) 
                 servo.isCorrectingAngle += 1;            // 一度ずつ補正
             }
-            if (radius + tof.val[3] - 30 >
+            if (radius + tof.val[9] - 25 >
                 0.8660254038 * (radius + tof.val[8])) {
                 servo.isCorrectingAngle -= 1;
             }
@@ -350,9 +351,9 @@ void absoluteDirectionApp(App) {  // 絶対方位で壁を見るApp
 
 void monitorApp(App) {
     while (1) {
-        uart3.print(radius + tof.val[9]);
-        uart3.print(" ");
-        uart3.println(0.8660254038 * (radius + tof.val[8]));
+        uart3.println(radius + tof.val[8]);
+        // uart3.print(" ");
+        // uart3.println(0.8660254038 * (radius + tof.val[10]));
         app.delay(500);
     }
 }
