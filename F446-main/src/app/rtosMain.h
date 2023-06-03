@@ -84,11 +84,11 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.velocity = SPEED;
                 app.delay(FORWARD);
                 servo.suspend = true;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.suspend = false;
             } else if (tof.isNotRight &&
                        !location
@@ -101,11 +101,11 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle += 90;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.velocity = SPEED;
                 app.delay(FORWARD);
                 servo.suspend = true;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.suspend = false;
             } else {
                 app.delay(10);
@@ -123,11 +123,11 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle += 90;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.velocity = SPEED;
                 app.delay(FORWARD);
                 servo.suspend = true;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.suspend = false;
             } else if (tof.isNotRight &&
                        !location
@@ -140,11 +140,11 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.velocity = SPEED;
                 app.delay(FORWARD);
                 servo.suspend = true;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.suspend = false;
             } else {
                 app.delay(10);
@@ -162,11 +162,11 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.velocity = SPEED;
                 app.delay(FORWARD);
                 servo.suspend = true;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.suspend = false;
             } else if (tof.isNotRight &&
                        !location
@@ -179,11 +179,11 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.velocity = SPEED;
                 app.delay(FORWARD);
                 servo.suspend = true;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.suspend = false;
             } else {
                 app.delay(10);
@@ -201,11 +201,11 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle += 90;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.velocity = SPEED;
                 app.delay(FORWARD);
                 servo.suspend = true;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.suspend = false;
 
             } else if (tof.isNotRight &&
@@ -219,11 +219,11 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.velocity = SPEED;
                 app.delay(FORWARD);
                 servo.suspend = true;
-                app.delay(500);
+                app.delay(WAIT);
                 servo.suspend = false;
             } else {
                 app.delay(10);
@@ -323,7 +323,8 @@ void AstarApp(App) {  // NOTE 動いた
     int Wdistance = MAX_DISTANCE;  // 値の初期化(最大値に設定)
     bool status   = true;
     app.delay(WAIT);
-    const int initialWall[4] = {(tof.isNorthWall), (tof.isEastWall), (tof.isSouthWall),
+    const int initialWall[4] = {(tof.isNorthWall), (tof.isEastWall),
+                                (tof.isSouthWall),
                                 (tof.isWestWall)};  //(0,0)の壁の状態を記憶
     while (1) {
         app.delay(100);
@@ -388,8 +389,8 @@ void AstarApp(App) {  // NOTE 動いた
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.delay(WAIT);
-                servo.suspend = false;
-                tof.isSouthWall     = true;  // 後方に仮想壁
+                servo.suspend   = false;
+                tof.isSouthWall = true;  // 後方に仮想壁
                 goto MEASURE_DISTANCE;
 
             } else if (Sdistance < Edistance && Sdistance < Wdistance) {
@@ -399,8 +400,8 @@ void AstarApp(App) {  // NOTE 動いた
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.delay(WAIT);
-                servo.suspend = false;
-                tof.isNorthWall     = true;
+                servo.suspend   = false;
+                tof.isNorthWall = true;
                 goto MEASURE_DISTANCE;
 
             } else if (Edistance < Wdistance) {
@@ -410,8 +411,8 @@ void AstarApp(App) {  // NOTE 動いた
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.delay(WAIT);
-                servo.suspend = false;
-                tof.isWestWall      = true;
+                servo.suspend  = false;
+                tof.isWestWall = true;
                 goto MEASURE_DISTANCE;
 
             } else {
@@ -421,8 +422,8 @@ void AstarApp(App) {  // NOTE 動いた
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.delay(WAIT);
-                servo.suspend = false;
-                tof.isEastWall      = true;
+                servo.suspend  = false;
+                tof.isEastWall = true;
                 goto MEASURE_DISTANCE;
             }
         } else {
@@ -445,7 +446,7 @@ void monitorApp(App) {
         uart3.print("\t");
         uart3.println(location.y);
 
-        app.delay(500);
+        app.delay(WAIT);
     }
 }
 
@@ -476,7 +477,7 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
         if (tof.val[0] < 180 && tof.val[3] < 180 && tof.val[9] < 180) {
             app.stop(rightWallApp);
             servo.suspend = true;
-            app.delay(500);
+            app.delay(WAIT);
             servo.suspend = false;
             servo.angle += 180;
             app.delay(WAIT * 3);
