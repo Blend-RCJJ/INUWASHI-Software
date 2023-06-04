@@ -35,6 +35,7 @@ void initDevice(void) {
     gyro.setOffset();
 
     buzzer.bootSound();
+    delay(100);
 }
 
 #endif

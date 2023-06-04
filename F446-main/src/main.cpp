@@ -30,7 +30,7 @@ void setup() {
     app.create(monitorApp);
     
     //UI系統
-    app.create(victimDetectionUIApp);
+    app.create(victimNotifyApp);
 
     app.start(mainApp);
     app.startRTOS();

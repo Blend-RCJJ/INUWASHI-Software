@@ -5,6 +5,7 @@
 #include "../kit/RTOS-Kit.h"
 #include "./rtosIO.h"
 #include "./rtosLocation.h"
+#include "./rtosVictim.h"
 
 extern RTOS_Kit app;
 
