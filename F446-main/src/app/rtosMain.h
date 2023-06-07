@@ -16,7 +16,7 @@ extern RTOS_Kit app;
 #define SOUTH 2
 #define WEST 3
 #define MAX_DISTANCE 800
-#define FEEDBACK 15000  // 帰還開始時間(ms)
+#define FEEDBACK 60000  // 帰還開始時間(ms)
 
 const int radius                                 = 20;
 bool virtualWall[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
@@ -438,13 +438,11 @@ void monitorApp(App) {
         // uart3.print(" ");
         // uart3.println(0.8660254038 * (radius + tof.val[8]));
 
-        uart3.print(location.coordinateX);
+        uart3.print(gyro.North);
         uart3.print("\t");
-        uart3.print(location.coordinateY);
+        uart3.print(tof.val[3]);
         uart3.print("\t");
-        uart3.print(location.x);
-        uart3.print("\t");
-        uart3.println(location.y);
+        uart3.println(tof.val[4]);
 
         app.delay(WAIT);
     }
@@ -474,7 +472,7 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
             app.start(rightWallApp);
         }
 
-        if (tof.val[0] < 180 && tof.val[3] < 180 && tof.val[9] < 180) {
+        if (tof.isNotFront && tof.isNotRight) {
             app.stop(rightWallApp);
             servo.suspend = true;
             app.delay(WAIT);

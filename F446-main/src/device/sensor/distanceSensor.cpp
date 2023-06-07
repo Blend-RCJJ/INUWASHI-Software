@@ -46,15 +46,23 @@ int DISTANCE_SENSOR::read(void) {
     }
 }
 
-void DISTANCE_SENSOR::calcVector(int angle) {
+void DISTANCE_SENSOR::calc(int angle) {
     for (int n = 0; n < 12; n++) {
         vecX[n] = val[n] * sin(radians(n * 30 + angle));
         vecY[n] = val[n] * cos(radians(n * 30 + angle));
     }
+    leftWall();
+    direction();
+    rightWall();
 }
 
 void DISTANCE_SENSOR::rightWall(void) {
-    if (val[3] > 300 && val[4] > 280) {
+    if (val[0] < 200 && val[3] < 180 && val[9] < 180) {
+        isNotFront = true;
+    } else {
+        isNotFront = false;
+    }
+    if (val[3] > 300 && val[4] > 250) {
         isNotRight = true;
     } else {
         isNotRight = false;
@@ -62,7 +70,7 @@ void DISTANCE_SENSOR::rightWall(void) {
 }
 
 void DISTANCE_SENSOR::leftWall(void) {
-    if (val[9] > 300 && val[8] > 280) {
+    if (val[9] > 300 && val[8] > 250) {
         isNotLeft = true;
     } else {
         isNotLeft = false;
@@ -70,6 +78,7 @@ void DISTANCE_SENSOR::leftWall(void) {
 }
 
 void DISTANCE_SENSOR::direction(void) {
+    gyro.read();
     if (gyro.North) {
         if (val[0] > 230) {
             isNorthWall = false;

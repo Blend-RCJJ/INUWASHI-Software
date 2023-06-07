@@ -20,6 +20,7 @@ class DISTANCE_SENSOR {
     int vecY[12] = {0};
     bool isNotRight = false;
     bool isNotLeft  = false;
+    bool isNotFront = false;
 
     bool isNorthWall = false;
     bool isEastWall  = false;
@@ -27,10 +28,10 @@ class DISTANCE_SENSOR {
     bool isWestWall  = false;
 
     int read(void);
-    void calcVector(int angle);  // 定義しときました〜
-    void rightWall(void);
+    void calc(int angle);  // 定義しときました〜
     void leftWall(void);
     void direction(void);
+    void rightWall(void);
 
    private:
     int _valTemp[12] = {0};

@@ -54,6 +54,7 @@ int GYRO::read(void) {
     if (abs(slope) <= 8) {
         slope = 0;
     }
+    direction();
 
     return deg;
 }
