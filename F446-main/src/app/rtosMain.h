@@ -21,6 +21,7 @@ extern RTOS_Kit app;
 const int radius                                 = 20;
 bool virtualWall[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
 bool isRightWallApp                              = false;
+bool oldstatus                                   = false;
 
 void rightWallApp(App);
 void leftWallApp(App);
@@ -40,13 +41,17 @@ void mainApp(App) {
     app.start(adjustmentApp);
     while (1) {
         if (ui.toggle) {
-            app.start(rightWallApp);
-            app.start(locationApp);
+            if (oldstatus) {
+                app.start(rightWallApp);
+                app.start(locationApp);
+                oldstatus = false;
+            }
         } else {
             app.stop(rightWallApp);
             app.stop(locationApp);
 
             servo.suspend = true;
+            oldstatus     = true;
         }
         app.delay(period);
     }
@@ -281,6 +286,7 @@ void leftWallApp(App) {
 
 void adjustmentApp(App) {
     while (1) {
+        static bool isHit = false;
         app.delay(period);
         if (isRightWallApp) {
             if (tof.val[3] < 120) {
@@ -312,6 +318,28 @@ void adjustmentApp(App) {
                 }
             }
         }
+
+        if (loadcell.status == RIGHT) {
+            app.stop(servoApp);
+            servo.driveAngularVelocity(-30, 45);
+            app.delay(WAIT);
+            servo.driveAngularVelocity(-30, -45);
+            app.delay(WAIT);
+            isHit = false;
+        }
+        if (loadcell.status == LEFT) {
+            app.stop(servoApp);
+            servo.driveAngularVelocity(-30, -45);
+            app.delay(WAIT);
+            servo.driveAngularVelocity(-30, 45);
+            app.delay(WAIT);
+            isHit = false;
+        }
+        if (!isHit) {
+            servo.velocity = SPEED;
+            app.start(servoApp);
+            isHit = true;
+        }
     }
 }
 
@@ -335,7 +363,7 @@ void AstarApp(App) {  // NOTE 動いた
                 app.stop(rightWallApp);
                 app.stop(leftWallApp);
                 app.stop(DepthFirstSearchApp);
-                app.stop(adjustmentApp);
+                // app.stop(adjustmentApp);
                 app.delay(WAIT);
                 servo.suspend = false;
                 status        = false;
@@ -427,7 +455,7 @@ void AstarApp(App) {  // NOTE 動いた
                 goto MEASURE_DISTANCE;
             }
         } else {
-            app.delay(period);
+            app.delay(period * 5);
         }
     }
 }
@@ -438,13 +466,14 @@ void monitorApp(App) {
         // uart3.print(" ");
         // uart3.println(0.8660254038 * (radius + tof.val[8]));
 
-        uart3.print(gyro.North);
+        uart3.print(tof.isNorthWall);
         uart3.print("\t");
-        uart3.print(tof.val[3]);
+        uart3.print(tof.isEastWall);
         uart3.print("\t");
-        uart3.println(tof.val[4]);
-
-        app.delay(WAIT);
+        uart3.print(tof.isSouthWall);
+        uart3.print("\t");
+        uart3.println(tof.isWestWall);
+        app.delay(period);
     }
 }
 
