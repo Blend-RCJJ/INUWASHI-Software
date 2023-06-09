@@ -17,7 +17,7 @@ extern RTOS_Kit app;
 #define SOUTH 2
 #define WEST 3
 #define MAX_DISTANCE 800
-#define FEEDBACK 60000  // 帰還開始時間(ms)
+#define FEEDBACK 300000  // 帰還開始時間(ms)
 
 const int radius                                 = 20;
 bool virtualWall[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
@@ -481,7 +481,6 @@ void monitorApp(App) {
 void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録する変数
                                  // "JCT"
     static bool JCT[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
-    static int oldmillis                            = 0;
     app.delay(WAIT);
     while (1) {
         virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] =
@@ -490,19 +489,18 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
 
         if (tof.val[0] > 450 && (tof.val[3] > 230 || tof.val[9] > 230)) {
             JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
-            oldmillis                                             = millis();
         }
         if (!isRightWallApp &&
             JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] &&
             (tof.val[3] > 230 || tof.val[9] > 230)) {
-            servo.velocity = 0;
-            servo.stop();
-            app.stop(leftWallApp);
+            servo.suspend = true;
             app.delay(WAIT);
+            servo.suspend = false;
+            app.stop(leftWallApp);
             app.start(rightWallApp);
         }
 
-        if (tof.isNotFront && tof.isNotRight) {
+        if (!tof.isNotFront) {
             app.stop(rightWallApp);
             servo.suspend = true;
             app.delay(WAIT);
