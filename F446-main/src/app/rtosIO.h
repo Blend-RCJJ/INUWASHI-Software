@@ -11,8 +11,9 @@ const int period = 10;  // 制御周期
 void sensorApp(App) {
     while (1) {
         ui.read();
-        tof.read();
         gyro.read();
+        tof.read();
+        tof.calc(gyro.deg);
         // camera.read(); //FIXME: ポインタの設定違う
         loadcell.read();
         floorSensor.read();

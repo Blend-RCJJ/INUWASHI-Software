@@ -39,7 +39,7 @@ int GYRO::read(void) {
 
     if (isGyroDisabled) {  // 地磁気
         magnetic = event.magnetic.x;
-        deg = (int)(magnetic - offset + 360) % 360;
+        deg      = (int)(magnetic - offset + 360) % 360;
     } else {
         deg = (int)(event.orientation.x - offset + 360) % 360;
     }
@@ -54,6 +54,7 @@ int GYRO::read(void) {
     if (abs(slope) <= 8) {
         slope = 0;
     }
+    direction();
 
     return deg;
 }
@@ -70,4 +71,30 @@ void GYRO::setOffset(void) {
     }
 
     slopeOffset = event.orientation.z;
+}
+
+void GYRO::direction(void) {
+    if (deg >= 350 || deg < 10) {
+        North = true;
+    } else {
+        North = false;
+    }
+
+    if (deg >= 80 && deg < 100) {
+        East = true;
+    } else {
+        East = false;
+    }
+
+    if (deg >= 170 && deg < 190) {
+        South = true;
+    } else {
+        South = false;
+    }
+
+    if (deg >= 260 && deg < 280) {
+        West = true;
+    } else {
+        West = false;
+    }
 }

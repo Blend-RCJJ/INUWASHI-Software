@@ -21,8 +21,10 @@ void setup() {
     app.create(mainApp, firstPriority);
     app.create(rightWallApp);
     app.create(leftWallApp);
-    app.create(absoluteDirectionApp);
     app.create(locationApp, firstPriority);
+    app.create(DepthFirstSearchApp);
+    app.create(AstarApp, secondPriority);
+    app.create(adjustmentApp, lowPriority);
 
     // 入出力系統
     app.create(sensorApp, secondPriority);
