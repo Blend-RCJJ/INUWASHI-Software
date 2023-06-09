@@ -92,7 +92,7 @@ void GYRO::direction(void) {
         South = false;
     }
 
-    if (deg >= 160 && deg < 280) {
+    if (deg >= 260 && deg < 280) {
         West = true;
     } else {
         West = false;

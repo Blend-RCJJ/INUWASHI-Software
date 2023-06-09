@@ -23,7 +23,7 @@ void setup() {
     app.create(leftWallApp);
     app.create(locationApp, firstPriority);
     app.create(DepthFirstSearchApp);
-    // app.create(AstarApp, secondPriority);
+    app.create(AstarApp, secondPriority);
     app.create(adjustmentApp, lowPriority);
 
     // 入出力系統
