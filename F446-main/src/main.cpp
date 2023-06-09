@@ -30,6 +30,9 @@ void setup() {
     app.create(sensorApp, secondPriority);
     app.create(servoApp, secondPriority);
     app.create(monitorApp);
+    
+    //UI系統
+    app.create(victimNotifyApp);
 
     app.start(mainApp);
     app.startRTOS();

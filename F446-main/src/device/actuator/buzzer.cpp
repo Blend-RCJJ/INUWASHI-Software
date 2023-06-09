@@ -1,4 +1,7 @@
 #include "buzzer.h"
+#include "../../kit/RTOS-Kit.h"
+
+extern RTOS_Kit app;
 
 BUZZER::BUZZER(Output *pinPtr) {
     this->pinPtr = pinPtr;
@@ -28,9 +31,214 @@ void BUZZER::beat(int freq, double beat) {
     } else {
         setFrequency(freq);
     }
-    delay((60000.0 / bpm) * beat - interval);
+
+    unsigned long timer = millis() + (60000.0 / bpm) * beat - interval;
+    while (millis() < timer) {
+        app.delay(10);
+    }
     mute();
-    delay(interval);
+    app.delay(interval);
+}
+
+void BUZZER::rescueKit(int kit) {
+    bpm = 500;
+    for (int j = 0; j < 2; j++) {
+        for (int i = 0; i < kit; i++) {
+            beat(FA, 1);
+            beat(RA, 1);
+            beat(DO_, 1);
+        }
+        beat(0, 2);
+    }
+
+    bpm = 200;
+    if (kit == 0) {
+        beat(MI_, 1);
+        beat(SHI, 3);
+    }
+}
+
+void BUZZER::sakura(void) {
+    bpm = 200;
+    beat(RA, 1);
+    beat(RA, 1);
+    beat(SHI, 0.5);
+    beat(MI_, 0.5);
+    beat(DO_, 0.5);
+    beat(SHI, 0.5);
+
+    beat(RA, 1);
+    beat(RA, 1);
+    beat(SHI, 0.5);
+    beat(MI_, 0.5);
+    beat(DO_, 0.5);
+    beat(SHI, 0.5);
+
+    beat(MI, 1);
+    beat(FA, 1);
+    beat(SHI, 0.5);
+    beat(RA, 0.5);
+    beat(FA, 1);
+
+    beat(MI, 2);
+}
+
+void BUZZER::tokyoOndo(void) {
+    bpm = 220;
+    beat(RA, 0.5);
+    beat(RA, 1);
+    beat(SHI, 0.5);
+    beat(DO_, 1);
+    beat(SHI, 0.5);
+    beat(MI_, 1);
+    beat(MI_, 0.5);
+
+    beat(DO_, 1.5);
+    beat(SHI, 1);
+    beat(DO_, 0.5);
+    beat(RA, 1.5);
+    beat(DO_, 1);
+    beat(DO_, 0.5);
+
+    beat(SHI, 1);
+    beat(DO_, 0.5);
+    beat(RA, 1);
+    beat(FA, 0.5);
+    beat(RA, 1);
+    beat(SHI, 0.5);
+    beat(FA, 1.5);
+
+    beat(MI, 1.5);
+    beat(SHI, 1.5);
+    beat(SHI, 3);
+}
+
+void BUZZER::sambaII(void) {
+    bpm = 140;
+    beat(RAS, 0.5);
+    beat(FA, 0.25);
+    beat(RE, 0.25);
+    beat(RA, 0.25);
+    beat(FA, 0.25);
+    beat(DO, 0.25);
+    beat(SO, 0.25);
+    beat(0, 0.25);
+    beat(SO, 0.25);
+    beat(0, 0.25);
+    beat(SO, 0.25);
+    beat(FA, 0.5);
+    beat(FA, 0.5);
+    beat(RAS, 0.5);
+    beat(FA, 0.25);
+    beat(RE, 0.25);
+    beat(RA, 0.25);
+    beat(FA, 0.25);
+    beat(DO, 0.25);
+    beat(SO, 0.25);
+    beat(0, 0.25);
+    beat(SO, 0.25);
+    beat(0, 0.25);
+    beat(SO, 0.25);
+    beat(FA, 0.5);
+    beat(FA, 0.5);
+    beat(RAS, 0.5);
+    beat(FA, 0.25);
+    beat(RE, 0.25);
+    beat(RA, 0.25);
+    beat(FA, 0.25);
+    beat(DO, 0.25);
+    beat(SO, 0.25);
+    beat(0, 0.25);
+    beat(SO, 0.25);
+    beat(0, 0.25);
+    beat(SO, 0.25);
+    beat(FA, 0.5);
+    beat(FA, 0.5);
+    beat(SO, 0.75);
+    beat(RAS, 0.25);
+    beat(RAS, 0.5);
+    beat(RAS, 0.5);
+    beat(0, 0.5);
+}
+
+void BUZZER::shoten(void) {
+    bpm = 180;
+
+    beat(RES, 1);
+    beat(RES, 0.5);
+    beat(RES, 1);
+    beat(SOS, 0.5);
+    beat(FA, 0.5);
+    beat(RES, 0.5);
+
+    beat(0, 1);
+    beat(FA, 0.75);
+    beat(0, 0.25);
+    beat(FA, 0.75);
+    beat(0, 0.25);
+    beat(_FA, 1);
+
+    beat(RES, 1);
+    beat(RES, 0.5);
+    beat(RES, 1);
+    beat(SOS, 0.5);
+    beat(FA, 0.5);
+    beat(RES, 0.5);
+
+    beat(0, 1);
+    beat(FA, 0.75);
+    beat(0, 0.25);
+    beat(FA, 0.75);
+    beat(0, 0.25);
+
+    beat(DO_, 0.5);
+    beat(RAS, 0.5);
+
+    beat(SOS, 1);
+
+    beat(0, 1);
+
+    beat(SOS_, 0.5);
+}
+
+void BUZZER::yuyake(void) {
+    bpm = 220;
+    // 夕焼けこやけ
+    beat(SO, 1);
+    beat(MI, 1);
+    beat(RE, 1);
+    beat(DO, 1);
+
+    beat(RE, 1);
+    beat(RE, 1);
+    beat(DO, 1);
+    beat(RE, 1);
+
+    beat(MI, 1);
+    beat(SO, 1);
+    beat(RA, 1);
+    beat(SO, 1);
+
+    beat(DO_, 2);
+}
+
+void BUZZER::shogun(void) {
+    bpm = 160;
+    beat(_SO, 1.5);
+    beat(_SO, 0.5);
+    beat(DO, 2);
+
+    beat(SO, 0.5);
+    beat(FA, 1);
+    beat(RES, 0.5);
+    beat(RE, 2);
+
+    beat(DO, 1);
+    beat(RES, 1);
+    beat(RAS, 1.5);
+    beat(DO_, 0.5);
+
+    beat(SO, 3);
 }
 
 // this is the function that plays 暴れん坊将軍
