@@ -2,6 +2,7 @@
 #include <TFT_eSPI.h>
 #include <XPT2046_Touchscreen.h>
 #include <Adafruit_NeoPixel.h>
+#include <pico.h>
 
 TFT_eSPI tft = TFT_eSPI();
 XPT2046_Touchscreen ts(7);
@@ -11,6 +12,11 @@ XPT2046_Touchscreen ts(7);
 #include "./img/blend.h"
 #include "./ui-kit/ui-kit.h"
 #include "./victim/victim.h"
+
+#define NEO_PWR 11
+#define NEOPIX 12
+
+Adafruit_NeoPixel pixels(1, NEOPIX, NEO_GRB + NEO_KHZ800);
 
 #define BACKLIGHT 29
 
@@ -35,7 +41,6 @@ void showBootImage(void) {
 
 void setup() {
     pinMode(BACKLIGHT, OUTPUT);
-    pinMode(BACKLIGHT, OUTPUT);
 
     Serial.begin(115200);
     tft.begin();
@@ -55,18 +60,27 @@ int oldMode = 1;
 
 void loop() {
     bool bTouch = ts.touched();
-    static bool oldTouch = false;
     TS_Point p = ts.getPoint();
-
-    static int oldY = 0;
-    static int homeCount = 0;
-    static int homeTime = 0;
-    delay(10);
 
     if (bTouch) {
         Serial.print(p.x);
         Serial.print("\t");
         Serial.println(p.y);
     }
-    oldTouch = bTouch;
+}
+
+void setup1(void) {
+    pinMode(NEO_PWR, OUTPUT);
+    digitalWrite(NEO_PWR, HIGH);
+}
+
+void loop1(void) {
+    if ((millis() / 20) % 2 == 0 && (millis() / 300) % 10 == 0) {
+        pixels.setPixelColor(0, 0, 80, 255);
+        pixels.setBrightness(150);
+        pixels.show();
+    } else {
+        pixels.setBrightness(0);
+        pixels.show();
+    }
 }
