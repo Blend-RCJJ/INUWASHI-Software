@@ -57,7 +57,7 @@ void DISTANCE_SENSOR::calc(int angle) {
 }
 
 void DISTANCE_SENSOR::rightWall(void) {
-    if (val[0] < 200 && val[3] < 180 && val[9] < 180) {
+    if (val[0] < 180 && val[3] < 180 && val[9] < 180) {
         isNotFront = false;
     } else {
         isNotFront = true;
