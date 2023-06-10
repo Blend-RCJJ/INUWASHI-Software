@@ -13,6 +13,14 @@ LED::LED(Adafruit_NeoPixel* top, Adafruit_NeoPixel* right,
         ptrArr[i]->setBrightness(brightness);
         ptrArr[i]->show();
     }
+
+    delay(10);
+
+    // set color
+    setColor(TOP, cyan);
+    setColor(RIGHT, white);
+    setColor(LEFT, white);
+    setColor(UI, cyan);
 }
 
 void LED::setColor(int led, int r, int g, int b) {
@@ -20,4 +28,19 @@ void LED::setColor(int led, int r, int g, int b) {
 
     ptrArr[led]->fill(ptrArr[led]->Color(r, g, b));
     ptrArr[led]->show();
+}
+
+void LED::setColor(int led, unsigned long color) {
+    if (isDisabled) return;
+
+    ptrArr[led]->fill(color);
+    ptrArr[led]->show();
+}
+
+unsigned long LED::colorRGB(int red, int green, int blue) {
+    return ptrArr[0]->Color(red, green, blue);
+}
+
+unsigned long LED::colorHSV(int hue, int saturation, int value) {
+    return ptrArr[0]->ColorHSV(hue * 256, saturation, value);
 }
