@@ -23,6 +23,10 @@ const int radius                                 = 20;
 bool virtualWall[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
 bool isRightWallApp                              = false;
 bool oldstatus                                   = false;
+static int oldmillis                             = 0;
+int checkPointX                                  = 0;
+int checkPointY                                  = 0;
+int checkPointWall[4]                            = {0};
 
 void rightWallApp(App);
 void leftWallApp(App);
@@ -59,9 +63,7 @@ void mainApp(App) {
 }
 
 void rightWallApp(App) {
-    static bool DFS                                        = false;
-    static bool checkPoint[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
-    static int oldmillis                                   = 0;
+    static bool DFS = false;
     app.delay(WAIT);
     while (1) {
         servo.velocity = SPEED;
@@ -79,18 +81,22 @@ void rightWallApp(App) {
             servo.angle -= 90;
             app.delay(WAIT);
         }
-
         if (virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1] &&
             gyro.North) {
-            checkPoint[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
-            oldmillis = millis();
             if (tof.isNotLeft && !location
                                       .mapData[location.x + MAP_ORIGIN - 1]
                                               [location.y + MAP_ORIGIN]
                                       .isPassed) {
-                DFS            = true;
-                servo.velocity = 0;
-                servo.suspend  = true;
+                oldmillis         = millis();
+                checkPointX       = location.x;
+                checkPointY       = location.y;
+                checkPointWall[0] = tof.isNorthWall;
+                checkPointWall[1] = tof.isEastWall;
+                checkPointWall[2] = tof.isSouthWall;
+                checkPointWall[3] = tof.isWestWall;
+                DFS               = true;
+                servo.velocity    = 0;
+                servo.suspend     = true;
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
@@ -123,15 +129,20 @@ void rightWallApp(App) {
         } else if (virtualWall[location.x + MAP_ORIGIN]
                               [location.y + MAP_ORIGIN - 1] &&
                    gyro.South) {
-            checkPoint[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
-            oldmillis = millis();
             if (tof.isNotRight && !location
                                        .mapData[location.x + MAP_ORIGIN - 1]
                                                [location.y + MAP_ORIGIN]
                                        .isPassed) {
-                DFS            = true;
-                servo.velocity = 0;
-                servo.suspend  = true;
+                oldmillis         = millis();
+                checkPointX       = location.x;
+                checkPointY       = location.y;
+                checkPointWall[0] = tof.isNorthWall;
+                checkPointWall[1] = tof.isEastWall;
+                checkPointWall[2] = tof.isSouthWall;
+                checkPointWall[3] = tof.isWestWall;
+                DFS               = true;
+                servo.velocity    = 0;
+                servo.suspend     = true;
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle += 90;
@@ -146,9 +157,16 @@ void rightWallApp(App) {
                             .mapData[location.x + MAP_ORIGIN + 1]
                                     [location.y + MAP_ORIGIN]
                             .isPassed) {
-                DFS            = true;
-                servo.velocity = 0;
-                servo.suspend  = true;
+                oldmillis         = millis();
+                checkPointX       = location.x;
+                checkPointY       = location.y;
+                checkPointWall[0] = tof.isNorthWall;
+                checkPointWall[1] = tof.isEastWall;
+                checkPointWall[2] = tof.isSouthWall;
+                checkPointWall[3] = tof.isWestWall;
+                DFS               = true;
+                servo.velocity    = 0;
+                servo.suspend     = true;
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
@@ -164,8 +182,6 @@ void rightWallApp(App) {
         } else if (virtualWall[location.x + MAP_ORIGIN + 1]
                               [location.y + MAP_ORIGIN] &&
                    gyro.East) {
-            checkPoint[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
-            oldmillis = millis();
             if (tof.isNotRight && !location
                                        .mapData[location.x + MAP_ORIGIN]
                                                [location.y + MAP_ORIGIN + 1]
@@ -175,14 +191,14 @@ void rightWallApp(App) {
                 servo.suspend  = true;
                 app.delay(WAIT);
                 servo.suspend = false;
-                servo.angle -= 90;
+                servo.angle += 90;
                 app.delay(WAIT);
                 servo.velocity = SPEED;
                 app.delay(FORWARD);
                 servo.suspend = true;
                 app.delay(WAIT);
                 servo.suspend = false;
-            } else if (tof.isNotRight &&
+            } else if (tof.isNotLeft &&
                        !location
                             .mapData[location.x + MAP_ORIGIN]
                                     [location.y + MAP_ORIGIN - 1]
@@ -205,8 +221,6 @@ void rightWallApp(App) {
         } else if (virtualWall[location.x + MAP_ORIGIN - 1]
                               [location.y + MAP_ORIGIN] &&
                    gyro.West) {
-            checkPoint[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
-            oldmillis = millis();
             if (tof.isNotRight && !location
                                        .mapData[location.x + MAP_ORIGIN]
                                                [location.y + MAP_ORIGIN + 1]
@@ -224,7 +238,7 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
 
-            } else if (tof.isNotRight &&
+            } else if (tof.isNotLeft &&
                        !location
                             .mapData[location.x + MAP_ORIGIN]
                                     [location.y + MAP_ORIGIN - 1]
@@ -242,17 +256,8 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
             } else {
-                app.delay(10);
+                app.delay(period);
             }
-        }
-
-        if (checkPoint[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] &&
-            oldmillis + 5000 < millis()) {
-            servo.suspend = true;
-            app.delay(WAIT);
-            servo.suspend = false;
-            servo.angle += 180;
-            app.delay(WAIT);
         }
 
         if (!DFS) {
@@ -529,6 +534,14 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
             app.delay(WAIT * 3);
             app.start(leftWallApp);
         }  // 前方+左右に壁があったら反転して左壁追従
+        if (checkPointX && checkPointY && checkPointWall[0] &&
+            checkPointWall[1] && checkPointWall[2] && checkPointWall[3]) {
+            servo.velocity = 0;
+            servo.suspend  = true;
+            app.delay(WAIT);
+            servo.suspend = false;
+            servo.angle += 180;
+        }
     }
 }
 
