@@ -152,25 +152,25 @@ void DISTANCE_SENSOR::direction(void) {
             isWestWall = true;
         }
     } else if (gyro.West) {
-        if (val[9] > 230) {
+        if (val[3] > 230) {
             isNorthWall = false;
         } else {
             isNorthWall = true;
         }
 
-        if (val[0] > 230) {
+        if (val[6] > 230) {
             isEastWall = false;
         } else {
             isEastWall = true;
         }
 
-        if (val[6] > 230) {
+        if (val[9] > 230) {
             isSouthWall = false;
         } else {
             isSouthWall = true;
         }
 
-        if (val[3] > 230) {
+        if (val[0] > 230) {
             isWestWall = false;
         } else {
             isWestWall = true;
