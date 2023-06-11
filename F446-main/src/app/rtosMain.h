@@ -33,6 +33,7 @@ void AstarApp(App);
 void adjustmentApp(App);
 
 void mainApp(App) {
+    app.start(ledApp);
     app.start(sensorApp);
     app.start(monitorApp);
     app.start(servoApp);

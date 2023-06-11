@@ -40,4 +40,29 @@ void servoApp(App) {
     }
 }
 
+double mapDouble(double x, double in_min, double in_max, double out_min,
+                 double out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+void ledApp(App) {
+    unsigned long startTime = millis();
+    while (1) {
+        int amplitude = 100;
+        int period = 5000;
+
+        int brightness =
+            mapDouble(cos((millis() - startTime) * 2 * PI / period), -1, 1,
+                      255 - amplitude, 255);
+
+        for (int i = 0; i < 4; i++) {
+            led.setColor(i, led.cyan);
+            led.setBrightness(i, brightness);
+        }
+        led.showAll();
+
+        app.delay(5);
+    }
+}
+
 #endif
