@@ -9,7 +9,7 @@ void RTOS_Kit::create(TaskFunction_t funcPtr, int priority) {
             funcPtrArray[i] = funcPtr;
             priorityArray[i] = priority;
 
-            xTaskCreate(funcPtrArray[i], "app", 256, NULL, priority,
+            xTaskCreate(funcPtrArray[i], "app", 500, NULL, priority,
                         &handlerArray[i]);
             vTaskSuspend(handlerArray[i]);
 
@@ -56,5 +56,6 @@ void RTOS_Kit::startRTOS(void) {
 }
 
 void RTOS_Kit::delay(unsigned long ms) {
-    vTaskDelay(ms);
+    vTaskDelay(ms/portTICK_RATE_MS);
+    // osDelay(ms);
 }

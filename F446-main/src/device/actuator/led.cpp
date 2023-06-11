@@ -35,7 +35,7 @@ void LED::initCompleteIllumination(void) {
     if (isDisabled) return;
 
     unsigned long timer = millis();
-    const int duration = 300;
+    const int duration = 200;
 
     while (millis() - timer < duration) {
         for (int i = 0; i < 4; i++) {
@@ -72,14 +72,12 @@ void LED::setColor(int led, int r, int g, int b) {
     if (isDisabled) return;
 
     ptrArr[led]->fill(ptrArr[led]->Color(r, g, b));
-    ptrArr[led]->show();
 }
 
 void LED::setColor(int led, unsigned long color) {
     if (isDisabled) return;
 
     ptrArr[led]->fill(color);
-    ptrArr[led]->show();
 }
 
 unsigned long LED::colorRGB(int red, int green, int blue) {
@@ -94,7 +92,6 @@ void LED::setBrightness(int led, int brightness) {
     if (isDisabled) return;
 
     ptrArr[led]->setBrightness((int)(brightness * maxBrightness / 255.0));
-    ptrArr[led]->show();
 }
 
 void LED::showAll(void) {

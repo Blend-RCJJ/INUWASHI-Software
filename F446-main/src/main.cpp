@@ -33,7 +33,7 @@ void setup() {
 
     // UI系統
     app.create(victimNotifyApp);
-    app.create(ledApp);
+    app.create(ledApp,firstPriority);
 
     app.start(mainApp);
     app.startRTOS();

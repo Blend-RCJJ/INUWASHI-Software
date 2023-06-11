@@ -4,9 +4,13 @@
 #include "../device/device.h"
 #include "../kit/RTOS-Kit.h"
 
+#include "./algorithm/victim.h"
+
 extern RTOS_Kit app;
 
 const int period = 10;  // 制御周期
+
+extern int robotStatus;
 
 void sensorApp(App) {
     while (1) {
@@ -48,20 +52,35 @@ double mapDouble(double x, double in_min, double in_max, double out_min,
 void ledApp(App) {
     unsigned long startTime = millis();
     while (1) {
-        int amplitude = 100;
-        int period = 5000;
+        if (victim.isDetected) {
+            unsigned long color = victim.color[victim.id];
+            unsigned long victimTime = millis();
 
-        int brightness =
-            mapDouble(cos((millis() - startTime) * 2 * PI / period), -1, 1,
-                      255 - amplitude, 255);
+            while (victim.isDetected) {
+                int brightness = 255 - ((millis() - victimTime) / 4) % 255;
 
-        for (int i = 0; i < 4; i++) {
-            led.setColor(i, led.cyan);
-            led.setBrightness(i, brightness);
+                for (int i = 0; i < 4; i++) {
+                    led.setColor(i, color);
+                    led.setBrightness(i, brightness);
+                }
+                led.showAll();
+                app.delay(1);
+            }
+        } else {
+            int amplitude = 100;
+            int period = 5000;
+
+            int brightness =
+                mapDouble(cos((millis() - startTime) * 2 * PI / period), -1, 1,
+                          255 - amplitude, 255);
+
+            for (int i = 0; i < 4; i++) {
+                led.setColor(i, led.cyan);
+                led.setBrightness(i, brightness);
+            }
+            led.showAll();
         }
-        led.showAll();
-
-        app.delay(5);
+        app.delay(10);
     }
 }
 

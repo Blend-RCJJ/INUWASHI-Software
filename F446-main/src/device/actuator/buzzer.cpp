@@ -8,8 +8,10 @@ BUZZER::BUZZER(Output *pinPtr) {
 }
 
 void BUZZER::setFrequency(int freq) {
+    if (isDisabled) return;
+
     analogWriteFrequency(freq);
-    pinPtr->setPWM(128);
+    pinPtr->setPWM(30);
 }
 
 void BUZZER::mute(void) {
