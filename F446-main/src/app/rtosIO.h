@@ -64,7 +64,7 @@ void ledApp(App) {
                     led.setBrightness(i, brightness);
                 }
                 led.showAll();
-                app.delay(1);
+                app.delay(15);
             }
         } else {
             int amplitude = 100;

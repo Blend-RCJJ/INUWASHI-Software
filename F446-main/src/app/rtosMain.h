@@ -36,16 +36,15 @@ void adjustmentApp(App);
 
 void mainApp(App) {
     app.start(ledApp);
-    // app.start(sensorApp);
-    // app.start(monitorApp);
-    // app.start(servoApp);
+    app.start(sensorApp);
+    app.start(monitorApp);
+    app.start(servoApp);
     // app.start(rightWallApp);
     // app.start(DepthFirstSearchApp);
     // app.start(AstarApp);
     // app.start(adjustmentApp);
     app.delay(3000);
     while (1) {
-        // if (ui.toggle) {
             //     if (oldstatus) {
             //         app.start(rightWallApp);
             //         app.start(locationApp);
@@ -60,6 +59,7 @@ void mainApp(App) {
 
             app.restart(victimNotifyApp);
             app.delay(12000);
+            // app.stop(ledApp);
         // }
         app.delay(period);
     }
