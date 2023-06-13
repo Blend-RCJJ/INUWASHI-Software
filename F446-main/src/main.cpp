@@ -24,7 +24,7 @@ void setup() {
     app.create(locationApp, firstPriority);
     app.create(DepthFirstSearchApp, secondPriority);
     app.create(AstarApp, secondPriority);
-    app.create(adjustmentApp, lowPriority);
+    app.create(adjustmentApp);
 
     // 入出力系統
     app.create(sensorApp, secondPriority);

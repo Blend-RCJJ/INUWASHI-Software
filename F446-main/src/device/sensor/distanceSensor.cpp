@@ -57,7 +57,7 @@ void DISTANCE_SENSOR::calc(int angle) {
 }
 
 void DISTANCE_SENSOR::rightWall(void) {
-    if (val[0] < 180 && val[3] < 180 && val[9] < 180) {
+    if (val[0] < 160 && val[3] < 180 && val[9] < 180) {
         isNotFront = false;
     } else {
         isNotFront = true;
@@ -80,97 +80,97 @@ void DISTANCE_SENSOR::leftWall(void) {
 void DISTANCE_SENSOR::direction(void) {
     gyro.read();
     if (gyro.North) {
-        if (val[0] > 230) {
+        if (val[0] > 280) {
             isNorthWall = false;
         } else {
             isNorthWall = true;
         }
 
-        if (val[3] > 230) {
+        if (val[3] > 280) {
             isEastWall = false;
         } else {
             isEastWall = true;
         }
 
-        if (val[6] > 230) {
+        if (val[6] > 280) {
             isSouthWall = false;
         } else {
             isSouthWall = true;
         }
 
-        if (val[9] > 230) {
+        if (val[9] > 280) {
             isWestWall = false;
         } else {
             isWestWall = true;
         }
     } else if (gyro.East) {
-        if (val[9] > 230) {
+        if (val[9] > 280) {
             isNorthWall = false;
         } else {
             isNorthWall = true;
         }
 
-        if (val[0] > 230) {
+        if (val[0] > 280) {
             isEastWall = false;
         } else {
             isEastWall = true;
         }
 
-        if (val[3] > 230) {
+        if (val[3] > 280) {
             isSouthWall = false;
         } else {
             isSouthWall = true;
         }
 
-        if (val[6] > 230) {
+        if (val[6] > 280) {
             isWestWall = false;
         } else {
             isWestWall = true;
         }
     } else if (gyro.South) {
-        if (val[6] > 230) {
+        if (val[6] > 280) {
             isNorthWall = false;
         } else {
             isNorthWall = true;
         }
 
-        if (val[9] > 230) {
+        if (val[9] > 280) {
             isEastWall = false;
         } else {
             isEastWall = true;
         }
 
-        if (val[0] > 230) {
+        if (val[0] > 280) {
             isSouthWall = false;
         } else {
             isSouthWall = true;
         }
 
-        if (val[3] > 230) {
+        if (val[3] > 280) {
             isWestWall = false;
         } else {
             isWestWall = true;
         }
     } else if (gyro.West) {
-        if (val[3] > 230) {
+        if (val[3] > 280) {
             isNorthWall = false;
         } else {
             isNorthWall = true;
         }
 
-        if (val[6] > 230) {
+        if (val[6] > 280) {
             isEastWall = false;
         } else {
             isEastWall = true;
         }
 
-        if (val[9] > 230) {
+        if (val[9] > 280) {
             isSouthWall = false;
         } else {
             isSouthWall = true;
         }
 
-        if (val[0] > 230) {
+        if (val[0] > 280) {
             isWestWall = false;
         } else {
             isWestWall = true;
