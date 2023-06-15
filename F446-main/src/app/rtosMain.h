@@ -265,45 +265,91 @@ void rightWallApp(App) {
             } else {
                 app.delay(period);
             }
-        // } else if (!virtualWall[location.x + MAP_ORIGIN]
-        //                        [location.y + MAP_ORIGIN + 1] &&
-        //            gyro.North) {
-        //     if (!tof.isNorthWall) {
-        //         oldmillis   = millis();
-        //         checkPointX = location.x;
-        //         checkPointY = location.y;
-        //         DFS         = true;
-        //         servo.velocity = 0;
-        //         servo.suspend  = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //         app.delay(WAIT);
-        //         servo.velocity = SPEED;
-        //         app.delay(FORWARD); 
-        //         servo.suspend = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //     }
-        // }else if(!virtualWall[location.x + MAP_ORIGIN]
-        //                        [location.y + MAP_ORIGIN - 1] &&
-        //            gyro.South){
-        //     if(!tof.isSouthWall){
-        //         oldmillis   = millis();
-        //         checkPointX = location.x;
-        //         checkPointY = location.y;
-        //         DFS         = true;
-        //         servo.velocity = 0;
-        //         servo.suspend  = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //         servo.angle += 180;
-        //         app.delay(WAIT);
-        //         servo.velocity = SPEED;
-        //         app.delay(FORWARD); 
-        //         servo.suspend = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
+        } else if (!virtualWall[location.x + MAP_ORIGIN]
+                               [location.y + MAP_ORIGIN + 1] &&
+                   gyro.North &&
+                   (virtualWall[location.x + MAP_ORIGIN - 1]
+                               [location.y + MAP_ORIGIN] ||
+                    tof.isWestWall) &&
+                   (virtualWall[location.x + MAP_ORIGIN + 1]
+                               [location.y + MAP_ORIGIN] ||
+                    tof.isEastWall) &&
+                   (virtualWall[location.x + MAP_ORIGIN]
+                               [location.y + MAP_ORIGIN - 1] ||
+                    tof.isSouthWall)) {
+            if (!tof.isNorthWall) {
+                oldmillis      = millis();
+                checkPointX    = location.x;
+                checkPointY    = location.y;
+                DFS            = true;
+                servo.velocity = SPEED;
+                app.delay(FORWARD);
             }
+        } else if (!virtualWall[location.x + MAP_ORIGIN]
+                               [location.y + MAP_ORIGIN - 1] &&
+                   gyro.South &&
+                   (virtualWall[location.x + MAP_ORIGIN + 1]
+                               [location.y + MAP_ORIGIN] ||
+                    tof.isEastWall) &&
+                   (virtualWall[location.x + MAP_ORIGIN - 1]
+                               [location.y + MAP_ORIGIN] ||
+                    tof.isWestWall) &&
+                   (virtualWall[location.x + MAP_ORIGIN]
+                               [location.y + MAP_ORIGIN + 1] ||
+                    tof.isNorthWall)) {
+            if (!tof.isSouthWall) {
+                oldmillis      = millis();
+                checkPointX    = location.x;
+                checkPointY    = location.y;
+                DFS            = true;
+                servo.velocity = 0;
+                servo.suspend  = true;
+                servo.velocity = SPEED;
+                app.delay(FORWARD);
+            }
+        } else if (!virtualWall[location.x + MAP_ORIGIN + 1]
+                               [location.y + MAP_ORIGIN] &&
+                   gyro.East &&
+                   (virtualWall[location.x + MAP_ORIGIN]
+                               [location.y + MAP_ORIGIN - 1] ||
+                    tof.isSouthWall) &&
+                   (virtualWall[location.x + MAP_ORIGIN]
+                               [location.y + MAP_ORIGIN + 1] ||
+                    tof.isNorthWall) &&
+                   (virtualWall[location.x + MAP_ORIGIN - 1]
+                               [location.y + MAP_ORIGIN] ||
+                    tof.isWestWall)) {
+            if (!tof.isEastWall) {
+                oldmillis      = millis();
+                checkPointX    = location.x;
+                checkPointY    = location.y;
+                DFS            = true;
+                servo.velocity = SPEED;
+                app.delay(FORWARD);
+            }
+        } else if (!virtualWall[location.x + MAP_ORIGIN - 1]
+                               [location.y + MAP_ORIGIN] &&
+                   gyro.West &&
+                   (virtualWall[location.x + MAP_ORIGIN]
+                               [location.y + MAP_ORIGIN + 1] ||
+                    tof.isNorthWall) &&
+                   (virtualWall[location.x + MAP_ORIGIN]
+                               [location.y + MAP_ORIGIN - 1] ||
+                    tof.isSouthWall) &&
+                   (virtualWall[location.x + MAP_ORIGIN + 1]
+                               [location.y + MAP_ORIGIN] ||
+                    tof.isEastWall)) {
+            if (!tof.isWestWall) {
+                oldmillis      = millis();
+                checkPointX    = location.x;
+                checkPointY    = location.y;
+                DFS            = true;
+                servo.velocity = SPEED;
+                app.delay(FORWARD);
+            }  
+        } else {
+            app.delay(period);
+        }
 
         if (!DFS) {
             if (tof.isNotRight && !gyro.slope) {  // 右壁が消えた時の処理
@@ -362,7 +408,7 @@ void adjustmentApp(App) {
         if (isRightWallApp) {
             if (tof.val[3] < 120) {
                 servo.isCorrectingAngle -= 1;  // 接近しすぎたら離れる
-                app.delay(period * 5);
+                app.delay(period * 10);
             } else if (tof.val[3] < 230 && tof.val[2] < 265) {
                 if (radius + tof.val[3] + 30 <
                     0.8660254038 *
@@ -377,7 +423,7 @@ void adjustmentApp(App) {
         } else {
             if (tof.val[9] < 120) {
                 servo.isCorrectingAngle += 1;
-                app.delay(period * 5);
+                app.delay(period * 10);
             } else if (tof.val[9] < 230 && tof.val[10] < 265) {
                 if (radius + tof.val[9] + 25 <
                     0.8660254038 *
