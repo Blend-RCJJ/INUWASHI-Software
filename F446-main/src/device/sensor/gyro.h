@@ -28,7 +28,7 @@ class GYRO {
     int slope       = 0;
     int slopeOffset = 0;
 
-    bool isGyroDisabled = false;
+    bool isGyroDisabled = true;
 
     bool North = false;
     bool East  = false;
