@@ -72,7 +72,7 @@ void rightWallApp(App) {
         DFS            = false;
         app.delay(period);
 
-        if (tof.val[0] < 140 && !gyro.slope) {  // 前に壁が来た時の処理
+        if (tof.val[0] < 130 && !gyro.slope) {  // 前に壁が来た時の処理
             oldmillis      = millis();
             checkPointX    = location.x;
             checkPointY    = location.y;
@@ -141,7 +141,6 @@ void rightWallApp(App) {
                 DFS            = true;
                 servo.velocity = 0;
                 servo.suspend  = true;
-
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle += 90;
@@ -283,7 +282,7 @@ void rightWallApp(App) {
                 checkPointY    = location.y;
                 DFS            = true;
                 servo.velocity = SPEED;
-                app.delay(FORWARD);
+                app.delay(1500);
             }
         } else if (!virtualWall[location.x + MAP_ORIGIN]
                                [location.y + MAP_ORIGIN - 1] &&
@@ -302,10 +301,8 @@ void rightWallApp(App) {
                 checkPointX    = location.x;
                 checkPointY    = location.y;
                 DFS            = true;
-                servo.velocity = 0;
-                servo.suspend  = true;
                 servo.velocity = SPEED;
-                app.delay(FORWARD);
+                app.delay(1500);
             }
         } else if (!virtualWall[location.x + MAP_ORIGIN + 1]
                                [location.y + MAP_ORIGIN] &&
@@ -325,7 +322,7 @@ void rightWallApp(App) {
                 checkPointY    = location.y;
                 DFS            = true;
                 servo.velocity = SPEED;
-                app.delay(FORWARD);
+                app.delay(1500);
             }
         } else if (!virtualWall[location.x + MAP_ORIGIN - 1]
                                [location.y + MAP_ORIGIN] &&
@@ -345,8 +342,8 @@ void rightWallApp(App) {
                 checkPointY    = location.y;
                 DFS            = true;
                 servo.velocity = SPEED;
-                app.delay(FORWARD);
-            }  
+                app.delay(1500);
+            }
         } else {
             app.delay(period);
         }
@@ -403,10 +400,10 @@ void leftWallApp(App) {
 
 void adjustmentApp(App) {
     while (1) {
-        static bool isHit = false;
+        static bool isHit       = false;
         app.delay(period);
         if (isRightWallApp) {
-            if (tof.val[3] < 120) {
+            if (tof.val[3] < 110) {
                 servo.isCorrectingAngle -= 1;  // 接近しすぎたら離れる
                 app.delay(period * 10);
             } else if (tof.val[3] < 230 && tof.val[2] < 265) {
@@ -421,8 +418,8 @@ void adjustmentApp(App) {
                 }
             }
         } else {
-            if (tof.val[9] < 120) {
-                servo.isCorrectingAngle += 1;
+            if (tof.val[9] < 110) {
+                servo.isCorrectingAngle += 1;  // 接近しすぎたら離れる
                 app.delay(period * 10);
             } else if (tof.val[9] < 230 && tof.val[10] < 265) {
                 if (radius + tof.val[9] + 25 <
@@ -587,9 +584,11 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        uart3.print(gyro.deg);
-        uart3.print("\t");
-        uart3.println(servo.angle + servo.isCorrectingAngle);
+        for (int i = 0; i < 12; i++) {
+            uart3.print(tof.val[i]);
+            uart3.print("\t");
+        }
+        uart3.println(" ");
         app.delay(period);
     }
 }
@@ -621,12 +620,15 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
             app.stop(rightWallApp);
             servo.suspend = true;
             app.delay(WAIT);
+            servo.suspend = false;
+            servo.angle += 90;
+            servo.velocity = 0;
+            app.delay(WAIT * 2);
+            servo.suspend = true;
+            app.delay(WAIT);
+            servo.suspend = false;
             servo.angle += 90;
             app.delay(WAIT * 2);
-            servo.angle += 90;
-            app.delay(period);
-            servo.suspend = false;
-            app.delay(WAIT * 3);
             app.start(leftWallApp);
 
         }  // 前方+左右に壁があったら反転して左壁追従
