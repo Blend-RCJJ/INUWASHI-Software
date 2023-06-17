@@ -44,6 +44,9 @@ void mainApp(App) {
     app.start(DepthFirstSearchApp);
     app.start(AstarApp);
     app.start(adjustmentApp);
+    stripFloor.setBrightness(255);
+    floorSensor.setFloorColor(floorSensor.red);
+    stripFloor.show();
     while (1) {
         if (ui.toggle) {
             if (oldstatus) {
@@ -588,12 +591,13 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        for (int i = 0; i < 12; i++) {
-            uart3.print(tof.val[i]);
-            uart3.print("\t");
-        }
-        uart3.println(" ");
-        app.delay(period);
+        uart1.print(floorSensor.redVal);
+        uart1.print("\t");
+        uart1.print(floorSensor.greenVal);
+        uart1.print("\t");
+        uart1.print(floorSensor.blueVal);
+        uart1.println("\t");
+        app.delay(500);
     }
 }
 
