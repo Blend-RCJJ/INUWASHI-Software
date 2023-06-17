@@ -14,8 +14,8 @@ void mapUpdate(void) {
     int tempY = constrain(location.y + MAP_ORIGIN, 3, MAP_ORIGIN * 2 - 3);
 
     if (location.mapData[tempX][tempY].isPassed == false) {
-        location.mapData[tempX][tempY].isPassed = true;
-        location.mapData[tempX][tempY].isDetected = true;
+        location.mapData[tempX][tempY].isPassed        = true;
+        location.mapData[tempX][tempY].isDetected      = true;
         location.mapData[tempX][tempY].firstPassedTime = millis();
     }
 
