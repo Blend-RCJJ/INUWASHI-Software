@@ -400,8 +400,7 @@ void leftWallApp(App) {
 
 void adjustmentApp(App) {
     while (1) {
-        static bool isHit       = false;
-        app.delay(period);
+        static bool isHit = false;
         if (isRightWallApp) {
             if (tof.val[3] < 110) {
                 servo.isCorrectingAngle -= 1;  // 接近しすぎたら離れる
@@ -411,10 +410,14 @@ void adjustmentApp(App) {
                     0.8660254038 *
                         (radius + tof.val[2])) {   // √3/2(tofが30°間隔)
                     servo.isCorrectingAngle += 1;  // 一度ずつ補正
+                } else {
+                    servo.isCorrectingAngle = 0;
                 }
                 if (radius + tof.val[3] - 30 >
                     0.8660254038 * (radius + tof.val[2])) {
                     servo.isCorrectingAngle -= 1;
+                } else {
+                    servo.isCorrectingAngle = 0;
                 }
             }
         } else {
@@ -456,6 +459,7 @@ void adjustmentApp(App) {
             app.start(servoApp);
             isHit = true;
         }
+        app.delay(period);
     }
 }
 
