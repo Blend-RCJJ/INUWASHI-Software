@@ -19,15 +19,16 @@ void sensorApp(App) {
         floorSensor.init();
 
         floorSensor.setFloorColor(floorSensor.red);
-        app.delay(5);
-        floorSensor.read();
-        floorSensor.setFloorColor(floorSensor.green);
-        app.delay(5);
-        floorSensor.read();
-        floorSensor.setFloorColor(floorSensor.blue);
-        app.delay(5);
-        floorSensor.read();
+        delay(3);
+        floorSensor.redVal = analogRead(PC0);
 
+        floorSensor.setFloorColor(floorSensor.green);
+        delay(3);
+        floorSensor.greenVal = analogRead(PC0);
+
+        floorSensor.setFloorColor(floorSensor.blue);
+        delay(3);
+        floorSensor.blueVal = analogRead(PC0);
         app.delay(period);
     }
 }
