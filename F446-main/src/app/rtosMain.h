@@ -591,13 +591,28 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        uart1.print(floorSensor.redVal);
-        uart1.print("\t");
-        uart1.print(floorSensor.greenVal);
-        uart1.print("\t");
-        uart1.print(floorSensor.blueVal);
-        uart1.println("\t");
-        app.delay(500);
+        floorSensor.colorJudgment();
+        if (floorSensor.isRed) {
+            uart1.print("red");
+            uart1.println("\t");
+        }
+        if (floorSensor.isGreen) {
+            uart1.print("green");
+            uart1.println("\t");
+        }
+        if (floorSensor.isBlue) {
+            uart1.print("blue");
+            uart1.println("\t");
+        }
+        if (floorSensor.isWhite) {
+            uart1.print("white");
+            uart1.println("\t");
+        }
+        if (floorSensor.isBlack) {
+            uart1.print("black");
+            uart1.println("\t");
+        }
+        app.delay(300);
     }
 }
 

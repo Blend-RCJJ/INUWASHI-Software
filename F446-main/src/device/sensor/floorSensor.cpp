@@ -22,3 +22,36 @@ void FLOOR_SENSOR::setFloorColor(unsigned long color) {
     }
     stripFloor.show();
 }
+
+void FLOOR_SENSOR::colorJudgment(void) {
+    if (redVal < 300 && greenVal > 500 && blueVal > 500) {
+        isRed = true;
+        // 赤
+    } else {
+        isRed = false;
+    }
+    if (redVal > 500 && greenVal < 300 && blueVal > 500) {
+        isGreen = true;
+        // 緑
+    } else {
+        isGreen = false;
+    }
+    if (redVal > 500 && greenVal < 300 && blueVal < 300) {
+        isBlue = true;
+        // 青
+    } else {
+        isBlue = false;
+    }
+    if (redVal < 300 && greenVal < 300 && blueVal < 300) {
+        isWhite = true;
+        // 白
+    } else {
+        isWhite = false;
+    }
+    if (redVal > 500 && greenVal > 500 && blueVal > 500) {
+        isBlack = true;
+        // 黒
+    } else {
+        isBlack = false;
+    }
+}
