@@ -25,6 +25,7 @@ void setup() {
     app.create(DepthFirstSearchApp, secondPriority);
     app.create(AstarApp, secondPriority);
     app.create(adjustmentApp);
+    app.create(floorApp);
 
     // 入出力系統
     app.create(sensorApp, secondPriority);

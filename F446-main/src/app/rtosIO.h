@@ -29,7 +29,6 @@ void sensorApp(App) {
         floorSensor.setFloorColor(floorSensor.blue);
         app.delay(3);
         floorSensor.blueVal = analogRead(PC0);
-        app.delay(period);
     }
 }
 
