@@ -42,6 +42,7 @@ void AstarApp(App) {  // NOTE 動いた
         app.delay(100);
         if (millis() > FEEDBACK && servo.velocity == 50) {
             if (status) {
+                buzzer.bootSound();
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.stop(rightWallApp);
@@ -53,6 +54,8 @@ void AstarApp(App) {  // NOTE 動いた
             }
             app.delay(period);
         MEASURE_DISTANCE:  // 最短経路の算出
+            oldCoordinateX = location.coordinateX;
+            oldCoordinateY = location.coordinateY;
             if ((-1 <= location.x && location.x <= 1) &&
                 (-1 <= location.y && location.y <= 1) &&
                 initialWall[NORTH] == tof.isNorthWall &&
@@ -103,6 +106,7 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        goto MEASURE_DISTANCE;
                         break;
                     }
                     servo.velocity = SPEED;
@@ -121,6 +125,7 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        goto MEASURE_DISTANCE;
                         break;
                     }
                     servo.velocity = SPEED;
@@ -139,6 +144,7 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        goto MEASURE_DISTANCE;
                         break;
                     }
                     servo.velocity = SPEED;
@@ -157,6 +163,7 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        goto MEASURE_DISTANCE;
                         break;
                     }
                     servo.velocity = SPEED;
@@ -177,7 +184,7 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        for (int i = 7; i < 12; i++) {
+        for (int i = 0; i < 12; i++) {
             uart3.print(tof.val[i]);
             uart3.print("\t");
         }
