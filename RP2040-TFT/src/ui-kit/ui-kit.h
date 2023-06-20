@@ -6,14 +6,13 @@
 
 // images
 #include "./img/blend.h"
-#include "./img/ui-image/ui-image.h"
+#include "./img/ui_image/ui_image.h"
 
 #define MODE_TOP 0
 
 class UI_KIT {
    public:
     UI_KIT(void) {
-        settingImagePtr[0] = ui_top;
     }
 
     int status = 0;
@@ -34,7 +33,8 @@ class UI_KIT {
     }
 
    private:
-    const uint16_t* settingImagePtr[7];
+    const uint16_t* settingImagePtr[7] = {
+        ui_top, ui_camera, ui_led, ui_buzzer, ui_loadcell, ui_tof, ui_floor};
 };
 
 #endif

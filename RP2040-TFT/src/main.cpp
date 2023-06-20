@@ -13,15 +13,19 @@ UI_KIT ui;
 void setup() {
     Serial.begin(115200);
     ui.init();
-    ui.showSettingImage(0);
-
     led.normalSign();
 }
 
-int mode = 0;
-int oldMode = 1;
-
 void loop() {
+    static int mode = 0;
+
+    ui.showSettingImage(mode);
+
+    mode++;
+    mode %= 7;
+
+    delay(300);
+
     // touch.read();
 
     // sprite.fillRect(0, 0, 320, 240, TFT_BLUE);

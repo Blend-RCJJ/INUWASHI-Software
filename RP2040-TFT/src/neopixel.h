@@ -15,7 +15,7 @@ class LED {
 
     void normalSign(void) {
         ptr->setPixelColor(0, 0, 80, 255);
-        ptr->setBrightness(150);
+        ptr->setBrightness(30);
         ptr->show();
     }
 
