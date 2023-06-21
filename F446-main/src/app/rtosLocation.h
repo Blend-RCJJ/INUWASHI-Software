@@ -26,27 +26,27 @@ void mapUpdate(void) {
 
         if (millis() - location.lastTrustY <= 20000) {
             if (tof.val[location.minIndex] > judgeGain[0] &&
-                tof.val[(location.minIndex + 1) % 12] > judgeGain[1] &&
-                tof.val[(location.minIndex + 15) % 12] > judgeGain[1]) {
+                tof.val[(location.minIndex + 1) % 16] > judgeGain[1] &&
+                tof.val[(location.minIndex + 15) % 16] > judgeGain[1]) {
                 location.mapData[tempX][tempY + 1].isDetected = true;
             }
 
-            if (tof.val[(location.minIndex + 6) % 12] > judgeGain[0] &&
-                tof.val[(location.minIndex + 5) % 12] > judgeGain[1] &&
-                tof.val[(location.minIndex + 7) % 12] > judgeGain[1]) {
+            if (tof.val[(location.minIndex + 6) % 16] > judgeGain[0] &&
+                tof.val[(location.minIndex + 5) % 16] > judgeGain[1] &&
+                tof.val[(location.minIndex + 7) % 16] > judgeGain[1]) {
                 location.mapData[tempX][tempY - 1].isDetected = true;
             }
         }
 
         if (millis() - location.lastTrustX <= 20000) {
-            if (tof.val[(location.minIndex + 3) % 12] > judgeGain[0] &&
-                tof.val[(location.minIndex + 4) % 12] > judgeGain[1] &&
-                tof.val[(location.minIndex + 2) % 12] > judgeGain[1]) {
+            if (tof.val[(location.minIndex + 3) % 16] > judgeGain[0] &&
+                tof.val[(location.minIndex + 4) % 16] > judgeGain[1] &&
+                tof.val[(location.minIndex + 2) % 16] > judgeGain[1]) {
                 location.mapData[tempX + 1][tempY].isDetected = true;
             }
-            if (tof.val[(location.minIndex + 9) % 12] > judgeGain[0] &&
-                tof.val[(location.minIndex + 10) % 12] > judgeGain[1] &&
-                tof.val[(location.minIndex + 8) % 12] > judgeGain[1]) {
+            if (tof.val[(location.minIndex + 9) % 16] > judgeGain[0] &&
+                tof.val[(location.minIndex + 10) % 16] > judgeGain[1] &&
+                tof.val[(location.minIndex + 8) % 16] > judgeGain[1]) {
                 location.mapData[tempX - 1][tempY].isDetected = true;
             }
         }

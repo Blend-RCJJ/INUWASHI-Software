@@ -10,7 +10,7 @@
 
 extern RTOS_Kit app;
 
-#define SPEED 50
+#define SPEED 80
 #define WAIT 500
 #define FORWARD 2500
 #define NORTH 0
@@ -184,10 +184,11 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        for (int i = 0; i < 12; i++) {
-            uart3.print(tof.val[i]);
-            uart3.print("\t");
+        for (int i = 0; i < 16; i++) {
+            uart1.print(tof.val[i]);
+            uart1.print("\t");
         }
+        uart1.println(" ");
         app.delay(100);
     }
 }
@@ -202,12 +203,12 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
             true;  // 仮想壁
         app.delay(period);
 
-        if (tof.val[0] > 450 && (tof.val[3] > 230 || tof.val[9] > 230)) {
+        if (tof.val[0] > 450 && (tof.val[4] > 230 || tof.val[12] > 230)) {
             JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
         }
         if (!isRightWallApp &&
             JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] &&
-            (tof.val[3] > 230 || tof.val[9] > 230)) {
+            (tof.val[4] > 230 || tof.val[12] > 230)) {
             servo.suspend = true;
             app.delay(WAIT);
             servo.suspend = false;
