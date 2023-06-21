@@ -21,7 +21,7 @@ const char firstAddr = 0x30;
 bool isSensorActive = false;
 
 bool isSilver = false;
-const int silverThreshold = 8;
+const int silverThreshold = 18;
 
 void distanceSensorInit(void) {
     pinMode(xshutPin[0], OUTPUT);
