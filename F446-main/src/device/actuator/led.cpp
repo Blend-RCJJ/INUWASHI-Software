@@ -14,26 +14,22 @@ LED::LED(Adafruit_NeoPixel* top, Adafruit_NeoPixel* right,
     for (int i = 0; i < 4; i++) {
         ptrArr[i]->begin();
         setBrightness(i, maxBrightness);
-        ptrArr[i]->show();
     }
+    showAll();
 }
 
 void LED::bootIllumination(void) {
-    if (isDisabled) return;
-
     for (int brightCtr = 0; brightCtr < 255; brightCtr += 4) {
         for (int i = 0; i < 4; i++) {
             setBrightness(i, brightCtr);
             setColor(i, white);
-            ptrArr[i]->show();
+            show(i);
         }
         delay(1);
     }
 }
 
 void LED::initCompleteIllumination(void) {
-    if (isDisabled) return;
-
     unsigned long timer = millis();
     const int duration = 200;
 
@@ -69,14 +65,10 @@ void LED::initCompleteIllumination(void) {
 }
 
 void LED::setColor(int led, int r, int g, int b) {
-    if (isDisabled) return;
-
     ptrArr[led]->fill(ptrArr[led]->Color(r, g, b));
 }
 
 void LED::setColor(int led, unsigned long color) {
-    if (isDisabled) return;
-
     ptrArr[led]->fill(color);
 }
 
@@ -89,21 +81,36 @@ unsigned long LED::colorHSV(int hue, int saturation, int value) {
 }
 
 void LED::setBrightness(int led, int brightness) {
-    if (isDisabled) return;
-
     ptrArr[led]->setBrightness((int)(brightness * maxBrightness / 255.0));
 }
 
 void LED::showAll(void) {
-    if (isDisabled) return;
-
     for (int i = 0; i < 4; i++) {
-        ptrArr[i]->show();
+        show(i);
     }
 }
 
 void LED::show(int led) {
-    if (isDisabled) return;
+    if (disableAll || *(disablePtr[led])) return;
 
     ptrArr[led]->show();
+}
+
+void LED::setColorBar(int position, unsigned long color) {
+    if (disableAll || disableUI) return;
+
+    const int barWidth = 5;  // 奇数
+
+    const int barMax = ptrArr[UI]->numPixels() - 1 - barWidth / 2;
+    const int barMin = barWidth / 2;
+
+    int nomalizedPosition =
+        round(constrain(map(position, 10, 80, barMin, barMax), barMin, barMax));
+
+    ptrArr[UI]->fill(blank);
+
+    for (int i = 0; i < barWidth / 2 + 1; i++) {
+        ptrArr[UI]->setPixelColor(nomalizedPosition + i, color);
+        ptrArr[UI]->setPixelColor(nomalizedPosition - i, color);
+    }
 }

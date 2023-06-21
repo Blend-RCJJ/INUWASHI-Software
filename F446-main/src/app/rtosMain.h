@@ -46,23 +46,28 @@ void mainApp(App) {
     while (1) {
         uart1.print(loadcell.load[0]);
         uart1.print("\t");
-        uart1.println(loadcell.load[1]);
-            //     if (oldstatus) {
-            //         app.start(rightWallApp);
-            //         app.start(locationApp);
-            //         oldstatus = false;
-            //     }
-            // } else {
-            //     app.stop(rightWallApp);
-            //     app.stop(locationApp);
+        uart1.print(loadcell.load[1]);
 
-            //     servo.suspend = true;
-            //     oldstatus     = true;
+        uart1.print("\t");
+        uart1.println(loadcell.moment);
+        
+        //     if (oldstatus) {
+        //         app.start(rightWallApp);
+        //         app.start(locationApp);
+        //         oldstatus = false;
+        //     }
+        // } else {
+        //     app.stop(rightWallApp);
+        //     app.stop(locationApp);
 
-            // app.restart(victimNotifyApp);
-            // app.delay(12000);
-            // app.stop(ledApp);
+        //     servo.suspend = true;
+        //     oldstatus     = true;
+
+        // app.restart(victimNotifyApp);
+        // app.delay(12000);
+        // app.stop(ledApp);
         // }
+
         app.delay(period);
     }
 }

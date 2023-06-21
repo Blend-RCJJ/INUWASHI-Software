@@ -17,11 +17,20 @@ class LED {
 
     // settings:
     const int maxBrightness = 50;
-    const bool isDisabled = false;
+    const bool disableAll = false;
+
+    bool disableUI = false;
+    bool disableTop = true;
+    bool disableSide = false;
+
+    const bool* disablePtr[4] = {&disableTop, &disableSide, &disableSide,
+                                 &disableUI};
 
     // functions:
     void bootIllumination(void);
     void initCompleteIllumination(void);
+
+    void setColorBar(int position, unsigned long color);
 
     void setColor(int led, int r, int g, int b);
     void setColor(int led, unsigned long color);

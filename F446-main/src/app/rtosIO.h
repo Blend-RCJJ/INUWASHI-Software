@@ -5,6 +5,7 @@
 #include "../kit/RTOS-Kit.h"
 
 #include "./algorithm/victim.h"
+#include "../device/device.h"
 
 extern RTOS_Kit app;
 
@@ -77,6 +78,9 @@ void ledApp(App) {
             for (int i = 0; i < 4; i++) {
                 led.setColor(i, led.cyan);
                 led.setBrightness(i, brightness);
+            }
+            if (loadcell.status != 0) {
+                led.setColorBar(loadcell.moment, led.white);
             }
             led.showAll();
         }
