@@ -17,22 +17,23 @@ void setup() {
 }
 
 void loop() {
+    static int oldMode = 0;
+
     static int mode = 0;
+    static unsigned long timer = 0;
 
-    ui.showSettingImage(mode);
+    ui.touchUpdate();
 
-    mode++;
-    mode %= 7;
+    if (ui.goToHome) {
+        ui.goToHome = false;
+        mode = 2;
+    }
 
-    delay(300);
+    if (millis() - timer > 100) {
+        ui.showSettingImage(mode);
+        timer = millis();
+        mode = 0;
+    }
 
-    // touch.read();
-
-    // sprite.fillRect(0, 0, 320, 240, TFT_BLUE);
-
-    // if (touch.isTouched) {
-    //     sprite.fillCircle(touch.point.x, touch.point.y, 15, TFT_WHITE);
-    // }
-
-    // sprite.pushSprite(0, 0);
+    oldMode = mode;
 }

@@ -23,11 +23,12 @@ void DISPLAY_DEVICE::setSPIClockFast(void) {
     SPI.endTransaction();
 }
 
-void DISPLAY_DEVICE::setBackgroundImage(const uint16_t *imagePtr){
+void DISPLAY_DEVICE::setBackgroundImage(const uint16_t* imagePtr) {
     spritePtr->pushImage(0, 0, 320, 240, imagePtr);
 }
 
 void DISPLAY_DEVICE::publish(void) {
+    setSPIClockFast();
     spritePtr->pushSprite(0, 0);
     digitalWrite(backlightPin, LOW);
 }
