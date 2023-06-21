@@ -24,25 +24,25 @@ class LOADCELL {
         for (int i = 0; i < 2; i++) {
             load[i] = inputPin[i].raw();
         }
-        load[1] = 1023 - load[1];
+        // load[1] = 1023 - load[1];
 
-        for (int i = 0; i < 2; i++) {
-            load[i] -= offset[i];
-            load[i] = constrain(load[i], 0, 800);
-            load[i] /= 8;
-        }
+        // for (int i = 0; i < 2; i++) {
+        //     load[i] -= offset[i];
+        //     load[i] = constrain(load[i], 0, 800);
+        //     load[i] /= 8;
+        // }
 
-        if (load[0] > 10 || load[1] > 10) {
-            moment = degrees(atan2(load[0], load[1]));
+        // if (load[0] > 10 || load[1] > 10) {
+        //     moment = degrees(atan2(load[0], load[1]));
 
-            if (moment < 45) {
-                status = LEFT;
-            } else {
-                status = RIGHT;
-            }
-        } else {
-            status = 0;
-        }
+        //     if (moment < 45) {
+        //         status = LEFT;
+        //     } else {
+        //         status = RIGHT;
+        //     }
+        // } else {
+        //     status = 0;
+        // }
     }
 
     void init(void) {

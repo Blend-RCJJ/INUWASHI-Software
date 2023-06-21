@@ -43,8 +43,10 @@ void mainApp(App) {
     // app.start(DepthFirstSearchApp);
     // app.start(AstarApp);
     // app.start(adjustmentApp);
-    app.delay(3000);
     while (1) {
+        uart1.print(loadcell.load[0]);
+        uart1.print("\t");
+        uart1.println(loadcell.load[1]);
             //     if (oldstatus) {
             //         app.start(rightWallApp);
             //         app.start(locationApp);
@@ -57,8 +59,8 @@ void mainApp(App) {
             //     servo.suspend = true;
             //     oldstatus     = true;
 
-            app.restart(victimNotifyApp);
-            app.delay(12000);
+            // app.restart(victimNotifyApp);
+            // app.delay(12000);
             // app.stop(ledApp);
         // }
         app.delay(period);
