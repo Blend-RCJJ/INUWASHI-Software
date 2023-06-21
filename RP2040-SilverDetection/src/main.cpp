@@ -10,6 +10,8 @@
 #define NEOPIX 12
 #define numOfSensors 2
 
+#define OUT 0
+
 Adafruit_NeoPixel pixels(NUMPIXELS, NEOPIX, NEO_GRB + NEO_KHZ800);
 VL53L0X distanceSensor[numOfSensors];
 
@@ -27,6 +29,8 @@ void distanceSensorInit(void) {
     digitalWrite(xshutPin[0], LOW);
     digitalWrite(xshutPin[1], LOW);
 
+    pinMode(OUT, OUTPUT);
+
     for (int i = 0; i < numOfSensors; i++) {
         digitalWrite(xshutPin[i], HIGH);  // VL53L0Xの電源をON
         distanceSensor[i].setTimeout(100);
@@ -36,6 +40,7 @@ void distanceSensorInit(void) {
 
             pixels.setBrightness(255);
             while (1) {
+                digitalWrite(OUT, LOW);
                 pixels.setPixelColor(0, 255, 0, 0);
                 pixels.show();
                 delay(100);
@@ -84,7 +89,7 @@ void loop() {
 
     static uint16_t silverTimer = 0;
 
-    if (rawData[0] < silverThreshold || rawData[1] < silverThreshold) {
+    if (rawData[0] < silverThreshold && rawData[1] < silverThreshold) {
         isSilver = true;
         silverTimer = millis();
     } else if (millis() - silverTimer > 100) {
@@ -121,9 +126,13 @@ void loop1(void) {
             pixels.setBrightness(0);
             pixels.show();
         }
+
+        digitalWrite(OUT, LOW);
     } else if (isSilver) {
         pixels.setPixelColor(0, 255, 255, 0);
         pixels.setBrightness(150);
         pixels.show();
+
+        digitalWrite(OUT, HIGH);
     }
 }
