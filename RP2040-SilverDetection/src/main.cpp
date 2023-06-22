@@ -21,7 +21,7 @@ const char firstAddr = 0x30;
 bool isSensorActive = false;
 
 bool isSilver = false;
-const int silverThreshold = 8;
+const int silverThreshold = 18;
 
 void distanceSensorInit(void) {
     pinMode(xshutPin[0], OUTPUT);
@@ -117,10 +117,11 @@ void setup1(void) {
 }
 
 void loop1(void) {
+    
     if (isSensorActive && !isSilver) {
         if ((millis() / 25) % 2 == 0 && (millis() / 300) % 10 == 0) {
             pixels.setPixelColor(0, 0, 80, 255);
-            pixels.setBrightness(150);
+            pixels.setBrightness(255);
             pixels.show();
         } else {
             pixels.setBrightness(0);
@@ -130,7 +131,7 @@ void loop1(void) {
         digitalWrite(OUT, LOW);
     } else if (isSilver) {
         pixels.setPixelColor(0, 255, 255, 0);
-        pixels.setBrightness(150);
+        pixels.setBrightness(10);
         pixels.show();
 
         digitalWrite(OUT, HIGH);
