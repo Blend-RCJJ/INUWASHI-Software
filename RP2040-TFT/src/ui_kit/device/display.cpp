@@ -27,8 +27,14 @@ void DISPLAY_DEVICE::setBackgroundImage(const uint16_t* imagePtr) {
     spritePtr->pushImage(0, 0, 320, 240, imagePtr);
 }
 
-void DISPLAY_DEVICE::publish(void) {
+void DISPLAY_DEVICE::publish(int x, int y) {
     setSPIClockFast();
-    spritePtr->pushSprite(0, 0);
+    spritePtr->pushSprite(x, y);
+    spritePtr->deleteSprite();
     digitalWrite(backlightPin, LOW);
+}
+
+void DISPLAY_DEVICE::createSprite(int x, int y) {
+    spritePtr->createSprite(x, y);
+    spritePtr->setColorDepth(7);
 }

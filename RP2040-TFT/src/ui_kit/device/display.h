@@ -16,8 +16,10 @@ class DISPLAY_DEVICE {
     void init(void);
     void setSPIClockFast(void);
 
-    void publish(void);
+    void publish(int x = 0, int y = 0);
     void setBackgroundImage(const uint16_t *imagePtr);
+
+    void createSprite(int x = 320, int y = 240);
 
    private:
     const int backlightPin = 29;
