@@ -10,7 +10,7 @@
 
 class FLOOR_SENSOR {
    public:
-    const int brightness = 255;
+    const int brightness = 0;
     int redVal;
     int greenVal;
     int blueVal;
@@ -18,9 +18,9 @@ class FLOOR_SENSOR {
     unsigned long colorRGB(int red, int green, int blue);
     unsigned long colorHSV(int hue, int saturation, int brightness);
 
-    unsigned long red   = colorHSV(0, 255, 255);
-    unsigned long green = colorHSV(90, 255, 255);
-    unsigned long blue  = colorHSV(180, 255, 255);
+    unsigned long red   = colorRGB(255,0,0);
+    unsigned long green = colorRGB(0, 255, 0);
+    unsigned long blue  = colorRGB(0, 0, 255);
     unsigned long white = colorRGB(255, 255, 255);
     unsigned long blank = colorRGB(0, 0, 0);
 

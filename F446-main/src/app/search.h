@@ -17,7 +17,7 @@ extern RTOS_Kit app;
 #define SOUTH 2
 #define WEST 3
 
-const int radius                                 = 28;
+const double radius                              = 26.5;
 bool virtualWall[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
 bool isRightWallApp                              = false;
 bool oldstatus                                   = false;
@@ -45,11 +45,14 @@ void rightWallApp(App) {
             checkPointX    = location.x;
             checkPointY    = location.y;
             DFS            = true;
+            servo.velocity = 0;
             servo.suspend  = true;
             app.delay(WAIT);
             servo.suspend = false;
             servo.angle -= 90;
-            app.delay(WAIT);
+            servo.isCorrectingAngle = 0;
+            app.delay(WAIT * 4);
+            servo.velocity = SPEED;
         }
         if (virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1] &&
             gyro.North) {
@@ -66,7 +69,8 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle += 90;
-                app.delay(WAIT);
+                servo.isCorrectingAngle = 0;
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
@@ -93,7 +97,8 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
-                app.delay(WAIT);
+                servo.isCorrectingAngle = 0;
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
@@ -125,7 +130,8 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle += 90;
-                app.delay(WAIT);
+                servo.isCorrectingAngle = 0;
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
@@ -152,7 +158,8 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
-                app.delay(WAIT);
+                servo.isCorrectingAngle = 0;
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
@@ -184,7 +191,8 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle += 90;
-                app.delay(WAIT);
+                servo.isCorrectingAngle = 0;
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
@@ -211,7 +219,8 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
-                app.delay(WAIT);
+                servo.isCorrectingAngle = 0;
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
@@ -243,7 +252,8 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle += 90;
-                app.delay(WAIT);
+                servo.isCorrectingAngle = 0;
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
@@ -271,7 +281,8 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle -= 90;
-                app.delay(WAIT);
+                servo.isCorrectingAngle = 0;
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
@@ -406,9 +417,10 @@ void rightWallApp(App) {
                 app.delay(WAIT);
                 servo.suspend = false;
                 servo.angle += 90;
+                servo.isCorrectingAngle = 0;
                 servo.velocity = 0;
                 servo.suspend  = true;
-                app.delay(WAIT);
+                app.delay(WAIT * 4);
                 servo.suspend = false;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
@@ -436,9 +448,10 @@ void leftWallApp(App) {
             app.delay(WAIT);
             servo.suspend = false;
             servo.angle -= 90;
+            servo.isCorrectingAngle = 0;
             servo.velocity = 0;
             servo.suspend  = true;
-            app.delay(WAIT);
+            app.delay(WAIT * 4);
             servo.suspend  = false;
             servo.velocity = SPEED;
             while (abs(location.coordinateX - oldCoordinateX) < 300 &&
@@ -451,13 +464,15 @@ void leftWallApp(App) {
             }  // 次のタイルまで前進
         }
 
-        if (tof.val[0] < 140 && !gyro.slope) {  // 前に壁が来た時の処理
+        if (tof.val[0] < 150 && !gyro.slope) {  // 前に壁が来た時の処理
             servo.velocity = 0;
             servo.suspend  = true;
             app.delay(WAIT);
             servo.suspend = false;
             servo.angle += 90;
-            app.delay(WAIT);
+            servo.isCorrectingAngle = 0;
+            app.delay(WAIT * 4);
+            servo.velocity = SPEED;
         }
     }
 }
@@ -466,34 +481,36 @@ void adjustmentApp(App) {
     while (1) {
         static bool isHit = false;
         if (isRightWallApp) {
-            if (tof.val[4] < 100) {
+            if (tof.val[4] < 90) {
                 servo.isCorrectingAngle -= 1;  // 接近しすぎたら離れる
                 app.delay(period * 10);
-            } else if (tof.val[4] < 200 && tof.val[3] < 180 && tof.val[5] < 180) {
-                if (radius + tof.val[4] >
+            } else if (tof.val[4] < 200 && tof.val[3] < 180 &&
+                       tof.val[5] < 180) {
+                if (radius + tof.val[4] - 30 >
                     0.707106781186548 *
-                        (radius + tof.val[6]) + 30) {   // √3/2(tofが30°間隔)
+                        (radius + tof.val[6])) {   // √3/2(tofが30°間隔)
                     servo.isCorrectingAngle += 1;  // 一度ずつ補正
                 }
                 if (radius + tof.val[4] + 30 <
                     0.707106781186548 * (radius + tof.val[6])) {
                     servo.isCorrectingAngle -= 1;
-                } 
+                }
             }
         } else {
             if (tof.val[12] < 100) {
                 servo.isCorrectingAngle += 1;  // 接近しすぎたら離れる
                 app.delay(period * 10);
-            } else if (tof.val[12] < 170 && tof.val[10] < 150) {
-                if (radius + tof.val[12] + 30 <
+            } else if (tof.val[12] < 200 && tof.val[11] < 180 &&
+                       tof.val[13] < 180) {
+                if (radius + tof.val[12] - 40 <
                     0.707106781186548 *
                         (radius + tof.val[10])) {  // √3/2　//NOTE
                                                    // 新機体は1/√2(0.7071067812)
-                    servo.isCorrectingAngle += 1;  // 一度ずつ補正
+                    servo.isCorrectingAngle -= 1;  // 一度ずつ補正
                 }
-                if (radius + tof.val[12] - 40 >
+                if (radius + tof.val[12] + 40 >
                     0.707106781186548 * (radius + tof.val[10])) {
-                    servo.isCorrectingAngle -= 1;
+                    servo.isCorrectingAngle += 1;
                 }
             }
         }
@@ -561,6 +578,7 @@ void floorApp(App) {
             servo.velocity = -SPEED;
             app.delay(WAIT * 2);
             servo.angle -= 90;
+            servo.isCorrectingAngle = 0;
             app.delay(WAIT);
             oldCoordinateX = location.coordinateX;
             oldCoordinateY = location.coordinateY;

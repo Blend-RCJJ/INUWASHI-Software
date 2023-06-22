@@ -32,6 +32,7 @@ void mainApp(App) {
     app.start(DepthFirstSearchApp);
     app.start(AstarApp);
     app.start(adjustmentApp);
+    static bool oldstatus = false;
     while (1) {
         if (ui.toggle) {
             if (oldstatus) {

@@ -9,6 +9,8 @@ extern RTOS_Kit app;
 const int period = 10;  // 制御周期
 
 void sensorApp(App) {
+    floorSensor.init();
+
     while (1) {
         ui.read();
         gyro.read();
@@ -16,18 +18,16 @@ void sensorApp(App) {
         tof.calc(gyro.deg);
         // camera.read(); //FIXME: ポインタの設定違う
         loadcell.read();
-        floorSensor.init();
-
         floorSensor.setFloorColor(floorSensor.red);
-        app.delay(3);
+        app.delay(4);
         floorSensor.redVal = analogRead(PC0);
 
-        floorSensor.setFloorColor(floorSensor.green);
+        floorSensor.setFloorColor(floorSensor.blank);
         app.delay(3);
         floorSensor.greenVal = analogRead(PC0);
 
         floorSensor.setFloorColor(floorSensor.blue);
-        app.delay(3);
+        app.delay(4);
         floorSensor.blueVal = analogRead(PC0);
     }
 }
@@ -45,8 +45,8 @@ void servoApp(App) {
         } else {
             servo.stop();
         }
-
-        app.delay(period);
+        servo.angle %= 360;
+        app.delay(1);
     }
 }
 
