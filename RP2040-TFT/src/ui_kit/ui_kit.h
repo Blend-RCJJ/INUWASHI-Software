@@ -4,6 +4,7 @@
 #include "./img/blend.h"
 #include "./img/ui_image/ui_image.h"
 
+#include "./font/bold40.h"
 class UI_KIT {
    public:
     UI_KIT(void) {
@@ -22,6 +23,8 @@ class UI_KIT {
     void selectSettingMode(void);
 
     void publish(void);
+
+    void topUI(void);
 
    private:
     const uint16_t* settingImagePtr[7] = {

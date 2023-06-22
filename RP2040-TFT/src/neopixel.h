@@ -14,9 +14,14 @@ class LED {
     }
 
     void normalSign(void) {
-        ptr->setPixelColor(0, 0, 80, 255);
-        ptr->setBrightness(30);
-        ptr->show();
+        if ((millis() / 20) % 2 == 0 && (millis() / 300) % 10 == 0) {
+            ptr->setPixelColor(0, 0, 80, 255);
+            ptr->setBrightness(20);
+            ptr->show();
+        } else {
+            ptr->setBrightness(0);
+            ptr->show();
+        }
     }
 
     void errorSign(void) {

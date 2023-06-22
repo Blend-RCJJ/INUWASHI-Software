@@ -4,7 +4,6 @@
 XPT2046_Touchscreen touchscreenDevice(7);
 TOUCHSCREEN touch(&touchscreenDevice, 7);
 
-// display
 #include "./device/display.h"
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&tft);
@@ -15,9 +14,10 @@ void UI_KIT::init(void) {
     display.init();
     display.publish();
 
-    display.setBackgroundImage(image_data_blend);
+    display.createSprite();
+    display.setBackgroundImage(bootImage);
     display.publish();
-    delay(500);
+    delay(1000);
 }
 
 void UI_KIT::showSettingImage(int status) {
@@ -33,8 +33,6 @@ void UI_KIT::touchUpdate(void) {
     } else {
         selectSettingMode();
     }
-
-    _isTouched = touch.isTouched;
 }
 
 void UI_KIT::publish(void) {
@@ -43,8 +41,36 @@ void UI_KIT::publish(void) {
         showSettingImage(settingMode);
     }
     _mode = settingMode;
-
     display.publish();
+
+    if (settingMode == 0) {
+        topUI();
+    }
+
+    _isTouched = touch.isTouched;
+}
+
+void UI_KIT::topUI(void) {
+    display.createSprite(100, 40);
+    static unsigned long offset = 0;
+    int val = ((millis() - offset) / 50) % 360;
+
+    sprite.loadFont(bold40);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(val);
+    sprite.print("°");
+
+    display.publish(25, 20);
+
+    if (!_isTouched && touch.isTouched) {
+        if (160 <= touch.point.x && touch.point.x <= 160 + 135) {
+            if (31 <= touch.point.y && touch.point.y <= 31 + 18) {
+                offset = millis();
+            }
+        }
+    }
 }
 
 void UI_KIT::homeScreenGesture(void) {
@@ -88,6 +114,8 @@ void UI_KIT::selectSettingMode(void) {
             yLine = 3;
         }
 
-        settingMode = yLine + (xLine - 1) * 3;
+        if (xLine != 0 && yLine != 0) {
+            settingMode = (xLine - 1) * 3 + yLine;
+        }
     }
 }

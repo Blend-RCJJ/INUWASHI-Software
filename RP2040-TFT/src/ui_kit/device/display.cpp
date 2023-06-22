@@ -10,17 +10,16 @@ DISPLAY_DEVICE::DISPLAY_DEVICE(TFT_eSPI* tftPtr, TFT_eSprite* spritePtr) {
 
 void DISPLAY_DEVICE::init(void) {
     spritePtr->createSprite(320, 240);
-    spritePtr->setColorDepth(7);
+    spritePtr->setColorDepth(5);
 
     tftPtr->begin();
-    tftPtr->setAddrWindow(0, 0, 240, 320);
     tftPtr->setRotation(1);
-    tftPtr->setSwapBytes(true);
+
+    pinMode(TFT_CS, OUTPUT);
 }
 
 void DISPLAY_DEVICE::setSPIClockFast(void) {
     SPI.beginTransaction(SPISettings(SPI_FREQUENCY, MSBFIRST, TFT_SPI_MODE));
-    SPI.endTransaction();
 }
 
 void DISPLAY_DEVICE::setBackgroundImage(const uint16_t* imagePtr) {
@@ -36,5 +35,5 @@ void DISPLAY_DEVICE::publish(int x, int y) {
 
 void DISPLAY_DEVICE::createSprite(int x, int y) {
     spritePtr->createSprite(x, y);
-    spritePtr->setColorDepth(7);
+    spritePtr->setColorDepth(5);
 }
