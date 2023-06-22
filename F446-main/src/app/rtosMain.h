@@ -32,14 +32,14 @@ void mainApp(App) {
     app.start(DepthFirstSearchApp);
     app.start(AstarApp);
     app.start(adjustmentApp);
-    static bool oldstatus = false;
+    static bool status = false;
     while (1) {
         if (ui.toggle) {
-            if (oldstatus) {
+            if (status) {
                 app.start(rightWallApp);
                 app.start(locationApp);
                 app.start(floorApp);
-                oldstatus = false;
+                status = false;
             }
         } else {
             app.stop(rightWallApp);
@@ -47,7 +47,7 @@ void mainApp(App) {
             app.stop(floorApp);
 
             servo.suspend = true;
-            oldstatus     = true;
+            status     = true;
         }
         app.delay(period);
     }
