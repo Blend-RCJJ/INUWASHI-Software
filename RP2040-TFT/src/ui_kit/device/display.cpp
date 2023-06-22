@@ -2,7 +2,9 @@
 
 DISPLAY_DEVICE::DISPLAY_DEVICE(TFT_eSPI* tftPtr, TFT_eSprite* spritePtr) {
     pinMode(backlightPin, OUTPUT);
-    digitalWrite(backlightPin, HIGH);
+    // digitalWrite(backlightPin, HIGH);
+
+    digitalWrite(backlightPin, LOW);
 
     this->tftPtr = tftPtr;
     this->spritePtr = spritePtr;

@@ -9,10 +9,12 @@ TFT_eSPI tft = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&tft);
 DISPLAY_DEVICE display(&tft, &sprite);
 
+#include "databox.h"
+DATA_BOX data;
+
 void UI_KIT::init(void) {
     touch.begin();
     display.init();
-    display.publish();
 
     display.createSprite();
     display.setBackgroundImage(bootImage);
@@ -36,7 +38,9 @@ void UI_KIT::touchUpdate(void) {
 }
 
 void UI_KIT::publish(void) {
-    static int _mode = 0;
+    data.update();
+
+    static int _mode = -1;
     if (settingMode != _mode) {
         showSettingImage(settingMode);
     }
@@ -52,22 +56,19 @@ void UI_KIT::publish(void) {
 
 void UI_KIT::topUI(void) {
     display.createSprite(100, 40);
-    static unsigned long offset = 0;
-    int val = ((millis() - offset) / 50) % 360;
 
     sprite.loadFont(bold40);
     sprite.fillScreen(TFT_WHITE);
     sprite.setTextColor(TFT_BLACK, TFT_WHITE);
     sprite.setCursor(0, 0);
-    sprite.print(val);
-    sprite.print("°");
+    sprite.print("Hi!");
 
-    display.publish(25, 20);
+    display.publish(25, 18);
 
     if (!_isTouched && touch.isTouched) {
         if (160 <= touch.point.x && touch.point.x <= 160 + 135) {
             if (31 <= touch.point.y && touch.point.y <= 31 + 18) {
-                offset = millis();
+                data.gyroReset = true;
             }
         }
     }

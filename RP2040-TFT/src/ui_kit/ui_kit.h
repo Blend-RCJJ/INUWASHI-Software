@@ -5,13 +5,14 @@
 #include "./img/ui_image/ui_image.h"
 
 #include "./font/bold40.h"
+
 class UI_KIT {
    public:
     UI_KIT(void) {
     }
 
     int status = 0;
-    int settingMode = 3;
+    int settingMode = 0;
 
     bool _isTouched = false;
 
