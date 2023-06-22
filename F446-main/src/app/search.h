@@ -45,7 +45,6 @@ void rightWallApp(App) {
             checkPointX    = location.x;
             checkPointY    = location.y;
             DFS            = true;
-            servo.velocity = 0;
             servo.suspend  = true;
             app.delay(WAIT);
             servo.suspend = false;
@@ -471,13 +470,13 @@ void adjustmentApp(App) {
                 servo.isCorrectingAngle -= 1;  // 接近しすぎたら離れる
                 app.delay(period * 10);
             } else if (tof.val[4] < 200 && tof.val[3] < 180 && tof.val[5] < 180) {
-                if (radius + tof.val[4] + 30 <
+                if (radius + tof.val[4] >
                     0.707106781186548 *
-                        (radius + tof.val[2])) {   // √3/2(tofが30°間隔)
+                        (radius + tof.val[6]) + 30) {   // √3/2(tofが30°間隔)
                     servo.isCorrectingAngle += 1;  // 一度ずつ補正
                 }
-                if (radius + tof.val[4] - 40 >
-                    0.707106781186548 * (radius + tof.val[2])) {
+                if (radius + tof.val[4] + 30 <
+                    0.707106781186548 * (radius + tof.val[6])) {
                     servo.isCorrectingAngle -= 1;
                 } 
             }
