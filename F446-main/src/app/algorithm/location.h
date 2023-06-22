@@ -11,13 +11,13 @@
 
 class MAP_Kit {
    public:
-    bool isPassed = false;
+    bool isPassed   = false;
     bool isDetected = false;
 
     bool northWall = false;  // 起動時の方角を北とする。
     bool southWall = false;
-    bool eastWall = false;
-    bool westWall = false;
+    bool eastWall  = false;
+    bool westWall  = false;
 
     int floorColor = 0;  // 床の色
 
@@ -37,15 +37,15 @@ class Location_Kit {
     double coordinateX = 0;  // 時刻t時の予測された絶対座標（ワールド座標系）
     double coordinateY = 0;  // 時刻t時の予測された絶対座標（ワールド座標系）
 
-    int period = 10;
+    int period   = 10;
     int minIndex = 0;
 
     int rightWheelSpeed = 0;
-    int leftWheelSpeed = 0;
+    int leftWheelSpeed  = 0;
 
     int offset[4] = {105, 165, 130, 130};
-    int widthY = 0;
-    int widthX = 0;
+    int widthY    = 0;
+    int widthX    = 0;
 
     int x = 0;
     int y = 0;

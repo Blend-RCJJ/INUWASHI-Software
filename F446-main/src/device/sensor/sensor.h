@@ -13,6 +13,7 @@
 #include "switch.h"
 
 Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);
+Adafruit_NeoPixel stripFloor = Adafruit_NeoPixel(4, PB15, NEO_GRB + NEO_KHZ800);
 
 HardwareSerial uart4(PA1, PA0);
 DISTANCE_SENSOR tof(&uart4);

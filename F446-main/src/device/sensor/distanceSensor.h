@@ -14,10 +14,10 @@ class DISTANCE_SENSOR {
 
     HardwareSerial *serialPtr;
 
-    int val[12] = {0};
+    int val[16] = {0};
 
-    int vecX[12] = {0};
-    int vecY[12] = {0};
+    int vecX[16] = {0};
+    int vecY[16] = {0};
     bool isNotRight = false;
     bool isNotLeft  = false;
     bool isNotFront = false;
@@ -34,7 +34,7 @@ class DISTANCE_SENSOR {
     void rightWall(void);
 
    private:
-    int _valTemp[12] = {0};
+    int _valTemp[16] = {0};
 };
 
 #endif
