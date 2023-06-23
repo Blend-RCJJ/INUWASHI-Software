@@ -5,9 +5,8 @@
 
 #include "../../kit/IO-Kit.h"
 
-#define LEFT 1
-#define CENTER 2
-#define RIGHT 3
+#define LEFT 2
+#define RIGHT 1
 
 class LOADCELL {
    public:

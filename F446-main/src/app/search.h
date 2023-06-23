@@ -51,7 +51,7 @@ void rightWallApp(App) {
             servo.suspend = false;
             servo.angle -= 90;
             servo.isCorrectingAngle = 0;
-            app.delay(WAIT * 4);
+            app.delay(WAIT * 6);
             servo.velocity = SPEED;
         }
         if (virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1] &&
@@ -515,27 +515,27 @@ void adjustmentApp(App) {
             }
         }
 
-        // if (loadcell.status == RIGHT) {
-        //     app.stop(servoApp);
-        //     servo.driveAngularVelocity(-30, 45);
-        //     app.delay(300);
-        //     servo.driveAngularVelocity(-30, -45);
-        //     app.delay(300);
-        //     isHit = false;
-        // }
-        // if (loadcell.status == LEFT) {
-        //     app.stop(servoApp);
-        //     servo.driveAngularVelocity(-30, -45);
-        //     app.delay(300);
-        //     servo.driveAngularVelocity(-30, 45);
-        //     app.delay(300);
-        //     isHit = false;
-        // }
-        // if (!isHit) {
-        //     servo.velocity = SPEED;
-        //     app.start(servoApp);
-        //     isHit = true;
-        // }
+        if (loadcell.status == RIGHT) {
+            app.stop(servoApp);
+            servo.driveAngularVelocity(-30, 45);
+            app.delay(300);
+            servo.driveAngularVelocity(-30, -45);
+            app.delay(300);
+            isHit = false;
+        }
+        if (loadcell.status == LEFT) {
+            app.stop(servoApp);
+            servo.driveAngularVelocity(-30, -45);
+            app.delay(300);
+            servo.driveAngularVelocity(-30, 45);
+            app.delay(300);
+            isHit = false;
+        }
+        if (!isHit) {
+            servo.velocity = SPEED;
+            app.start(servoApp);
+            isHit = true;
+        }
         app.delay(period);
     }
 }

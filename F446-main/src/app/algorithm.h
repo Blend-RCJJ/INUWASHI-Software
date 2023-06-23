@@ -184,11 +184,11 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        for(int i = 0; i < 16; i++) {
-            uart1.print(tof.val[i]);
-            uart1.print("\t");
-        }
-        uart1.println("\t");
+        // for (int i = 0; i < 16; i++) {
+        //     uart1.print(tof.val[i]);
+        //     uart1.print("\t");
+        // }
+        // uart1.println("\t");
         app.delay(100);
     }
 }
@@ -218,6 +218,7 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
 
         if (!tof.isNotFront) {
             app.stop(rightWallApp);
+            app.stop(adjustmentApp);
             servo.suspend = true;
             app.delay(WAIT);
             servo.suspend = false;
@@ -228,8 +229,10 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
             app.delay(WAIT);
             servo.suspend = false;
             servo.angle += 90;
-            app.delay(WAIT * 2);
+            app.delay(WAIT * 3);
             app.start(leftWallApp);
+            app.restart(adjustmentApp);
+            app.delay(period);
 
         }  // 前方+左右に壁があったら反転して左壁追従
 
