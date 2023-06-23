@@ -8,6 +8,7 @@
         "istream": "cpp",
         "sstream": "cpp",
         "numeric": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "random": "cpp"
     }
 }

@@ -1,5 +1,5 @@
-#ifndef _RTOS_UI_H_
-#define _RTOS_UI_H_
+#ifndef _RTOS_VICTIM_H_
+#define _RTOS_VICTIM_H_
 
 #include "../device/device.h"
 #include "../kit/RTOS-Kit.h"
@@ -7,38 +7,41 @@
 extern RTOS_Kit app;
 
 void victimNotifyApp(App) {
-    static int victim = 0;  // NOTE:　仮だから他の用途に使うな
+    static int id = 0;  // NOTE:　仮だから他の用途に使うな
     static int victimID[6] = {VICTIM_H,   VICTIM_S,      VICTIM_U,
                               VICTIM_RED, VICTIM_YELLOW, VICTIM_GREEN};
 
     int rescueKitNum = 0;
 
-    switch (victimID[victim]) {
-        case VICTIM_H:
+    victim.isDetected = true;
+    victim.id = id;
+
+    switch (id) {
+        case 0:
             buzzer.sambaII();
             rescueKitNum = 3;
             break;
 
-        case VICTIM_S:
+        case 1:
             buzzer.tokyoOndo();
             rescueKitNum = 2;
             break;
 
-        case VICTIM_U:
+        case 2:
             buzzer.sakura();
             break;
 
-        case VICTIM_RED:
+        case 3:
             buzzer.shoten();
             rescueKitNum = 1;
             break;
 
-        case VICTIM_YELLOW:
+        case 4:
             buzzer.shogun();
             rescueKitNum = 1;
             break;
 
-        case VICTIM_GREEN:
+        case 5:
             buzzer.yuyake();
             break;
 
@@ -49,8 +52,10 @@ void victimNotifyApp(App) {
     app.delay(500);
     buzzer.rescueKit(rescueKitNum);
 
-    victim++;
-    victim %= 6;
+    id++;
+    id %= 6;
+
+    victim.isDetected = false;
 
     while (1) {
         app.delay(1000);

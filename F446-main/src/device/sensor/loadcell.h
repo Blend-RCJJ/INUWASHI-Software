@@ -24,15 +24,13 @@ class LOADCELL {
         for (int i = 0; i < 2; i++) {
             load[i] = inputPin[i].raw();
         }
-        load[1] = 1023 - load[1];
 
         for (int i = 0; i < 2; i++) {
             load[i] -= offset[i];
-            load[i] = constrain(load[i], 0, 800);
-            load[i] /= 8;
+            load[i] = constrain(load[i], 0, 1024);
         }
 
-        if (load[0] > 10 || load[1] > 10) {
+        if (load[0] > 20 || load[1] > 20) {
             moment = degrees(atan2(load[0], load[1]));
 
             if (moment < 45) {
@@ -49,7 +47,6 @@ class LOADCELL {
         for (int i = 0; i < 2; i++) {
             offset[i] = inputPin[i].raw();
         }
-        offset[1] = 1023 - offset[1];
     }
 
    private:

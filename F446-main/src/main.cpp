@@ -34,6 +34,7 @@ void setup() {
 
     // UI系統
     app.create(victimNotifyApp);
+    app.create(ledApp, lowPriority);
 
     app.start(mainApp);
     app.startRTOS();
