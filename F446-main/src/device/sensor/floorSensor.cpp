@@ -6,6 +6,8 @@ void FLOOR_SENSOR::init(void) {
     stripFloor.begin();
     stripFloor.setBrightness(brightness);
     stripFloor.show();
+
+    pinMode(PC0, INPUT);
 }
 
 unsigned long FLOOR_SENSOR::colorRGB(int red, int green, int blue) {

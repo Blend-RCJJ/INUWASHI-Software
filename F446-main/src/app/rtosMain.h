@@ -3,10 +3,10 @@
 
 #include "../device/device.h"
 #include "../kit/RTOS-Kit.h"
+#include "./algorithm.h"
 #include "./rtosIO.h"
 #include "./rtosLocation.h"
 #include "./rtosVictim.h"
-#include "./algorithm.h"
 #include "./search.h"
 
 extern RTOS_Kit app;
@@ -28,26 +28,26 @@ void mainApp(App) {
     app.start(sensorApp);
     app.start(monitorApp);
     app.start(servoApp);
-    app.start(rightWallApp);
     app.start(DepthFirstSearchApp);
     app.start(AstarApp);
-    app.start(adjustmentApp);
     static bool status = false;
     while (1) {
         if (ui.toggle) {
             if (status) {
                 app.start(rightWallApp);
+                app.start(adjustmentApp);
                 app.start(locationApp);
-                app.start(floorApp);
+                // app.start(floorApp);
                 status = false;
             }
         } else {
             app.stop(rightWallApp);
+            app.stop(adjustmentApp);
             app.stop(locationApp);
             app.stop(floorApp);
 
             servo.suspend = true;
-            status     = true;
+            status        = true;
         }
         app.delay(period);
     }
