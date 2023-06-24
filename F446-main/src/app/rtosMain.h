@@ -1,6 +1,8 @@
 #ifndef _RTOS_MAIN_H_
 #define _RTOS_MAIN_H_
 
+#include <Arduino.h>
+
 #include "../device/device.h"
 #include "../kit/RTOS-Kit.h"
 #include "./algorithm.h"
@@ -47,8 +49,12 @@ void mainApp(App) {
             app.stop(floorApp);
 
             servo.suspend = true;
-            status        = true;
+            status = true;
         }
+        uart4.write('U');
+        uart4.write('I');
+        uart4.write(highByte(gyro.deg));
+        uart4.write(lowByte(gyro.deg));
         app.delay(period);
     }
 }

@@ -19,6 +19,8 @@ void UI_KIT::init(void) {
     display.createSprite();
     display.setBackgroundImage(bootImage);
     display.publish();
+
+    data.init();
     delay(1000);
 }
 
@@ -61,7 +63,8 @@ void UI_KIT::topUI(void) {
     sprite.fillScreen(TFT_WHITE);
     sprite.setTextColor(TFT_BLACK, TFT_WHITE);
     sprite.setCursor(0, 0);
-    sprite.print("Hi!");
+    sprite.print(data.gyro);
+    sprite.print("°");
 
     display.publish(25, 18);
 

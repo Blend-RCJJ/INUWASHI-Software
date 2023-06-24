@@ -14,6 +14,7 @@ UI_KIT ui;
 
 void setup() {
     Serial.begin(115200);
+
     ui.init();
 }
 
