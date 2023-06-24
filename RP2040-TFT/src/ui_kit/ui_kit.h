@@ -26,6 +26,12 @@ class UI_KIT {
     void publish(void);
 
     void topUI(void);
+    void cameraUI(void);
+    void ledUI(void);
+    void buzzerUI(void);
+    void loadcellUI(void);
+    void tofUI(void);
+    void floorUI(void);
 
    private:
     const uint16_t* settingImagePtr[7] = {

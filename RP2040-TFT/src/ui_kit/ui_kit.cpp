@@ -1,16 +1,15 @@
 #include "ui_kit.h"
 
 #include "./device/touchscreen.h"
-XPT2046_Touchscreen touchscreenDevice(7);
-TOUCHSCREEN touch(&touchscreenDevice, 7);
-
 #include "./device/display.h"
-TFT_eSPI tft = TFT_eSPI();
-TFT_eSprite sprite = TFT_eSprite(&tft);
-DISPLAY_DEVICE display(&tft, &sprite);
+#include "./databox.h"
 
-#include "databox.h"
-DATA_BOX data;
+extern XPT2046_Touchscreen touchscreenDevice;
+extern TOUCHSCREEN touch;
+extern TFT_eSPI tft;
+extern TFT_eSprite sprite;
+extern DISPLAY_DEVICE display;
+extern DATA_BOX data;
 
 void UI_KIT::init(void) {
     touch.begin();
@@ -31,12 +30,6 @@ void UI_KIT::showSettingImage(int status) {
 
 void UI_KIT::touchUpdate(void) {
     touch.read();
-
-    if (settingMode != 0) {
-        homeScreenGesture();
-    } else {
-        selectSettingMode();
-    }
 }
 
 void UI_KIT::publish(void) {
@@ -49,14 +42,60 @@ void UI_KIT::publish(void) {
     _mode = settingMode;
     display.publish();
 
-    if (settingMode == 0) {
-        topUI();
+    switch(settingMode) {
+        case 0:
+            topUI();
+            break;
+        case 1:
+            cameraUI();
+            break;
+        case 2:
+            ledUI();
+            break;
+        case 3:
+            buzzerUI();
+            break;
+        case 4:
+            loadcellUI();
+            break;
+        case 5:
+            tofUI();
+            break;
+        case 6:
+            floorUI();
+            break;
     }
 
     _isTouched = touch.isTouched;
 }
 
+void UI_KIT::cameraUI(void) {
+    homeScreenGesture();
+}
+
+void UI_KIT::ledUI(void) {
+    homeScreenGesture();
+}
+
+void UI_KIT::buzzerUI(void) {
+    homeScreenGesture();
+}
+
+void UI_KIT::loadcellUI(void) {
+    homeScreenGesture();
+}
+
+void UI_KIT::tofUI(void) {
+    homeScreenGesture();
+}
+
+void UI_KIT::floorUI(void) {
+    homeScreenGesture();
+}
+
 void UI_KIT::topUI(void) {
+    selectSettingMode();
+
     display.createSprite(100, 40);
 
     sprite.loadFont(bold40);
