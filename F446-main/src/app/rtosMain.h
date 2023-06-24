@@ -11,6 +11,10 @@
 #include "./rtosVictim.h"
 #include "./search.h"
 
+#include "../kit/UI-Kit.h"
+
+UI_Kit uikit(&uart4);
+
 extern RTOS_Kit app;
 
 int robotStaus = 0;
@@ -42,6 +46,8 @@ void mainApp(App) {
                 // app.start(floorApp);
                 status = false;
             }
+
+            uikit.runningWrite();
         } else {
             app.stop(rightWallApp);
             app.stop(adjustmentApp);
@@ -50,11 +56,10 @@ void mainApp(App) {
 
             servo.suspend = true;
             status = true;
+
+            uikit.settingWrite();
         }
-        uart4.write('U');
-        uart4.write('I');
-        uart4.write(highByte(gyro.deg));
-        uart4.write(lowByte(gyro.deg));
+
         app.delay(period);
     }
 }

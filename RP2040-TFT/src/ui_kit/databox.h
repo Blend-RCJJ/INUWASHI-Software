@@ -12,12 +12,18 @@ class DATA_BOX {
     }
 
     void update(void) {
-        if (Serial1.available() >= 4) {
+        if (Serial1.available() >= 3) {
             if (Serial1.read() == 'U') {
                 if (Serial1.read() == 'I') {
-                    char a = Serial1.read();
-                    char b = Serial1.read();
-                    gyro = a * 256 + b;
+                    char byteNum = Serial1.read();
+
+                    while (Serial1.available() < byteNum) {
+                    }
+
+                    if (byteNum == 13) {  // setting Mode
+                        gyro = Serial1.read() * 256 + Serial1.read();
+                        
+                    }
                 }
             }
         }
