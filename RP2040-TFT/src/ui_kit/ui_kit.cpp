@@ -36,13 +36,21 @@ void UI_KIT::publish(void) {
     data.update();
 
     static int _mode = -1;
-    if (settingMode != _mode) {
-        showSettingImage(settingMode);
+
+    int img;
+    if (data.status == 0) {
+        img = settingMode;
+    } else {
+        img = 7;
     }
-    _mode = settingMode;
+
+    if (img != _mode) {
+        showSettingImage(img);
+    }
+    _mode = img;
     display.publish();
 
-    switch(settingMode) {
+    switch (img) {
         case 0:
             topUI();
             break;
@@ -64,9 +72,84 @@ void UI_KIT::publish(void) {
         case 6:
             floorUI();
             break;
+        case 7:
+            runningUI();
+            break;
     }
 
     _isTouched = touch.isTouched;
+}
+
+void UI_KIT::runningUI(void) {
+    display.createSprite(150, 30);
+    uint16_t orange = sprite.color565(255, 195, 60);
+    sprite.fillScreen(orange);
+    sprite.setTextColor(TFT_BLACK, orange);
+    sprite.loadFont(bold25);
+    sprite.setCursor(0, 2);
+    sprite.print("Exploring");
+    display.publish(46, 142);
+
+    display.createSprite(70, 20);
+    sprite.fillScreen(orange);
+    sprite.setTextColor(TFT_BLACK, orange);
+    sprite.loadFont(bold25);
+    sprite.setCursor(0, 2);
+    sprite.loadFont(regular15);
+    int minute = (millis() - data.runningTimer) / 60000;
+    int second = ((millis() - data.runningTimer) % 60000) / 1000;
+    int centisecond = ((millis() - data.runningTimer) % 1000) / 10;
+    sprite.print(minute);
+    sprite.print(":");
+    if (second < 10) {
+        sprite.print("0");
+    }
+    sprite.print(second);
+    sprite.print(".");
+    if (centisecond < 10) {
+        sprite.print("0");
+    }
+    sprite.print(centisecond);
+    display.publish(221, 150);
+
+    display.createSprite(80, 40);
+    sprite.loadFont(bold40);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(data.x);
+    display.publish(84, 28);
+    display.createSprite(80, 40);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(data.y);
+    display.publish(84, 81);
+
+display.createSprite(70, 30);
+    sprite.loadFont(bold20);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(data.coordinateX);
+    sprite.print("mm");
+    display.publish(36, 201 + 3);
+display.createSprite(70, 30);
+    sprite.loadFont(bold20);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(data.coordinateY);
+    sprite.print("mm");
+    display.publish(135, 201 + 3);
+    display.createSprite(70, 30);
+    sprite.loadFont(bold20);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(data.gyro);
+    sprite.print("°");
+    display.publish(238, 201 + 3);
 }
 
 void UI_KIT::cameraUI(void) {

@@ -11,9 +11,7 @@
 #include "./rtosVictim.h"
 #include "./search.h"
 
-#include "../kit/UI-Kit.h"
-
-UI_Kit uikit(&uart4);
+#include "./uartUI.h"
 
 extern RTOS_Kit app;
 
@@ -47,7 +45,7 @@ void mainApp(App) {
                 status = false;
             }
 
-            uikit.runningWrite();
+            runningWrite();
         } else {
             app.stop(rightWallApp);
             app.stop(adjustmentApp);
@@ -57,7 +55,7 @@ void mainApp(App) {
             servo.suspend = true;
             status = true;
 
-            uikit.settingWrite();
+            settingWrite();
         }
 
         app.delay(period);
