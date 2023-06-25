@@ -40,7 +40,7 @@ void AstarApp(App) {  // NOTE 動いた
                                 (tof.isWestWall)};  //(0,0)の壁の状態を記憶
     while (1) {
         app.delay(100);
-        if (millis() > FEEDBACK && servo.velocity == 50) {
+        if (millis() > FEEDBACK && servo.velocity == SPEED) {
             if (status) {
                 buzzer.bootSound();
                 servo.velocity = 0;
@@ -66,6 +66,7 @@ void AstarApp(App) {  // NOTE 動いた
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.stop(servoApp);
+                buzzer.matsukenShogun();
                 app.delay(20000);
             }
 
@@ -102,10 +103,14 @@ void AstarApp(App) {  // NOTE 動いた
             // 1マスぴったり進む方法が確立されていない&坂道来た時どうする？
             if (Ndistance < Edistance && Ndistance < Sdistance &&
                 Ndistance < Wdistance) {
-                servo.angle = 0 + servo.isCorrectingAngle;
+                servo.isCorrectingAngle = 0;
+                servo.angle             = 0 + servo.isCorrectingAngle;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        servo.suspend  = true;
+                        servo.velocity = 0;
+                        servo.suspend  = false;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -120,11 +125,15 @@ void AstarApp(App) {  // NOTE 動いた
                 goto MEASURE_DISTANCE;
 
             } else if (Sdistance < Edistance && Sdistance < Wdistance) {
-                servo.angle    = 180 + servo.isCorrectingAngle;
-                servo.velocity = 50;
+                servo.isCorrectingAngle = 0;
+                servo.angle             = 180 + servo.isCorrectingAngle;
+                servo.velocity          = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        servo.suspend  = true;
+                        servo.velocity = 0;
+                        servo.suspend  = false;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -139,11 +148,15 @@ void AstarApp(App) {  // NOTE 動いた
                 goto MEASURE_DISTANCE;
 
             } else if (Edistance < Wdistance) {
-                servo.angle    = 90 + servo.isCorrectingAngle;
-                servo.velocity = 50;
+                servo.isCorrectingAngle = 0;
+                servo.angle             = 90 + servo.isCorrectingAngle;
+                servo.velocity          = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        servo.suspend  = true;
+                        servo.velocity = 0;
+                        servo.suspend  = false;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -158,11 +171,15 @@ void AstarApp(App) {  // NOTE 動いた
                 goto MEASURE_DISTANCE;
 
             } else {
-                servo.angle    = 270 + servo.isCorrectingAngle;
-                servo.velocity = 50;
+                servo.isCorrectingAngle = 0;
+                servo.angle             = 270 + servo.isCorrectingAngle;
+                servo.velocity          = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        servo.suspend  = true;
+                        servo.velocity = 0;
+                        servo.suspend  = false;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -184,11 +201,12 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        for (int i = 0; i < 16; i++) {
-            uart1.print(tof.val[i]);
-            uart1.print("\t");
-        }
-        uart1.println("\t");
+        // for (int i = 0; i < 16; i++) {
+                    //     uart3.print(tof.val[i]);
+        //     uart3.print("\t");
+        // }
+        // uart3.println("\t");
+        uart3.println("Wireless Debugging with M5Stamp C3!!");
         app.delay(100);
     }
 }

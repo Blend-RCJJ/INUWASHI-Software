@@ -72,9 +72,9 @@ void rightWallApp(App) {
                 servo.isCorrectingAngle = 0;
                 app.delay(WAIT * 4);
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -100,9 +100,9 @@ void rightWallApp(App) {
                 servo.isCorrectingAngle = 0;
                 app.delay(WAIT * 4);
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -114,6 +114,7 @@ void rightWallApp(App) {
             } else {
                 app.delay(period);
             }
+            app.delay(period);
         } else if (virtualWall[location.x + MAP_ORIGIN]
                               [location.y + MAP_ORIGIN - 1] &&
                    gyro.South) {
@@ -133,9 +134,9 @@ void rightWallApp(App) {
                 servo.isCorrectingAngle = 0;
                 app.delay(WAIT * 4);
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -161,9 +162,9 @@ void rightWallApp(App) {
                 servo.isCorrectingAngle = 0;
                 app.delay(WAIT * 4);
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -175,6 +176,7 @@ void rightWallApp(App) {
             } else {
                 app.delay(period);
             }
+            app.delay(period);
         } else if (virtualWall[location.x + MAP_ORIGIN + 1]
                               [location.y + MAP_ORIGIN] &&
                    gyro.East) {
@@ -194,9 +196,9 @@ void rightWallApp(App) {
                 servo.isCorrectingAngle = 0;
                 app.delay(WAIT * 4);
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -222,9 +224,9 @@ void rightWallApp(App) {
                 servo.isCorrectingAngle = 0;
                 app.delay(WAIT * 4);
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -236,6 +238,7 @@ void rightWallApp(App) {
             } else {
                 app.delay(period);
             }
+            app.delay(period);
         } else if (virtualWall[location.x + MAP_ORIGIN - 1]
                               [location.y + MAP_ORIGIN] &&
                    gyro.West) {
@@ -255,9 +258,9 @@ void rightWallApp(App) {
                 servo.isCorrectingAngle = 0;
                 app.delay(WAIT * 4);
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -284,9 +287,9 @@ void rightWallApp(App) {
                 servo.isCorrectingAngle = 0;
                 app.delay(WAIT * 4);
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -298,6 +301,7 @@ void rightWallApp(App) {
             } else {
                 app.delay(period);
             }
+            app.delay(period);
         } else if (!virtualWall[location.x + MAP_ORIGIN]
                                [location.y + MAP_ORIGIN + 1] &&
                    gyro.North &&
@@ -316,9 +320,9 @@ void rightWallApp(App) {
                 checkPointY    = location.y;
                 DFS            = true;
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -343,9 +347,9 @@ void rightWallApp(App) {
                 checkPointY    = location.y;
                 DFS            = true;
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -370,9 +374,9 @@ void rightWallApp(App) {
                 checkPointY    = location.y;
                 DFS            = true;
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -397,9 +401,9 @@ void rightWallApp(App) {
                 checkPointY    = location.y;
                 DFS            = true;
                 servo.velocity = SPEED;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -422,9 +426,9 @@ void rightWallApp(App) {
                 servo.suspend  = true;
                 app.delay(WAIT * 4);
                 servo.suspend = false;
-                while (abs(location.coordinateX - oldCoordinateX) < 250 &&
-                       abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 140) {
+                while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                       abs(location.coordinateY - oldCoordinateY) < 300) {
+                    if (tof.val[0] < 130) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -456,7 +460,7 @@ void leftWallApp(App) {
             servo.velocity = SPEED;
             while (abs(location.coordinateX - oldCoordinateX) < 250 &&
                    abs(location.coordinateY - oldCoordinateY) < 250) {
-                if (tof.val[0] < 140) {
+                if (tof.val[0] < 130) {
                     break;
                 }
                 servo.velocity = SPEED;
