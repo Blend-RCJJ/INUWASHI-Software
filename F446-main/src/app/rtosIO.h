@@ -62,6 +62,14 @@ double mapDouble(double x, double in_min, double in_max, double out_min,
 
 void ledApp(App) {
     unsigned long startTime = millis();
+                for (int i = 0; i < 4; i++) {
+                led.setColor(i, led.cyan);
+                led.setBrightness(i, 100);
+            }
+            // if (loadcell.status != 0) {
+            //     led.setColorBar(loadcell.moment, led.white);
+            // }
+            led.showAll();
     while (1) {
         if (victim.isDetected) {
             unsigned long color = victim.color[victim.id];
@@ -78,21 +86,21 @@ void ledApp(App) {
                 app.delay(15);
             }
         } else {
-            int amplitude = 100;
-            int period = 5000;
+            // int amplitude = 100;
+            // int period = 5000;
 
-            int brightness =
-                mapDouble(cos((millis() - startTime) * 2 * PI / period), -1, 1,
-                          255 - amplitude, 255);
+            // int brightness =
+            //     mapDouble(cos((millis() - startTime) * 2 * PI / period), -1, 1,
+            //               255 - amplitude, 255);
 
-            for (int i = 0; i < 4; i++) {
-                led.setColor(i, led.cyan);
-                led.setBrightness(i, brightness);
-            }
-            if (loadcell.status != 0) {
-                led.setColorBar(loadcell.moment, led.white);
-            }
-            led.showAll();
+            // for (int i = 0; i < 4; i++) {
+            //     led.setColor(i, led.cyan);
+            //     led.setBrightness(i, brightness);
+            // }
+            // if (loadcell.status != 0) {
+            //     led.setColorBar(loadcell.moment, led.white);
+            // }
+            // led.showAll();
         }
         app.delay(10);
     }

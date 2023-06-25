@@ -13,9 +13,10 @@ LED::LED(Adafruit_NeoPixel* top, Adafruit_NeoPixel* right,
     // init
     for (int i = 0; i < 4; i++) {
         ptrArr[i]->begin();
-        setBrightness(i, maxBrightness);
+        ptrArr[i]->setBrightness(maxBrightness);
+        ptrArr[i]->clear();
+        ptrArr[i]->show();
     }
-    showAll();
 }
 
 void LED::bootIllumination(void) {
