@@ -28,7 +28,6 @@ void mainApp(App) {
     app.start(sensorApp);
     app.start(monitorApp);
     app.start(servoApp);
-    app.start(DepthFirstSearchApp);
     app.start(AstarApp);
     static bool status = false;
     while (1) {
@@ -37,13 +36,15 @@ void mainApp(App) {
                 app.start(rightWallApp);
                 app.start(adjustmentApp);
                 app.start(locationApp);
-                // app.start(floorApp);
-                status = false;
+                app.start(DepthFirstSearchApp);
+                    // app.start(floorApp);;
+                    status = false;
             }
         } else {
             app.stop(rightWallApp);
             app.stop(adjustmentApp);
             app.stop(locationApp);
+            app.stop(DepthFirstSearchApp);
             app.stop(floorApp);
 
             servo.suspend = true;
