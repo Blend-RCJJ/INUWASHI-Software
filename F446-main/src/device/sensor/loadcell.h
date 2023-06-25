@@ -29,7 +29,7 @@ class LOADCELL {
             load[i] = constrain(load[i], 0, 1024);
         }
 
-        if (load[0] > 20 || load[1] > 20) {
+        if (load[0] > 40 || load[1] > 40) {
             moment = degrees(atan2(load[0], load[1]));
 
             if (moment < 45) {
