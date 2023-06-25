@@ -55,10 +55,8 @@ void runningWrite(void) {
 
     // coordinate
 //send in 2 byte
-    if(location.coordinateX < 0){
-        uart4.write(1);
-        uart4.write(abs((int)location.coordinateX));
-    }
+    uart4.write(highByte((int)location.coordinateX));
+    uart4.write(lowByte((int)location.coordinateX));
 
     uart4.write(highByte((int)location.coordinateY));
     uart4.write(lowByte((int)location.coordinateY));

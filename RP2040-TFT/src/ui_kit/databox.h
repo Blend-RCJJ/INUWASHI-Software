@@ -19,6 +19,15 @@ class DATA_BOX {
 
     void init(void) {
         Serial1.begin(1000000);
+
+        delay(100);
+
+        while (Serial1.available()) {
+            Serial1.read();
+        }
+
+        while (Serial1.available() <= 0) {
+        }
     }
 
     void update(void) {
@@ -54,8 +63,8 @@ class DATA_BOX {
                             coordinateY -= 65536;
                         }
 
-                        x = coordinateX / 300;
-                        y = coordinateY / 300;
+                        x = round((double)coordinateX / 300.0);
+                        y = round((double)coordinateY / 300.0);
 
                         while (Serial1.available()) {
                             Serial1.read();

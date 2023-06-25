@@ -20,7 +20,6 @@ void UI_KIT::init(void) {
     display.publish();
 
     data.init();
-    delay(1000);
 }
 
 void UI_KIT::showSettingImage(int status) {
@@ -126,7 +125,7 @@ void UI_KIT::runningUI(void) {
     sprite.print(data.y);
     display.publish(84, 81);
 
-display.createSprite(70, 30);
+display.createSprite(90, 30);
     sprite.loadFont(bold20);
     sprite.fillScreen(TFT_WHITE);
     sprite.setTextColor(TFT_BLACK, TFT_WHITE);
@@ -134,7 +133,7 @@ display.createSprite(70, 30);
     sprite.print(data.coordinateX);
     sprite.print("mm");
     display.publish(36, 201 + 3);
-display.createSprite(70, 30);
+display.createSprite(90, 30);
     sprite.loadFont(bold20);
     sprite.fillScreen(TFT_WHITE);
     sprite.setTextColor(TFT_BLACK, TFT_WHITE);
