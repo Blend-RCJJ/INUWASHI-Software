@@ -60,6 +60,7 @@ class BUZZER {
     void rescueKit(int kit);
 
     void matsukenShogun(void);
+    void matsukenSamba(void);
 
     void sakura(void);
     void tokyoOndo(void);

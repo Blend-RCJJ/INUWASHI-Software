@@ -18,7 +18,7 @@ extern RTOS_Kit app;
 #define SOUTH 2
 #define WEST 3
 #define MAX_DISTANCE 800
-#define FEEDBACK 180000  // 帰還開始時間(ms)
+#define FEEDBACK 60000  // 帰還開始時間(ms)
 
 void rightWallApp(App);
 void leftWallApp(App);
@@ -43,10 +43,8 @@ void AstarApp(App) {  // NOTE 動いた
                                 (tof.isWestWall)};  //(0,0)の壁の状態を記憶
     while (1) {
         app.delay(100);
-        if (millis() > FEEDBACK &&
-            servo.velocity ==
-                SPEED) {  // FIXME
-                          // 時間にしてるけどレスキューキットの残玉数で決めたい
+        if (millis() > FEEDBACK && servo.velocity == SPEED) {  // FIXME
+            // 時間にしてるけどレスキューキットの残玉数で決めたい
             if (status) {
                 buzzer.bootSound();
                 servo.velocity = 0;
@@ -72,7 +70,7 @@ void AstarApp(App) {  // NOTE 動いた
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.stop(servoApp);
-                buzzer.matsukenShogun();
+                buzzer.matsukenSamba();
                 app.delay(20000);
             }
 
@@ -113,9 +111,6 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
-                        servo.suspend  = true;
-                        servo.velocity = 0;
-                        servo.suspend  = false;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -136,9 +131,6 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
-                        servo.suspend  = true;
-                        servo.velocity = 0;
-                        servo.suspend  = false;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -159,9 +151,6 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
-                        servo.suspend  = true;
-                        servo.velocity = 0;
-                        servo.suspend  = false;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -182,9 +171,6 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
-                        servo.suspend  = true;
-                        servo.velocity = 0;
-                        servo.suspend  = false;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -218,16 +204,13 @@ void monitorApp(App) {
 
 void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録する変数
                                  // "JCT"
-    static bool turn                                = false;
+    static bool turn = false;
     app.delay(WAIT);
     while (1) {
         virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] =
             true;  // 仮想壁
         app.delay(period);
 
-        if(isRightWallApp){
-            junction();
-        }
         if (!isRightWallApp &&
             JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] &&
             (tof.val[4] > 230 || tof.val[12] > 230)) {
@@ -238,7 +221,8 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
         if (!tof.isNotFront) {
             app.stop(rightWallApp);
             app.stop(adjustmentApp);
-            servo.suspend = true;
+            isRightWallApp = false;
+            servo.suspend  = true;
             app.delay(WAIT);
             servo.suspend = false;
             servo.angle += 90;
@@ -255,12 +239,19 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
 
         }  // 前方+左右に壁があったら反転して左壁追従
 
+        if (isRightWallApp) {
+            junction();
+        }
+
         if (checkPointX == location.x && checkPointY == location.y &&
             oldmillis + 10000 < millis()) {  // DFS開始地点に戻ってきたら反転
-            oldmillis   = millis();
-            checkPointX = MAP_ORIGIN;
-            checkPointY = MAP_ORIGIN;
-            app.delay(period);
+            oldmillis      = millis();
+            checkPointX    = MAP_ORIGIN;
+            checkPointY    = MAP_ORIGIN;
+            servo.velocity = 0;
+            servo.suspend  = true;
+            app.delay(WAIT);
+            servo.suspend = false;
             app.stop(rightWallApp);
             servo.angle += 180;
             app.delay(WAIT * 2);

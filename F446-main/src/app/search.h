@@ -422,8 +422,8 @@ void rightWallApp(App) {
                 servo.suspend = false;
                 servo.angle += 90;
                 servo.isCorrectingAngle = 0;
-                servo.velocity = 0;
-                servo.suspend  = true;
+                servo.velocity          = 0;
+                servo.suspend           = true;
                 app.delay(WAIT * 4);
                 servo.suspend = false;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
@@ -453,8 +453,8 @@ void leftWallApp(App) {
             servo.suspend = false;
             servo.angle -= 90;
             servo.isCorrectingAngle = 0;
-            servo.velocity = 0;
-            servo.suspend  = true;
+            servo.velocity          = 0;
+            servo.suspend           = true;
             app.delay(WAIT * 4);
             servo.suspend  = false;
             servo.velocity = SPEED;
@@ -468,7 +468,7 @@ void leftWallApp(App) {
             }  // 次のタイルまで前進
         }
 
-        if (tof.val[0] < 1-30 && !gyro.slope) {  // 前に壁が来た時の処理
+        if (tof.val[0] < 130 && !gyro.slope) {  // 前に壁が来た時の処理
             servo.velocity = 0;
             servo.suspend  = true;
             app.delay(WAIT);
@@ -484,38 +484,31 @@ void leftWallApp(App) {
 void adjustmentApp(App) {
     while (1) {
         static bool isHit = false;
-        if (isRightWallApp) {
-            if (tof.val[4] < 90) {
-                servo.isCorrectingAngle -= 1;  // 接近しすぎたら離れる
-                app.delay(WAIT * 2);
-            } else if (tof.val[4] < 200 && tof.val[3] < 180 &&
-                       tof.val[5] < 180) {
-                if (radius + tof.val[4] - 25 >
-                    0.707106781186548 *
-                        (radius + tof.val[6])) {   // √3/2(tofが30°間隔)
-                    servo.isCorrectingAngle += 1;  // 一度ずつ補正
-                }
-                if (radius + tof.val[4] + 30 <
-                    0.707106781186548 * (radius + tof.val[6])) {
-                    servo.isCorrectingAngle -= 1;
-                }
+        if (tof.val[4] + tof.val[12] < 300) {
+            if (tof.val[4] > tof.val[12]) {
+                servo.isCorrectingAngle = 7;
             }
+            if (tof.val[12] > tof.val[4]) {
+                servo.isCorrectingAngle = -7;
+            }
+            app.delay(50);
         } else {
-            if (tof.val[12] < 100) {
-                servo.isCorrectingAngle += 1;  // 接近しすぎたら離れる
-                app.delay(period * 10);
-            } else if (tof.val[12] < 200 && tof.val[11] < 180 &&
-                       tof.val[13] < 180) {
-                if (radius + tof.val[12] - 40 <
-                    0.707106781186548 *
-                        (radius + tof.val[10])) {  // √3/2　//NOTE
-                                                   // 新機体は1/√2(0.7071067812)
-                    servo.isCorrectingAngle -= 1;  // 一度ずつ補正
-                }
-                if (radius + tof.val[12] + 40 >
-                    0.707106781186548 * (radius + tof.val[10])) {
-                    servo.isCorrectingAngle += 1;
-                }
+            if (tof.val[12] < 120) {
+                servo.isCorrectingAngle = 7;
+            }
+            if (tof.val[4] < 120) {
+                servo.isCorrectingAngle = -7;
+            }
+        }
+
+        if (tof.val[4] > 300 && tof.val[12] < 300) {
+            if (tof.val[12] > 140) {
+                servo.isCorrectingAngle = -7;
+            }
+        }
+        if (tof.val[12] > 300 && tof.val[4] < 300) {
+            if (tof.val[4] > 140) {
+                servo.isCorrectingAngle = 7;
             }
         }
 
