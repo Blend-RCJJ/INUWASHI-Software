@@ -27,9 +27,10 @@ class LOADCELL {
         for (int i = 0; i < 2; i++) {
             load[i] -= offset[i];
             load[i] = constrain(load[i], 0, 1024);
+            load[i] = map(load[i], 0, 1024 - offset[i], 0, 100);
         }
 
-        if (load[0] > 20 || load[1] > 20) {
+        if (load[0] > 5 || load[1] > 5) {
             moment = degrees(atan2(load[0], load[1]));
 
             if (moment < 45) {

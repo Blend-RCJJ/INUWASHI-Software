@@ -47,7 +47,7 @@ class BUZZER {
     Output *pinPtr;
     BUZZER(Output *pinPtr);
 
-    const bool isDisabled = true;
+    const bool isDisabled = false;
 
     int bpm = 170;
 

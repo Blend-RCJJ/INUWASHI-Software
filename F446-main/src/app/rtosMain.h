@@ -1,6 +1,8 @@
 #ifndef _RTOS_MAIN_H_
 #define _RTOS_MAIN_H_
 
+#include <Arduino.h>
+
 #include "../device/device.h"
 #include "../kit/RTOS-Kit.h"
 #include "./algorithm.h"
@@ -8,6 +10,8 @@
 #include "./rtosLocation.h"
 #include "./rtosVictim.h"
 #include "./search.h"
+
+#include "./uartUI.h"
 
 extern RTOS_Kit app;
 
@@ -40,6 +44,8 @@ void mainApp(App) {
                 // app.start(floorApp);
                 status = false;
             }
+
+            runningWrite();
         } else {
             app.stop(rightWallApp);
             app.stop(adjustmentApp);
@@ -47,8 +53,11 @@ void mainApp(App) {
             app.stop(floorApp);
 
             servo.suspend = true;
-            status        = true;
+            status = true;
+
+            settingWrite();
         }
+
         app.delay(period);
     }
 }

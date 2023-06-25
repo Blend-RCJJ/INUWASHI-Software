@@ -1,16 +1,15 @@
 #include "ui_kit.h"
 
 #include "./device/touchscreen.h"
-XPT2046_Touchscreen touchscreenDevice(7);
-TOUCHSCREEN touch(&touchscreenDevice, 7);
-
 #include "./device/display.h"
-TFT_eSPI tft = TFT_eSPI();
-TFT_eSprite sprite = TFT_eSprite(&tft);
-DISPLAY_DEVICE display(&tft, &sprite);
+#include "./databox.h"
 
-#include "databox.h"
-DATA_BOX data;
+extern XPT2046_Touchscreen touchscreenDevice;
+extern TOUCHSCREEN touch;
+extern TFT_eSPI tft;
+extern TFT_eSprite sprite;
+extern DISPLAY_DEVICE display;
+extern DATA_BOX data;
 
 void UI_KIT::init(void) {
     touch.begin();
@@ -19,7 +18,8 @@ void UI_KIT::init(void) {
     display.createSprite();
     display.setBackgroundImage(bootImage);
     display.publish();
-    delay(1000);
+
+    data.init();
 }
 
 void UI_KIT::showSettingImage(int status) {
@@ -29,39 +29,163 @@ void UI_KIT::showSettingImage(int status) {
 
 void UI_KIT::touchUpdate(void) {
     touch.read();
-
-    if (settingMode != 0) {
-        homeScreenGesture();
-    } else {
-        selectSettingMode();
-    }
 }
 
 void UI_KIT::publish(void) {
     data.update();
 
     static int _mode = -1;
-    if (settingMode != _mode) {
-        showSettingImage(settingMode);
+
+    int img;
+    if (data.status == 0) {
+        img = settingMode;
+    } else {
+        img = 7;
     }
-    _mode = settingMode;
+
+    if (img != _mode) {
+        showSettingImage(img);
+    }
+    _mode = img;
     display.publish();
 
-    if (settingMode == 0) {
-        topUI();
+    switch (img) {
+        case 0:
+            topUI();
+            break;
+        case 1:
+            cameraUI();
+            break;
+        case 2:
+            ledUI();
+            break;
+        case 3:
+            buzzerUI();
+            break;
+        case 4:
+            loadcellUI();
+            break;
+        case 5:
+            tofUI();
+            break;
+        case 6:
+            floorUI();
+            break;
+        case 7:
+            runningUI();
+            break;
     }
 
     _isTouched = touch.isTouched;
 }
 
+void UI_KIT::runningUI(void) {
+    display.createSprite(150, 30);
+    uint16_t orange = sprite.color565(255, 195, 60);
+    sprite.fillScreen(orange);
+    sprite.setTextColor(TFT_BLACK, orange);
+    sprite.loadFont(bold25);
+    sprite.setCursor(0, 2);
+    sprite.print("Exploring");
+    display.publish(46, 142);
+
+    display.createSprite(70, 20);
+    sprite.fillScreen(orange);
+    sprite.setTextColor(TFT_BLACK, orange);
+    sprite.loadFont(bold25);
+    sprite.setCursor(0, 2);
+    sprite.loadFont(regular15);
+    int minute = (millis() - data.runningTimer) / 60000;
+    int second = ((millis() - data.runningTimer) % 60000) / 1000;
+    int centisecond = ((millis() - data.runningTimer) % 1000) / 10;
+    sprite.print(minute);
+    sprite.print(":");
+    if (second < 10) {
+        sprite.print("0");
+    }
+    sprite.print(second);
+    sprite.print(".");
+    if (centisecond < 10) {
+        sprite.print("0");
+    }
+    sprite.print(centisecond);
+    display.publish(221, 150);
+
+    display.createSprite(80, 40);
+    sprite.loadFont(bold40);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(data.x);
+    display.publish(84, 28);
+    display.createSprite(80, 40);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(data.y);
+    display.publish(84, 81);
+
+display.createSprite(90, 30);
+    sprite.loadFont(bold20);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(data.coordinateX);
+    sprite.print("mm");
+    display.publish(36, 201 + 3);
+display.createSprite(90, 30);
+    sprite.loadFont(bold20);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(data.coordinateY);
+    sprite.print("mm");
+    display.publish(135, 201 + 3);
+    display.createSprite(70, 30);
+    sprite.loadFont(bold20);
+    sprite.fillScreen(TFT_WHITE);
+    sprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    sprite.setCursor(0, 0);
+    sprite.print(data.gyro);
+    sprite.print("°");
+    display.publish(238, 201 + 3);
+}
+
+void UI_KIT::cameraUI(void) {
+    homeScreenGesture();
+}
+
+void UI_KIT::ledUI(void) {
+    homeScreenGesture();
+}
+
+void UI_KIT::buzzerUI(void) {
+    homeScreenGesture();
+}
+
+void UI_KIT::loadcellUI(void) {
+    homeScreenGesture();
+}
+
+void UI_KIT::tofUI(void) {
+    homeScreenGesture();
+}
+
+void UI_KIT::floorUI(void) {
+    homeScreenGesture();
+}
+
 void UI_KIT::topUI(void) {
+    selectSettingMode();
+
     display.createSprite(100, 40);
 
     sprite.loadFont(bold40);
     sprite.fillScreen(TFT_WHITE);
     sprite.setTextColor(TFT_BLACK, TFT_WHITE);
     sprite.setCursor(0, 0);
-    sprite.print("Hi!");
+    sprite.print(data.gyro);
+    sprite.print("°");
 
     display.publish(25, 18);
 
