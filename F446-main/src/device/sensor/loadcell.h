@@ -30,7 +30,7 @@ class LOADCELL {
             load[i] = map(load[i], 0, 1024 - offset[i], 0, 100);
         }
 
-        if (load[0] > 40 || load[1] > 40) {
+        if (load[0] > 20 || load[1] > 20) {
             moment = degrees(atan2(load[0], load[1]));
 
             if (moment < 45) {
