@@ -18,7 +18,7 @@ extern RTOS_Kit app;
 #define SOUTH 2
 #define WEST 3
 #define MAX_DISTANCE 800
-#define FEEDBACK 60000  // 帰還開始時間(ms)
+#define FEEDBACK 300000  // 帰還開始時間(ms)
 
 void rightWallApp(App);
 void leftWallApp(App);
@@ -265,7 +265,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1]
                   .isPassed &&
-             !tof.isNorthWall) &&
+             tof.val[0] > 450) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN + 1]
                            [location.y + MAP_ORIGIN]
@@ -282,7 +282,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN + 1][location.y + MAP_ORIGIN]
                   .isPassed &&
-             !tof.isEastWall) &&
+            tof.val[0] > 450) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN]
                            [location.y + MAP_ORIGIN + 1]
@@ -299,7 +299,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN - 1]
                   .isPassed &&
-             !tof.isSouthWall) &&
+             tof.val[0] > 450) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN + 1]
                            [location.y + MAP_ORIGIN]
@@ -316,7 +316,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN - 1][location.y + MAP_ORIGIN]
                   .isPassed &&
-             !tof.isWestWall) &&
+            tof.val[0] > 450) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN]
                            [location.y + MAP_ORIGIN + 1]
