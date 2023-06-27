@@ -48,6 +48,7 @@ void mainApp(App) {
             runningWrite();
         } else {
             app.stop(rightWallApp);
+            app.stop(leftWallApp);
             app.stop(adjustmentApp);
             app.stop(locationApp);
             app.stop(DepthFirstSearchApp);

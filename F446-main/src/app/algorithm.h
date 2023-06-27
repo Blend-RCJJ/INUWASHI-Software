@@ -111,6 +111,7 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        virtualWall[2] = true;  // 前方に仮想壁
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -131,6 +132,7 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        virtualWall[0] = true;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -151,6 +153,7 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        virtualWall[3] = true;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -171,6 +174,7 @@ void AstarApp(App) {  // NOTE 動いた
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 140) {
+                        virtualWall[1] = true;
                         goto MEASURE_DISTANCE;
                         break;
                     }
@@ -192,12 +196,10 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        uart1.print(floorSensor.redVal);
-        uart1.print("\t");
-        uart1.print(floorSensor.greenVal);
-        uart1.print("\t");
-        uart1.print(floorSensor.blueVal);
-        uart1.println("\t");
+      for(int i = 0; i < 16; i++){
+        uart3.print(tof.val[i]);
+        uart3.print("\t");
+      }
         app.delay(100);
     }
 }
@@ -213,9 +215,10 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
 
         if (!isRightWallApp &&
             JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] &&
-            (tof.val[4] > 230 || tof.val[12] > 230)) {
+            (tof.isNotRight || tof.isNotLeft)) {
             app.stop(leftWallApp);
-            app.start(rightWallApp);
+            app.restart(rightWallApp);
+            isRightWallApp = true;
         }
 
         if (!tof.isNotFront) {
@@ -238,7 +241,6 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
             app.delay(period);
 
         }  // 前方+左右に壁があったら反転して左壁追従
-
         if (isRightWallApp) {
             junction();
         }
@@ -265,7 +267,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1]
                   .isPassed &&
-             tof.val[0] > 300) &&
+             !tof.isNorthWall) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN + 1]
                            [location.y + MAP_ORIGIN]
@@ -282,7 +284,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN + 1][location.y + MAP_ORIGIN]
                   .isPassed &&
-            tof.val[0] > 300) &&
+             !tof.isNorthWall) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN]
                            [location.y + MAP_ORIGIN + 1]
@@ -299,7 +301,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN - 1]
                   .isPassed &&
-             tof.val[0] > 300) &&
+             !tof.isSouthWall) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN + 1]
                            [location.y + MAP_ORIGIN]
@@ -316,7 +318,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN - 1][location.y + MAP_ORIGIN]
                   .isPassed &&
-            tof.val[0] > 300) &&
+             !tof.isWestWall) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN]
                            [location.y + MAP_ORIGIN + 1]
