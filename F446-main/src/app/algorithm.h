@@ -265,7 +265,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1]
                   .isPassed &&
-             tof.val[0] > 450) &&
+             tof.val[0] > 300) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN + 1]
                            [location.y + MAP_ORIGIN]
@@ -282,7 +282,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN + 1][location.y + MAP_ORIGIN]
                   .isPassed &&
-            tof.val[0] > 450) &&
+            tof.val[0] > 300) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN]
                            [location.y + MAP_ORIGIN + 1]
@@ -299,7 +299,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN - 1]
                   .isPassed &&
-             tof.val[0] > 450) &&
+             tof.val[0] > 300) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN + 1]
                            [location.y + MAP_ORIGIN]
@@ -316,7 +316,7 @@ void junction(void) {
         if ((!location
                   .mapData[location.x + MAP_ORIGIN - 1][location.y + MAP_ORIGIN]
                   .isPassed &&
-            tof.val[0] > 450) &&
+            tof.val[0] > 300) &&
             ((!location
                    .mapData[location.x + MAP_ORIGIN]
                            [location.y + MAP_ORIGIN + 1]
