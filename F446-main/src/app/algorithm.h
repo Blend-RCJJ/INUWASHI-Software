@@ -113,7 +113,6 @@ void AstarApp(App) {  // NOTE 動いた
                     if (tof.val[0] < 140) {
                         virtualWall[2] = true;  // 前方に仮想壁
                         goto MEASURE_DISTANCE;
-                        break;
                     }
                     servo.velocity = SPEED;
                     app.delay(period);
@@ -134,7 +133,6 @@ void AstarApp(App) {  // NOTE 動いた
                     if (tof.val[0] < 140) {
                         virtualWall[0] = true;
                         goto MEASURE_DISTANCE;
-                        break;
                     }
                     servo.velocity = SPEED;
                     app.delay(period);
@@ -155,7 +153,6 @@ void AstarApp(App) {  // NOTE 動いた
                     if (tof.val[0] < 140) {
                         virtualWall[3] = true;
                         goto MEASURE_DISTANCE;
-                        break;
                     }
                     servo.velocity = SPEED;
                     app.delay(period);
@@ -176,7 +173,6 @@ void AstarApp(App) {  // NOTE 動いた
                     if (tof.val[0] < 140) {
                         virtualWall[1] = true;
                         goto MEASURE_DISTANCE;
-                        break;
                     }
                     servo.velocity = SPEED;
                     app.delay(period);
@@ -196,10 +192,12 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-      for(int i = 0; i < 16; i++){
-        uart3.print(tof.val[i]);
-        uart3.print("\t");
-      }
+     uart1.print(floorSensor.redVal);
+        uart1.print("\t");
+        uart1.print(floorSensor.blankVal);
+        uart1.print("\t");
+        uart1.print(floorSensor.blueVal);
+        uart1.println("\t");
         app.delay(100);
     }
 }
