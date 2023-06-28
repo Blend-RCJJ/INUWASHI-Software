@@ -22,6 +22,37 @@ bool isSensorActive = false;
 
 bool isSilver = false;
 const int silverThreshold = 18;
+bool deviceScanner(void) {
+  char error, address;
+  int nDevices;
+
+  Serial.println("Scanning...");
+
+  nDevices = 0;
+  for (address = 1; address < 127; address++) {
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+
+    if (error == 0) {
+      Serial.print("I2C device found at address 0x");
+      if (address < 16) Serial.print("0");
+      Serial.print(address, HEX);
+      Serial.println("  !");
+
+      nDevices++;
+    } else if (error == 4) {
+      Serial.print("Unknown error at address 0x");
+      if (address < 16) Serial.print("0");
+      Serial.println(address, HEX);
+    }
+  }
+  if (nDevices == 0)
+    Serial.println("No I2C devices found\n");
+  else
+    Serial.println("done\n");
+
+  return (nDevices == 0);
+}
 
 void distanceSensorInit(void) {
     pinMode(xshutPin[0], OUTPUT);
@@ -36,10 +67,11 @@ void distanceSensorInit(void) {
         distanceSensor[i].setTimeout(100);
 
         if (!distanceSensor[i].init()) {  // ERROR
-            Serial.println("ERR1: Failed to detect and initialize sensor!");
 
             pixels.setBrightness(255);
             while (1) {
+                Serial.println("ERR1: Failed to detect and initialize sensor!");
+                Serial.println(i);
                 digitalWrite(OUT, LOW);
                 pixels.setPixelColor(0, 255, 0, 0);
                 pixels.show();
@@ -70,7 +102,7 @@ void setup() {
 
     Wire.begin();  // I2C通信を開通
     Wire.setClock(1000000);
-
+    
     pixels.begin();
     pinMode(NEO_PWR, OUTPUT);
     digitalWrite(NEO_PWR, HIGH);
@@ -117,7 +149,6 @@ void setup1(void) {
 }
 
 void loop1(void) {
-    
     if (isSensorActive && !isSilver) {
         if ((millis() / 25) % 2 == 0 && (millis() / 300) % 10 == 0) {
             pixels.setPixelColor(0, 0, 80, 255);
