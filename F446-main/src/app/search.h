@@ -30,6 +30,7 @@ static bool locationIsChanged                    = false;
 
 void rightWallApp(App) {
     static bool DFS = false;
+    app.delay(WAIT);
     while (1) {
         servo.velocity = SPEED;
         servo.suspend  = false;
@@ -409,10 +410,7 @@ void rightWallApp(App) {
                     app.delay(period);
                 }
             }
-        } else {
-            app.delay(period);
         }
-
         if (!DFS) {
             if (tof.isNotRight) {  // 右壁が消えた時の処理
                 servo.velocity = 0;
