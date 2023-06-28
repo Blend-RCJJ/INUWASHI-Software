@@ -10,7 +10,6 @@
 #include "./rtosLocation.h"
 #include "./rtosVictim.h"
 #include "./search.h"
-
 #include "./uartUI.h"
 
 extern RTOS_Kit app;
@@ -41,8 +40,8 @@ void mainApp(App) {
                 app.start(adjustmentApp);
                 app.start(locationApp);
                 app.start(DepthFirstSearchApp);
-                    // app.start(floorApp);;
-                    status = false;
+                app.start(floorApp);
+                status = false;
             }
 
             runningWrite();
@@ -55,7 +54,7 @@ void mainApp(App) {
             app.stop(floorApp);
 
             servo.suspend = true;
-            status = true;
+            status        = true;
 
             settingWrite();
         }

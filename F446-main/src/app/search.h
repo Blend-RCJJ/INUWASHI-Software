@@ -542,9 +542,9 @@ void floorApp(App) {
     while (1) {
         floorSensor.colorJudgment();
         app.delay(period);
-        if (oldstate && millis() + 5000 > waitmillis) {
+        if (oldstate && millis() - 5000 < waitmillis) {
             app.delay(period);
-        } else if (oldstate && millis() + 5000 < waitmillis) {
+        } else if (oldstate) {
             oldstate = false;
         } else if (floorSensor.isBlue && !oldstate) {
             app.stop(rightWallApp);
