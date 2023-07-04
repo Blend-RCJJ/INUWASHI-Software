@@ -32,6 +32,7 @@ void rightWallApp(App) {
     static bool DFS = false;
     app.delay(WAIT);
     while (1) {
+        uart3.println("右壁探索中...");
         servo.velocity = SPEED;
         servo.suspend  = false;
         isRightWallApp = true;
@@ -438,6 +439,8 @@ void rightWallApp(App) {
 
 void leftWallApp(App) {
     while (1) {
+        uart3.println("左壁探索中...");
+        app.stop(rightWallApp);
         servo.velocity = SPEED;
         servo.suspend  = false;
         isRightWallApp = false;
@@ -557,6 +560,7 @@ void floorApp(App) {
                 app.delay(period);
             }
             servo.suspend = true;
+            servo.rescueKit(3, RIGHT);
             app.delay(5500);
             servo.suspend = false;
             app.restart(rightWallApp);
