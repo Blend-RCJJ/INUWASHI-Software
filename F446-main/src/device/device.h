@@ -24,7 +24,7 @@ void initI2C(void) {
 }
 
 void initDevice(void) {
-    buzzer.bootSound();
+    // buzzer.bootSound();
 
     led.bootIllumination();
 

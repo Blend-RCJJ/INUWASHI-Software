@@ -18,7 +18,6 @@ int robotStaus = 0;
 
 #define SPEED 50
 #define WAIT 500
-#define FORWARD 2500
 #define NORTH 0
 #define EAST 1
 #define SOUTH 2
