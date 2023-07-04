@@ -1,5 +1,5 @@
-#ifndef _CORE_H_
-#define _CORE_H_
+#ifndef _DEVICE_H_
+#define _DEVICE_H_
 
 #include <Arduino.h>
 #include <Wire.h>
