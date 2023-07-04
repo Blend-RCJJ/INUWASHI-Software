@@ -21,7 +21,9 @@ void sensorApp(App) {
         gyro.read();
         tof.read();
         tof.calc(gyro.deg);
-        // camera.read(); //FIXME: ポインタの設定違う
+
+        victim.read();
+
         loadcell.read();
         floorSensor.setFloorColor(floorSensor.white);
         app.delay(4);
@@ -71,21 +73,21 @@ void ledApp(App) {
             // }
             led.showAll();
     while (1) {
-        if (victim.isDetected) {
-            unsigned long color = victim.color[victim.id];
-            unsigned long victimTime = millis();
+        // if (victim.isDetected) {
+        //     unsigned long color = victim.color[victim.id];
+        //     unsigned long victimTime = millis();
 
-            while (victim.isDetected) {
-                int brightness = 255 - ((millis() - victimTime) / 4) % 255;
+        //     while (victim.isDetected) {
+        //         int brightness = 255 - ((millis() - victimTime) / 4) % 255;
 
-                for (int i = 0; i < 4; i++) {
-                    led.setColor(i, color);
-                    led.setBrightness(i, brightness);
-                }
-                led.showAll();
-                app.delay(15);
-            }
-        } else {
+        //         for (int i = 0; i < 4; i++) {
+        //             led.setColor(i, color);
+        //             led.setBrightness(i, brightness);
+        //         }
+        //         led.showAll();
+        //         app.delay(15);
+        //     }
+        // } else {
             // int amplitude = 100;
             // int period = 5000;
 
@@ -101,7 +103,7 @@ void ledApp(App) {
             //     led.setColorBar(loadcell.moment, led.white);
             // }
             // led.showAll();
-        }
+        // }
         app.delay(10);
     }
 }

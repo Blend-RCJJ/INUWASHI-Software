@@ -7,14 +7,8 @@
 extern RTOS_Kit app;
 
 void victimNotifyApp(App) {
-    static int id = 0;  // NOTE:　仮だから他の用途に使うな
-    static int victimID[6] = {VICTIM_H,   VICTIM_S,      VICTIM_U,
-                              VICTIM_RED, VICTIM_YELLOW, VICTIM_GREEN};
-
     int rescueKitNum = 0;
-
-    victim.isDetected = true;
-    victim.id = id;
+    int id = 0;
 
     switch (id) {
         case 0:
@@ -54,8 +48,6 @@ void victimNotifyApp(App) {
 
     id++;
     id %= 6;
-
-    victim.isDetected = false;
 
     while (1) {
         app.delay(1000);
