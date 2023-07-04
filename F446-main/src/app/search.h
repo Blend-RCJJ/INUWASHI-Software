@@ -17,7 +17,6 @@ extern RTOS_Kit app;
 #define SOUTH 2
 #define WEST 3
 
-const double radius                              = 26.5;
 bool virtualWall[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
 bool isRightWallApp                              = false;
 bool oldstatus                                   = false;
@@ -32,7 +31,7 @@ void rightWallApp(App) {
     static bool DFS = false;
     app.delay(WAIT);
     while (1) {
-        uart3.println("右壁探索中...");
+        // uart3.println("右壁探索中...");
         servo.velocity = SPEED;
         servo.suspend  = false;
         isRightWallApp = true;
@@ -439,7 +438,7 @@ void rightWallApp(App) {
 
 void leftWallApp(App) {
     while (1) {
-        uart3.println("左壁探索中...");
+        // uart3.println("左壁探索中...");
         app.stop(rightWallApp);
         servo.velocity = SPEED;
         servo.suspend  = false;

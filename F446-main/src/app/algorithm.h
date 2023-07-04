@@ -12,7 +12,6 @@ extern RTOS_Kit app;
 
 #define SPEED 100
 #define WAIT 500
-#define FORWARD 2500
 #define NORTH 0
 #define EAST 1
 #define SOUTH 2
@@ -46,7 +45,7 @@ void AstarApp(App) {  // NOTE 動いた
         if (millis() > FEEDBACK && servo.velocity == SPEED) {  // FIXME
             // 時間にしてるけどレスキューキットの残玉数で決めたい
             if (status) {
-                buzzer.bootSound();
+                // buzzer.bootSound();
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.stop(rightWallApp);
@@ -70,7 +69,7 @@ void AstarApp(App) {  // NOTE 動いた
                 servo.velocity = 0;
                 servo.suspend  = true;
                 app.stop(servoApp);
-                buzzer.matsukenSamba();
+                // buzzer.matsukenSamba();
                 app.delay(5000);
             }
 
@@ -200,6 +199,10 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
+        for(int i = 0; i < 8 ; i++){
+            uart3.print(tof.val[i]);
+            uart3.print("\t");
+        }
         app.delay(100);
     }
 }
@@ -212,15 +215,6 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
         virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] =
             true;  // 仮想壁
         app.delay(period);
-
-        if (isRightWallApp) {
-            junction();
-        } else if (!isRightWallApp &&
-                   JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN]) {
-            app.stop(leftWallApp);
-            app.start(rightWallApp);
-            isRightWallApp = true;
-        }
 
         if (!tof.isNotFront) {
             app.stop(rightWallApp);
@@ -236,11 +230,21 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
             servo.suspend = false;
             servo.angle += 90;
             app.delay(WAIT * 3);
+            isRightWallApp = false;
             app.start(leftWallApp);
             app.start(adjustmentApp);
-            isRightWallApp = true;
+            isRightWallApp = false;
             app.delay(period);
         }  // 前方+左右に壁があったら反転して左壁追従
+
+        if (isRightWallApp) {
+            junction();
+        } else if (!isRightWallApp &&
+                   JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN]) {
+            app.stop(leftWallApp);
+            app.start(rightWallApp);
+            isRightWallApp = true;
+        }
 
         if (checkPointX == location.x && checkPointY == location.y &&
             oldmillis + 10000 < millis()) {  // DFS開始地点に戻ってきたら反転
