@@ -10,7 +10,6 @@
 #include "./rtosLocation.h"
 #include "./rtosVictim.h"
 #include "./search.h"
-
 #include "./uartUI.h"
 
 extern RTOS_Kit app;
@@ -19,7 +18,6 @@ int robotStaus = 0;
 
 #define SPEED 50
 #define WAIT 500
-#define FORWARD 2500
 #define NORTH 0
 #define EAST 1
 #define SOUTH 2
@@ -41,20 +39,21 @@ void mainApp(App) {
                 app.start(adjustmentApp);
                 app.start(locationApp);
                 app.start(DepthFirstSearchApp);
-                    // app.start(floorApp);;
-                    status = false;
+                app.start(floorApp);
+                status = false;
             }
 
             runningWrite();
         } else {
             app.stop(rightWallApp);
+            app.stop(leftWallApp);
             app.stop(adjustmentApp);
             app.stop(locationApp);
             app.stop(DepthFirstSearchApp);
             app.stop(floorApp);
 
             servo.suspend = true;
-            status = true;
+            status        = true;
 
             settingWrite();
         }

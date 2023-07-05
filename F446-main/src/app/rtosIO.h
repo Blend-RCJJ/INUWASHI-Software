@@ -23,16 +23,16 @@ void sensorApp(App) {
         tof.calc(gyro.deg);
         // camera.read(); //FIXME: ポインタの設定違う
         loadcell.read();
-        floorSensor.setFloorColor(floorSensor.white);
-        app.delay(4);
+        floorSensor.setFloorColor(floorSensor.red);
+        app.delay(2);
         floorSensor.redVal = analogRead(PC0);
 
         floorSensor.setFloorColor(floorSensor.blank);
-        app.delay(3);
-        floorSensor.greenVal = analogRead(PC0);
+        app.delay(2);
+        floorSensor.blankVal = analogRead(PC0);
 
         floorSensor.setFloorColor(floorSensor.blue);
-        app.delay(4);
+        app.delay(2);
         floorSensor.blueVal = analogRead(PC0);
     }
 }
