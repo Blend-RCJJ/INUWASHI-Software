@@ -50,13 +50,12 @@ class VICTIM {
             case VICTIM_YELLOW:
                 returnColor = led.yellow;
                 break;
-            case VICTIM_GREEN:
+            default:
                 returnColor = led.green;
                 break;
-
-            default:
-                break;
         }
+
+        return returnColor;
     }
 
 } victim;

@@ -82,8 +82,8 @@ void ledApp(App) {
                 ledStatus = 1;
                 int brightness = 255;
                 for (int i = 0; i < 4; i++) {
-                    led.setColor(i, led.white);
                     led.setBrightness(i, brightness);
+                    led.setColor(i, led.white);
                 }
                 led.setColor(UI, led.blank);
                 led.showAll();
@@ -102,7 +102,7 @@ void ledApp(App) {
 
             for (int i = 0; i < 4; i++) {
                 led.setBrightness(i, brightness);
-                led.setColor(i, led.yellow);
+                led.setColor(i, victim.color(victimId));
             }
             led.showAll();
 
