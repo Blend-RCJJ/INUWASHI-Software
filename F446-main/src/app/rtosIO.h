@@ -63,47 +63,53 @@ double mapDouble(double x, double in_min, double in_max, double out_min,
 }
 
 void ledApp(App) {
+    int ledStatus = 0;
+    int victimId = 0;
     unsigned long startTime = millis();
-                for (int i = 0; i < 4; i++) {
-                led.setColor(i, led.cyan);
-                led.setBrightness(i, 100);
-            }
-            // if (loadcell.status != 0) {
-            //     led.setColorBar(loadcell.moment, led.white);
-            // }
-            led.showAll();
+    for (int i = 0; i < 4; i++) {
+        led.setColor(i, led.cyan);
+        led.setBrightness(i, 100);
+    }
+    led.showAll();
+
+    while (ui.toggle == 0) {
+        app.delay(10);
+    }
+
     while (1) {
-        // if (victim.isDetected) {
-        //     unsigned long color = victim.color[victim.id];
-        //     unsigned long victimTime = millis();
+        if (!victim.isDetected) {
+            if (ledStatus != 1) {
+                ledStatus = 1;
+                int brightness = 255;
+                for (int i = 0; i < 4; i++) {
+                    led.setColor(i, led.white);
+                    led.setBrightness(i, brightness);
+                }
+                led.setColor(UI, led.blank);
+                led.showAll();
+            }
+            victimId = 0;
+        } else {
+            ledStatus = 2;
+            static bool blink = true;
 
-        //     while (victim.isDetected) {
-        //         int brightness = 255 - ((millis() - victimTime) / 4) % 255;
+            int brightness;
+            if (blink) {
+                brightness = 255;
+            } else {
+                brightness = 0;
+            }
 
-        //         for (int i = 0; i < 4; i++) {
-        //             led.setColor(i, color);
-        //             led.setBrightness(i, brightness);
-        //         }
-        //         led.showAll();
-        //         app.delay(15);
-        //     }
-        // } else {
-            // int amplitude = 100;
-            // int period = 5000;
+            for (int i = 0; i < 4; i++) {
+                led.setBrightness(i, brightness);
+                led.setColor(i, led.yellow);
+            }
+            led.showAll();
 
-            // int brightness =
-            //     mapDouble(cos((millis() - startTime) * 2 * PI / period), -1, 1,
-            //               255 - amplitude, 255);
+            app.delay(500);
+            blink = !blink;
+        }
 
-            // for (int i = 0; i < 4; i++) {
-            //     led.setColor(i, led.cyan);
-            //     led.setBrightness(i, brightness);
-            // }
-            // if (loadcell.status != 0) {
-            //     led.setColorBar(loadcell.moment, led.white);
-            // }
-            // led.showAll();
-        // }
         app.delay(10);
     }
 }

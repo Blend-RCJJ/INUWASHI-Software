@@ -40,6 +40,7 @@ void mainApp(App) {
                 app.start(locationApp);
                 app.start(DepthFirstSearchApp);
                 app.start(floorApp);
+                app.start(victimNotifyApp);
                 status = false;
             }
 

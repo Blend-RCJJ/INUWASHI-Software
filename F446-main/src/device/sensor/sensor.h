@@ -25,6 +25,6 @@ FLOOR_SENSOR floorSensor;
 
 HardwareSerial uart2(PA3, PA2);
 HardwareSerial uart6(PC7, PC6);
-CAMERA camera[2] = {CAMERA(&uart2), CAMERA(&uart6)};  // 右左
+CAMERA camera[2] = {CAMERA(&uart6), CAMERA(&uart2)};  // 右左
 
 #endif
