@@ -40,7 +40,7 @@ void rightWallApp(App) {
         DFS            = false;
         app.delay(period);
 
-        if (tof.val[0] < 130) {  // 前に壁が来た時の処理
+        if (tof.val[0] < 125) {  // 前に壁が来た時の処理
             oldmillis      = millis();
             checkPointX    = location.x;
             checkPointY    = location.y;
@@ -51,7 +51,7 @@ void rightWallApp(App) {
             servo.suspend = false;
             servo.angle -= 90;
             servo.isCorrectingAngle = 0;
-            app.delay(WAIT * 2);
+            app.delay(WAIT * 4);
             servo.velocity = SPEED;
         }
         if (virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1] &&
@@ -70,11 +70,11 @@ void rightWallApp(App) {
                 servo.suspend = false;
                 servo.angle += 90;
                 servo.isCorrectingAngle = 0;
-                app.delay(WAIT * 2);
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                        abs(location.coordinateY - oldCoordinateY) < 280) {
-                    if (tof.val[0] < 130) {
+                    if (tof.val[0] < 125) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -98,11 +98,11 @@ void rightWallApp(App) {
                 servo.suspend = false;
                 servo.angle -= 90;
                 servo.isCorrectingAngle = 0;
-                app.delay(WAIT * 2);
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                        abs(location.coordinateY - oldCoordinateY) < 280) {
-                    if (tof.val[0] < 130) {
+                    if (tof.val[0] < 125) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -132,11 +132,11 @@ void rightWallApp(App) {
                 servo.suspend = false;
                 servo.angle += 90;
                 servo.isCorrectingAngle = 0;
-                app.delay(WAIT * 2);
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                        abs(location.coordinateY - oldCoordinateY) < 280) {
-                    if (tof.val[0] < 130) {
+                    if (tof.val[0] < 125) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -160,11 +160,11 @@ void rightWallApp(App) {
                 servo.suspend = false;
                 servo.angle -= 90;
                 servo.isCorrectingAngle = 0;
-                app.delay(WAIT * 2);
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                        abs(location.coordinateY - oldCoordinateY) < 280) {
-                    if (tof.val[0] < 130) {
+                    if (tof.val[0] < 125) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -194,11 +194,11 @@ void rightWallApp(App) {
                 servo.suspend = false;
                 servo.angle += 90;
                 servo.isCorrectingAngle = 0;
-                app.delay(WAIT * 2);
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                        abs(location.coordinateY - oldCoordinateY) < 280) {
-                    if (tof.val[0] < 130) {
+                    if (tof.val[0] < 125) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -222,11 +222,11 @@ void rightWallApp(App) {
                 servo.suspend = false;
                 servo.angle -= 90;
                 servo.isCorrectingAngle = 0;
-                app.delay(WAIT * 2);
+                app.delay(WAIT * 4);
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                        abs(location.coordinateY - oldCoordinateY) < 280) {
-                    if (tof.val[0] < 130) {
+                    if (tof.val[0] < 125) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -260,7 +260,7 @@ void rightWallApp(App) {
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                        abs(location.coordinateY - oldCoordinateY) < 280) {
-                    if (tof.val[0] < 130) {
+                    if (tof.val[0] < 125) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -289,7 +289,7 @@ void rightWallApp(App) {
                 servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                        abs(location.coordinateY - oldCoordinateY) < 280) {
-                    if (tof.val[0] < 130) {
+                    if (tof.val[0] < 125) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -421,11 +421,11 @@ void rightWallApp(App) {
                 servo.isCorrectingAngle = 0;
                 servo.velocity          = 0;
                 servo.suspend           = true;
-                app.delay(WAIT * 2);
+                app.delay(WAIT * 4);
                 servo.suspend = false;
                 while (abs(location.coordinateX - oldCoordinateX) < 250 &&
                        abs(location.coordinateY - oldCoordinateY) < 250) {
-                    if (tof.val[0] < 130) {
+                    if (tof.val[0] < 125) {
                         break;
                     }
                     servo.velocity = SPEED;
@@ -467,7 +467,7 @@ void leftWallApp(App) {
             }  // 次のタイルまで前進
         }
 
-        if (tof.val[0] < 130) {  // 前に壁が来た時の処理
+        if (tof.val[0] < 120) {  // 前に壁が来た時の処理
             servo.velocity = 0;
             servo.suspend  = true;
             app.delay(WAIT);
@@ -537,15 +537,34 @@ void adjustmentApp(App) {
 }
 
 void floorApp(App) {
-    static bool oldstate  = false;
-    static int waitmillis = 0;
+    static bool oldstate    = false;
+    static int waitmillis   = 0;
+    static int blackCounter = 0;
+    static int blueCounter  = 0;
     while (1) {
         floorSensor.colorJudgment();
+        uart3.print(blueCounter);
+        uart3.print("\t");
+        uart3.print(blackCounter);
+        uart3.println("\t");
         app.delay(period);
-
         if (floorSensor.isBlack) {
+            blackCounter++;
+        }
+
+        if (floorSensor.isBlue) {
+            blueCounter++;
+        }
+
+        if (floorSensor.isWhite) {
+            blackCounter = 0;
+            blueCounter = 0;
+        }
+
+        if (floorSensor.isBlack && blackCounter > 10) {
             servo.suspend = true;
             app.stop(rightWallApp);
+            app.stop(leftWallApp);
             app.delay(period);
             servo.suspend  = false;
             servo.velocity = -SPEED;
@@ -557,7 +576,7 @@ void floorApp(App) {
             oldCoordinateY = location.coordinateY;
             while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                    abs(location.coordinateY - oldCoordinateY) < 280) {
-                if (tof.val[0] < 140) {
+                if (tof.val[0] < 125) {
                     break;
                 }
                 servo.velocity = SPEED;
@@ -566,20 +585,28 @@ void floorApp(App) {
             servo.suspend = true;
             app.delay(500);
             servo.suspend = false;
-            app.restart(rightWallApp);
+            if (isRightWallApp) {
+                app.start(rightWallApp);
+                blackCounter = 0;
+            } else {
+                app.start(leftWallApp);
+                blackCounter = 0;
+            }
+            blackCounter = 0;
         }
 
         if (oldstate && millis() - 5000 < waitmillis) {
             app.delay(period);
         } else if (oldstate) {
             oldstate = false;
-        } else if (floorSensor.isBlue && !oldstate) {
+        } else if (floorSensor.isBlue && !oldstate && blueCounter > 10) {
             app.stop(rightWallApp);
+            app.stop(leftWallApp);
             oldCoordinateX = location.coordinateX;
             oldCoordinateY = location.coordinateY;
             while (abs(location.coordinateX - oldCoordinateX) < 150 &&
                    abs(location.coordinateY - oldCoordinateY) < 150) {
-                if (tof.val[0] < 140) {
+                if (tof.val[0] < 125) {
                     break;
                 }
                 servo.velocity = SPEED;
@@ -588,9 +615,17 @@ void floorApp(App) {
             servo.suspend = true;
             app.delay(5500);
             servo.suspend = false;
-            app.restart(rightWallApp);
-            waitmillis = millis();
-            oldstate   = true;
+            if (isRightWallApp) {
+                app.start(rightWallApp);
+                waitmillis  = millis();
+                oldstate    = true;
+                blueCounter = 0;
+            } else {
+                app.start(leftWallApp);
+                waitmillis  = millis();
+                oldstate    = true;
+                blueCounter = 0;
+            }
         }
     }
 }
