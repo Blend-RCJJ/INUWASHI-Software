@@ -30,15 +30,14 @@ static bool JCT[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
 
 void AstarApp(App) {  // NOTE 動いた
     app.delay(WAIT);
-    int Ndistance       = MAX_DISTANCE;
-    int Edistance       = MAX_DISTANCE;
-    int Sdistance       = MAX_DISTANCE;
-    int Wdistance       = MAX_DISTANCE;  // 値の初期化(最大値に設定)
+    int Ndistance = MAX_DISTANCE;
+    int Edistance = MAX_DISTANCE;
+    int Sdistance = MAX_DISTANCE;
+    int Wdistance = MAX_DISTANCE;  // 値の初期化(最大値に設定)
     bool virtualWall[4] = {false};
-    bool status         = true;
+    bool status = true;
     app.delay(WAIT);
-    const int initialWall[4] = {(tof.isNorthWall), (tof.isEastWall),
-                                (tof.isSouthWall),
+    const int initialWall[4] = {(tof.isNorthWall), (tof.isEastWall), (tof.isSouthWall),
                                 (tof.isWestWall)};  //(0,0)の壁の状態を記憶
     while (1) {
         app.delay(period);
@@ -47,53 +46,47 @@ void AstarApp(App) {  // NOTE 動いた
             if (status) {
                 // buzzer.bootSound();
                 servo.velocity = 0;
-                servo.suspend  = true;
+                servo.suspend = true;
                 app.stop(rightWallApp);
                 app.stop(leftWallApp);
                 app.stop(DepthFirstSearchApp);
                 app.delay(WAIT);
                 servo.suspend = false;
-                status        = false;
+                status = false;
             }
             app.delay(period);
         MEASURE_DISTANCE:  // 最短経路の算出
             oldCoordinateX = location.coordinateX;
             oldCoordinateY = location.coordinateY;
-            if ((-1 <= location.x && location.x <= 1) &&
-                (-1 <= location.y && location.y <= 1) &&
-                initialWall[NORTH] == tof.isNorthWall &&
-                initialWall[EAST] == tof.isEastWall &&
+            if ((-1 <= location.x && location.x <= 1) && (-1 <= location.y && location.y <= 1) &&
+                initialWall[NORTH] == tof.isNorthWall && initialWall[EAST] == tof.isEastWall &&
                 initialWall[SOUTH] == tof.isSouthWall &&
                 initialWall[WEST] ==
                     tof.isWestWall) {  //(0,0)かつスタート時の壁情報と一致+-1まで許容
                 servo.velocity = 0;
-                servo.suspend  = true;
+                servo.suspend = true;
                 app.stop(servoApp);
                 // buzzer.matsukenSamba();
                 app.delay(5000);
             }
 
             if (!tof.isNorthWall && !virtualWall[NORTH]) {
-                Ndistance = location.x * location.x +
-                            (location.y + 1) * (location.y + 1);
+                Ndistance = location.x * location.x + (location.y + 1) * (location.y + 1);
             } else {
                 Ndistance = MAX_DISTANCE;
             }
             if (!tof.isEastWall && !virtualWall[EAST]) {
-                Edistance = (location.x + 1) * (location.x + 1) +
-                            location.y * location.y;
+                Edistance = (location.x + 1) * (location.x + 1) + location.y * location.y;
             } else {
                 Edistance = MAX_DISTANCE;
             }
             if (!tof.isSouthWall && !virtualWall[SOUTH]) {
-                Sdistance = location.x * location.x +
-                            (location.y - 1) * (location.y - 1);
+                Sdistance = location.x * location.x + (location.y - 1) * (location.y - 1);
             } else {
                 Sdistance = MAX_DISTANCE;
             }
             if (!tof.isWestWall && !virtualWall[WEST]) {
-                Wdistance = (location.x - 1) * (location.x - 1) +
-                            location.y * location.y;
+                Wdistance = (location.x - 1) * (location.x - 1) + location.y * location.y;
             } else {
                 Wdistance = MAX_DISTANCE;
             }
@@ -103,10 +96,9 @@ void AstarApp(App) {  // NOTE 動いた
                 }
             }
         MOVE_COORDINATE:  // NOTE 1マスの定義できた。
-            if (Ndistance < Edistance && Ndistance < Sdistance &&
-                Ndistance < Wdistance) {
+            if (Ndistance < Edistance && Ndistance < Sdistance && Ndistance < Wdistance) {
                 servo.isCorrectingAngle = 0;
-                servo.angle             = 0 + servo.isCorrectingAngle;
+                servo.angle = 0 + servo.isCorrectingAngle;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 120) {
@@ -119,16 +111,21 @@ void AstarApp(App) {  // NOTE 動いた
                     app.delay(period);
                 }
                 servo.velocity = 0;
-                servo.suspend  = true;
+                servo.suspend = true;
                 app.delay(WAIT);
+<<<<<<< HEAD
                 servo.suspend      = false;
                 virtualWall[SOUTH] = true;  // 後方に仮想壁
+=======
+                servo.suspend = false;
+                virtualWall[2] = true;  // 後方に仮想壁
+>>>>>>> develop
                 goto MEASURE_DISTANCE;
 
             } else if (Sdistance < Edistance && Sdistance < Wdistance) {
                 servo.isCorrectingAngle = 0;
-                servo.angle             = 180 + servo.isCorrectingAngle;
-                servo.velocity          = SPEED;
+                servo.angle = 180 + servo.isCorrectingAngle;
+                servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 120) {
@@ -141,16 +138,21 @@ void AstarApp(App) {  // NOTE 動いた
                     app.delay(period);
                 }
                 servo.velocity = 0;
-                servo.suspend  = true;
+                servo.suspend = true;
                 app.delay(WAIT);
+<<<<<<< HEAD
                 servo.suspend      = false;
                 virtualWall[NORTH] = true;
+=======
+                servo.suspend = false;
+                virtualWall[0] = true;
+>>>>>>> develop
                 goto MEASURE_DISTANCE;
 
             } else if (Edistance < Wdistance) {
                 servo.isCorrectingAngle = 0;
-                servo.angle             = 90 + servo.isCorrectingAngle;
-                servo.velocity          = SPEED;
+                servo.angle = 90 + servo.isCorrectingAngle;
+                servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 120) {
@@ -163,16 +165,21 @@ void AstarApp(App) {  // NOTE 動いた
                     app.delay(period);
                 }
                 servo.velocity = 0;
-                servo.suspend  = true;
+                servo.suspend = true;
                 app.delay(WAIT);
+<<<<<<< HEAD
                 servo.suspend     = false;
                 virtualWall[WEST] = true;
+=======
+                servo.suspend = false;
+                virtualWall[3] = true;
+>>>>>>> develop
                 goto MEASURE_DISTANCE;
 
             } else {
                 servo.isCorrectingAngle = 0;
-                servo.angle             = 270 + servo.isCorrectingAngle;
-                servo.velocity          = SPEED;
+                servo.angle = 270 + servo.isCorrectingAngle;
+                servo.velocity = SPEED;
                 while (abs(location.coordinateX - oldCoordinateX) < 300 &&
                        abs(location.coordinateY - oldCoordinateY) < 300) {
                     if (tof.val[0] < 120) {
@@ -185,10 +192,15 @@ void AstarApp(App) {  // NOTE 動いた
                     app.delay(period);
                 }
                 servo.velocity = 0;
-                servo.suspend  = true;
+                servo.suspend = true;
                 app.delay(WAIT);
+<<<<<<< HEAD
                 servo.suspend     = false;
                 virtualWall[EAST] = true;
+=======
+                servo.suspend = false;
+                virtualWall[1] = true;
+>>>>>>> develop
                 goto MEASURE_DISTANCE;
             }
         } else {
@@ -199,10 +211,25 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
+<<<<<<< HEAD
         for(int i = 0; i < 8 ; i++){
             uart3.print(tof.val[i]);
             uart3.print("\t");
         }
+=======
+        // uart1.print(floorSensor.redVal);
+        // uart1.print("\t");
+        // uart1.print(floorSensor.greenVal);
+        // uart1.print("\t");
+        // uart1.print(floorSensor.blueVal);
+        // uart1.println("\t");
+        uart3.print("LEFT:");
+        uart3.write(camera[1].data);
+        uart3.print("\t");
+        uart3.print("RIGHT:");
+        uart3.write(camera[0].data);
+        uart3.print("\n");
+>>>>>>> develop
         app.delay(100);
     }
 }
@@ -212,13 +239,25 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
     static bool turn = false;
     app.delay(WAIT);
     while (1) {
-        virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] =
-            true;  // 仮想壁
+        virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;  // 仮想壁
         app.delay(period);
+
+<<<<<<< HEAD
+        if (!tof.isNotFront) {
+            app.stop(rightWallApp);
+            app.stop(adjustmentApp);
+=======
+        if (!isRightWallApp && JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] &&
+            (tof.val[4] > 230 || tof.val[12] > 230)) {
+            app.stop(leftWallApp);
+            app.start(rightWallApp);
+        }
 
         if (!tof.isNotFront) {
             app.stop(rightWallApp);
             app.stop(adjustmentApp);
+            isRightWallApp = false;
+>>>>>>> develop
             servo.suspend = true;
             app.delay(WAIT);
             servo.suspend = false;
@@ -248,11 +287,11 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
 
         if (checkPointX == location.x && checkPointY == location.y &&
             oldmillis + 10000 < millis()) {  // DFS開始地点に戻ってきたら反転
-            oldmillis      = millis();
-            checkPointX    = MAP_ORIGIN;
-            checkPointY    = MAP_ORIGIN;
+            oldmillis = millis();
+            checkPointX = MAP_ORIGIN;
+            checkPointY = MAP_ORIGIN;
             servo.velocity = 0;
-            servo.suspend  = true;
+            servo.suspend = true;
             app.delay(WAIT);
             servo.suspend = false;
             app.stop(rightWallApp);
@@ -264,8 +303,47 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
 }
 
 void junction(void) {
+<<<<<<< HEAD
     if (tof.val[0] > 450 && (tof.isNotRight || tof.isNotLeft)) {
         JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
+=======
+    if (gyro.North) {
+        if ((!location.mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1].isPassed &&
+             tof.val[0] > 300) &&
+            ((!location.mapData[location.x + MAP_ORIGIN + 1][location.y + MAP_ORIGIN].isPassed &&
+              !tof.isEastWall) ||
+             (!location.mapData[location.x + MAP_ORIGIN - 1][location.y + MAP_ORIGIN].isPassed &&
+              !tof.isWestWall))) {
+            JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
+        }
+    } else if (gyro.East) {
+        if ((!location.mapData[location.x + MAP_ORIGIN + 1][location.y + MAP_ORIGIN].isPassed &&
+             tof.val[0] > 300) &&
+            ((!location.mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1].isPassed &&
+              !tof.isNorthWall) ||
+             (!location.mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN - 1].isPassed &&
+              !tof.isSouthWall))) {
+            JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
+        }
+    } else if (gyro.South) {
+        if ((!location.mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN - 1].isPassed &&
+             tof.val[0] > 300) &&
+            ((!location.mapData[location.x + MAP_ORIGIN + 1][location.y + MAP_ORIGIN].isPassed &&
+              !tof.isEastWall) ||
+             (!location.mapData[location.x + MAP_ORIGIN - 1][location.y + MAP_ORIGIN].isPassed &&
+              !tof.isWestWall))) {
+            JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
+        }
+    } else if (gyro.West) {
+        if ((!location.mapData[location.x + MAP_ORIGIN - 1][location.y + MAP_ORIGIN].isPassed &&
+             tof.val[0] > 300) &&
+            ((!location.mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1].isPassed &&
+              !tof.isNorthWall) ||
+             (!location.mapData[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN - 1].isPassed &&
+              !tof.isSouthWall))) {
+            JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN] = true;
+        }
+>>>>>>> develop
     }
 }
 
