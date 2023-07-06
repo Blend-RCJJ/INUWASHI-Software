@@ -13,7 +13,7 @@ LED::LED(Adafruit_NeoPixel* top, Adafruit_NeoPixel* right,
     // init
     for (int i = 0; i < 4; i++) {
         ptrArr[i]->begin();
-        ptrArr[i]->setBrightness(maxBrightness);
+        ptrArr[i]->setBrightness(normalBrightness);
         ptrArr[i]->clear();
         ptrArr[i]->show();
     }
@@ -82,7 +82,11 @@ unsigned long LED::colorHSV(int hue, int saturation, int value) {
 }
 
 void LED::setBrightness(int led, int brightness) {
-    ptrArr[led]->setBrightness((int)(brightness * maxBrightness / 255.0));
+    ptrArr[led]->setBrightness((int)(brightness * normalBrightness / 255.0));
+}
+
+void LED::setBrightnessRaw(int led, int brightness) {
+    ptrArr[led]->setBrightness(brightness);
 }
 
 void LED::showAll(void) {
@@ -113,5 +117,24 @@ void LED::setColorBar(int position, unsigned long color) {
     for (int i = 0; i < barWidth / 2 + 1; i++) {
         ptrArr[UI]->setPixelColor(nomalizedPosition + i, color);
         ptrArr[UI]->setPixelColor(nomalizedPosition - i, color);
+    }
+}
+
+void LED::setGlowColor(void) {
+    for (int i = 0; i < 4; i++) {
+        setBrightnessRaw(i, maxBrightness);
+    }
+
+    setColor(LEFT, white);
+    setColor(RIGHT, white);
+    setColor(UI, blank);
+    setColor(TOP, lowWhite);
+    
+    for (int i = 8; i < 13; i++) {
+        ptrArr[TOP]->setPixelColor(i, white);
+    }
+
+    for (int i = 20; i < 25; i++) {
+        ptrArr[TOP]->setPixelColor(i, white);
     }
 }
