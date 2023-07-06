@@ -98,6 +98,10 @@ void LED::showAll(void) {
 void LED::show(int led) {
     if (disableAll || *(disablePtr[led])) return;
 
+    if (led == LEFT || led == RIGHT) {
+        setColor(led, blank);
+    }
+
     ptrArr[led]->show();
 }
 
@@ -122,14 +126,14 @@ void LED::setColorBar(int position, unsigned long color) {
 
 void LED::setGlowColor(void) {
     for (int i = 0; i < 4; i++) {
-        setBrightnessRaw(i, maxBrightness);
+        setBrightnessRaw(i, normalBrightness);
     }
 
-    setColor(LEFT, white);
-    setColor(RIGHT, white);
+    setColor(LEFT, blank);
+    setColor(RIGHT, blank);
     setColor(UI, blank);
     setColor(TOP, lowWhite);
-    
+
     for (int i = 8; i < 13; i++) {
         ptrArr[TOP]->setPixelColor(i, white);
     }

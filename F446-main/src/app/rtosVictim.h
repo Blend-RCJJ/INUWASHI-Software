@@ -22,13 +22,13 @@ void victimNotifyApp(App) {
         while (1) {
             if (victim.isRightOrLeft != 0 && ui.toggle == true) {
                 if (victim.place[location.x + 20][location.y + 20] == false) {
-                    if (victim.isRightOrLeft == RIGHT && tof.val[4] < 130 &&
-                        tof.val[5] < 130) {
+                    if (victim.isRightOrLeft == RIGHT && tof.val[4] < 140 &&
+                        tof.val[5] < 200) {
                         break;
                     }
 
-                    if (victim.isRightOrLeft == LEFT && tof.val[12] < 130 &&
-                        tof.val[11] < 130) {
+                    if (victim.isRightOrLeft == LEFT && tof.val[12] < 140 &&
+                        tof.val[11] < 200) {
                         break;
                     }
                 }
@@ -108,13 +108,13 @@ void victimNotifyApp(App) {
 
         victim.isDetected = false;
 
-        app.start(DepthFirstSearchApp);
-        app.start(floorApp);
-        if (isRightWallApp) {
-            app.start(rightWallApp);
-        } else {
-            app.start(leftWallApp);
-        }
+        app.restart(DepthFirstSearchApp);
+        app.restart(floorApp);
+        // if (isRightWallApp) {
+        app.start(rightWallApp);
+        // } else {
+        //     app.start(leftWallApp);
+        // }
     }
 }
 

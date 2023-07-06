@@ -599,7 +599,7 @@ void floorApp(App) {
             blackCounter = 0;
         }
 
-        if (oldstate && millis() - 5000 < waitmillis) {
+        if (oldstate && millis() - 3500 < waitmillis) {
             app.delay(period);
         } else if (oldstate) {
             oldstate = false;

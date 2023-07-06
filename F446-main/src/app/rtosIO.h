@@ -68,7 +68,7 @@ void ledApp(App) {
     unsigned long startTime = millis();
     for (int i = 0; i < 4; i++) {
         led.setColor(i, led.cyan);
-        led.setBrightness(i, 100);
+        led.setBrightness(i, 255);
     }
     led.showAll();
 
