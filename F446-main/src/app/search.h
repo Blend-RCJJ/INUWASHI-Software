@@ -16,6 +16,7 @@ extern RTOS_Kit app;
 #define EAST 1
 #define SOUTH 2
 #define WEST 3
+#define RETURN_TIME 300000  // 帰還開始時間(ms)
 
 bool virtualWall[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
 bool isRightWallApp                              = false;
@@ -26,6 +27,8 @@ int checkPointY                                  = MAP_ORIGIN;
 static double oldCoordinateX                     = 0;
 static double oldCoordinateY                     = 0;
 static bool locationIsChanged                    = false;
+
+void AstarApp(App);
 
 void rightWallApp(App) {
     static bool DFS = false;
@@ -558,13 +561,14 @@ void floorApp(App) {
 
         if (floorSensor.isWhite) {
             blackCounter = 0;
-            blueCounter = 0;
+            blueCounter  = 0;
         }
 
         if (floorSensor.isBlack && blackCounter > 10) {
             servo.suspend = true;
             app.stop(rightWallApp);
             app.stop(leftWallApp);
+            app.stop(AstarApp);
             app.delay(period);
             servo.suspend  = false;
             servo.velocity = -SPEED;
@@ -585,7 +589,9 @@ void floorApp(App) {
             servo.suspend = true;
             app.delay(500);
             servo.suspend = false;
-            if (isRightWallApp) {
+            if (millis() > RETURN_TIME || servo.sumOfRescueKit >= 12) {
+                app.start(AstarApp);
+            } else if (isRightWallApp) {
                 app.start(rightWallApp);
                 blackCounter = 0;
             } else {
@@ -602,6 +608,7 @@ void floorApp(App) {
         } else if (floorSensor.isBlue && !oldstate && blueCounter > 10) {
             app.stop(rightWallApp);
             app.stop(leftWallApp);
+            app.stop(AstarApp);
             oldCoordinateX = location.coordinateX;
             oldCoordinateY = location.coordinateY;
             while (abs(location.coordinateX - oldCoordinateX) < 150 &&
@@ -615,7 +622,12 @@ void floorApp(App) {
             servo.suspend = true;
             app.delay(5500);
             servo.suspend = false;
-            if (isRightWallApp) {
+            if (millis() > RETURN_TIME || servo.sumOfRescueKit >= 12) {
+                app.start(AstarApp);
+                waitmillis  = millis();
+                oldstate    = true;
+                blueCounter = 0;
+            } else if (isRightWallApp) {
                 app.start(rightWallApp);
                 waitmillis  = millis();
                 oldstate    = true;
