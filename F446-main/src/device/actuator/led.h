@@ -50,7 +50,7 @@ class LED {
     unsigned long cyan = colorHSV(140, 255, 255);
     unsigned long blue = colorHSV(180, 255, 255);
     unsigned long white = colorRGB(255, 255, 255);
-    unsigned long lowWhite = colorRGB(100, 100, 100);
+    unsigned long lowWhite = colorRGB(255, 255, 255);
     unsigned long blank = colorHSV(0, 0, 0);
 
    private:
