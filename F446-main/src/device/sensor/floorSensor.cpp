@@ -30,13 +30,13 @@ void FLOOR_SENSOR::colorJudgment(void) {
         isWhite = true;
         isBlue  = false;
         isBlack = false;
-    } else if (redVal < 200 && (blankVal > 100 && blankVal < 300) &&
+    } else if (redVal < 200 && (blankVal > 80 && blankVal < 700) &&
                blueVal < 200) {
         isBlue  = true;
         isWhite = false;
         isBlack = false;
         // 青
-    } else if (redVal > 200 && blankVal > 400 && blueVal > 300) {
+    } else if (redVal > 180 && blankVal > 400 && blueVal > 300) {
         isBlack = true;
         isWhite = false;
         isBlue  = false;
