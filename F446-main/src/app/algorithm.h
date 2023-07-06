@@ -200,12 +200,12 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        // uart3.print(floorSensor.redVal);
-        // uart3.print("\t");
-        // uart3.print(floorSensor.blankVal);
-        // uart3.print("\t");
-        // uart3.print(floorSensor.blueVal);
-        // uart3.println("\t");
+        uart3.print(floorSensor.redVal);
+        uart3.print("\t");
+        uart3.print(floorSensor.blankVal);
+        uart3.print("\t");
+        uart3.print(floorSensor.blueVal);
+        uart3.println("\t");
         app.delay(100);
         // uart3.print("LEFT:");
         // uart3.write(camera[1].data);
@@ -226,26 +226,26 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
             true;  // 仮想壁
         app.delay(period);
 
-        if (!tof.isNotFront) {
-            app.stop(rightWallApp);
-            app.stop(adjustmentApp);
-            servo.suspend = true;
-            app.delay(WAIT);
-            servo.suspend = false;
-            servo.angle += 90;
-            servo.velocity = 0;
-            app.delay(WAIT * 2);
-            servo.suspend = true;
-            app.delay(WAIT);
-            servo.suspend = false;
-            servo.angle += 90;
-            app.delay(WAIT * 3);
-            isRightWallApp = false;
-            app.start(leftWallApp);
-            app.start(adjustmentApp);
-            isRightWallApp = false;
-            app.delay(period);
-        }  // 前方+左右に壁があったら反転して左壁追従
+        // if (!tof.isNotFront) {
+        //     app.stop(rightWallApp);
+        //     app.stop(adjustmentApp);
+        //     servo.suspend = true;
+        //     app.delay(WAIT);
+        //     servo.suspend = false;
+        //     servo.angle += 90;
+        //     servo.velocity = 0;
+        //     app.delay(WAIT * 2);
+        //     servo.suspend = true;
+        //     app.delay(WAIT);
+        //     servo.suspend = false;
+        //     servo.angle += 90;
+        //     app.delay(WAIT * 3);
+        //     isRightWallApp = false;
+        //     app.start(leftWallApp);
+        //     app.start(adjustmentApp);
+        //     isRightWallApp = false;
+        //     app.delay(period);
+        // }  // 前方+左右に壁があったら反転して左壁追従
 
         if (!isRightWallApp &&
             JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN]) {
