@@ -98,7 +98,9 @@ void LED::showAll(void) {
 void LED::show(int led) {
     if (disableAll || *(disablePtr[led])) return;
 
-    if (led == LEFT || led == RIGHT) return;
+    if (led == LEFT || led == RIGHT) {
+        setColor(led, blank);
+    }
 
     ptrArr[led]->show();
 }
