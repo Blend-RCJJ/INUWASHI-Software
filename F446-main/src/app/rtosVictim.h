@@ -19,11 +19,11 @@ void victimNotifyApp(App) {
         while (1) {
             if (victim.isRightOrLeft != 0 && ui.toggle == true) {
                 if (victim.place[location.x + 20][location.y + 20] == false) {
-                    if (victim.isRightOrLeft == RIGHT && tof.val[4] < 130) {
+                    if (victim.isRightOrLeft == RIGHT && tof.val[4] < 130  && tof.val[5] < 130) {
                         break;
                     }
 
-                    if (victim.isRightOrLeft == LEFT && tof.val[12] < 130) {
+                    if (victim.isRightOrLeft == LEFT && tof.val[12] < 130 && tof.val[11] < 130) {
                         break;
                     }
                 }

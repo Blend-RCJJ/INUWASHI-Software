@@ -16,7 +16,8 @@ class LED {
     Adafruit_NeoPixel* ptrArr[4];
 
     // settings:
-    const int maxBrightness = 100;
+    const int maxBrightness = 255;
+    const int normalBrightness = 100;
     const bool disableAll = false;
 
     bool disableUI = false;
@@ -34,7 +35,9 @@ class LED {
 
     void setColor(int led, int r, int g, int b);
     void setColor(int led, unsigned long color);
+    void setGlowColor();
     void setBrightness(int led, int brightness);
+    void setBrightnessRaw(int led, int brightness);
 
     void showAll(void);
     void show(int led);
@@ -46,7 +49,8 @@ class LED {
     unsigned long green = colorHSV(90, 255, 255);
     unsigned long cyan = colorHSV(140, 255, 255);
     unsigned long blue = colorHSV(180, 255, 255);
-    unsigned long white = colorHSV(255, 0, 255);
+    unsigned long white = colorRGB(255, 255, 255);
+    unsigned long lowWhite = colorRGB(100, 100, 100);
     unsigned long blank = colorHSV(0, 0, 0);
 
    private:

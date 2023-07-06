@@ -80,12 +80,7 @@ void ledApp(App) {
         if (!victim.isDetected) {
             if (ledStatus != 1) {
                 ledStatus = 1;
-                int brightness = 255;
-                for (int i = 0; i < 4; i++) {
-                    led.setBrightness(i, brightness);
-                    led.setColor(i, led.white);
-                }
-                led.setColor(UI, led.blank);
+                led.setGlowColor();
                 led.showAll();
             }
             victimId = 0;
