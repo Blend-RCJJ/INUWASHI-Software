@@ -17,7 +17,7 @@ extern RTOS_Kit app;
 #define SOUTH 2
 #define WEST 3
 #define MAX_DISTANCE 800
-#define FEEDBACK 180000  // 帰還開始時間(ms)
+#define RETURN_TIME 300000  // 帰還開始時間(ms)
 
 void rightWallApp(App);
 void leftWallApp(App);
@@ -42,8 +42,8 @@ void AstarApp(App) {  // NOTE 動いた
                                 (tof.isWestWall)};  //(0,0)の壁の状態を記憶
     while (1) {
         app.delay(period);
-        if (millis() > FEEDBACK && servo.velocity == SPEED) {  // FIXME
-            // 時間にしてるけどレスキューキットの残玉数で決めたい
+        if ((millis() > RETURN_TIME || servo.sumOfRescueKit >= 12) &&
+            servo.velocity == SPEED) {  // NOTE 定義できた
             if (status) {
                 buzzer.bootSound();
                 servo.velocity = 0;
@@ -51,6 +51,7 @@ void AstarApp(App) {  // NOTE 動いた
                 app.stop(rightWallApp);
                 app.stop(leftWallApp);
                 app.stop(DepthFirstSearchApp);
+                app.stop(victimNotifyApp);
                 app.delay(WAIT);
                 servo.suspend = false;
                 status        = false;
