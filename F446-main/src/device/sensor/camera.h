@@ -12,7 +12,7 @@
 #define VICTIM_S 'S'
 #define VICTIM_RED 'R'
 #define VICTIM_GREEN 'G'
-#define VICTIM_YELLOW 'B'
+#define VICTIM_YELLOW 'Y'
 #define NO_VICTIM 'N'
 
 class CAMERA {

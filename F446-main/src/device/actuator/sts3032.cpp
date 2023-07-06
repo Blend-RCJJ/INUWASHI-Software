@@ -95,7 +95,7 @@ void STS3032::stop(void) {
 void STS3032::rescueKit(int num, int position) {
     sumOfRescueKit += num;
     for (int i = 0; i < num; i++) {
-        if (position == 1) {  // 左
+        if (position == 2) {  // 左
             directDrive(4, 100);
             delay(300);
             directDrive(4, 0);
