@@ -13,6 +13,8 @@ extern void leftWallApp(App);
 extern void DepthFirstSearchApp(App);
 extern void floorApp(App);
 
+#define SPEED 100
+
 void victimNotifyApp(App) {
     while (1) {
         int rescueKitNum = 0;
@@ -20,11 +22,13 @@ void victimNotifyApp(App) {
         while (1) {
             if (victim.isRightOrLeft != 0 && ui.toggle == true) {
                 if (victim.place[location.x + 20][location.y + 20] == false) {
-                    if (victim.isRightOrLeft == RIGHT && tof.val[4] < 130  && tof.val[5] < 130) {
+                    if (victim.isRightOrLeft == RIGHT && tof.val[4] < 130 &&
+                        tof.val[5] < 130) {
                         break;
                     }
 
-                    if (victim.isRightOrLeft == LEFT && tof.val[12] < 130 && tof.val[11] < 130) {
+                    if (victim.isRightOrLeft == LEFT && tof.val[12] < 130 &&
+                        tof.val[11] < 130) {
                         break;
                     }
                 }
@@ -39,10 +43,10 @@ void victimNotifyApp(App) {
         app.stop(floorApp);
 
         victim.place[location.x + 20][location.y + 20] = true;
-        victim.isDetected = true;
+        victim.isDetected                              = true;
 
         servo.velocity = 0;
-        servo.suspend = true;
+        servo.suspend  = true;
 
         switch (victim.id) {
             case VICTIM_H:
@@ -99,16 +103,17 @@ void victimNotifyApp(App) {
         servo.rescueKit(rescueKitNum, victim.isRightOrLeft);
         app.delay(100);
 
-        servo.suspend = false;
+        servo.suspend  = false;
+        servo.velocity = SPEED;
 
         victim.isDetected = false;
 
-        app.restart(DepthFirstSearchApp);
-        app.restart(floorApp);
+        app.start(DepthFirstSearchApp);
+        app.start(floorApp);
         if (isRightWallApp) {
-            app.restart(rightWallApp);
+            app.start(rightWallApp);
         } else {
-            app.restart(leftWallApp);
+            app.start(leftWallApp);
         }
     }
 }
