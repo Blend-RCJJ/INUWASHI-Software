@@ -14,6 +14,7 @@ class FLOOR_SENSOR {
     int redVal;
     int blankVal;
     int blueVal;
+    int tof_of_bottom;
 
     unsigned long colorRGB(int red, int green, int blue);
     unsigned long colorHSV(int hue, int saturation, int brightness);
@@ -32,10 +33,8 @@ class FLOOR_SENSOR {
 
     void init(void);
 
-    void read(void) {
-        redVal   = analogRead(PC0);
-        blankVal = analogRead(PC0);
-        blueVal  = analogRead(PC0);
+    void tof_of_bottom_read(void) {
+        tof_of_bottom = analogRead(PB8);
         // FIXME: 未実装
     };
 

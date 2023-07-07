@@ -206,8 +206,7 @@ void monitorApp(App) {
     //    }
     //    uart1.println("\t");
 
-        uart3.println(floorSensor.isBlack);
-        uart1.println(gyro.slope);
+        uart1.println(floorSensor.tof_of_bottom);
         app.delay(100);
         // uart3.print("LEFT:");
         // uart3.write(camera[1].data);
