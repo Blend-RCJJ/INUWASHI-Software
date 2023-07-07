@@ -16,7 +16,7 @@ extern RTOS_Kit app;
 
 int robotStaus = 0;
 
-#define SPEED 50
+#define SPEED 100
 #define WAIT 500
 #define NORTH 0
 #define EAST 1
@@ -35,13 +35,14 @@ void mainApp(App) {
     while (1) {
         if (ui.toggle) {
             if (status) {
-                app.start(rightWallApp);
-                app.start(adjustmentApp);
-                app.start(locationApp);
-                app.start(DepthFirstSearchApp);
-                app.start(floorApp);
-                app.start(victimNotifyApp);
-                status = false;
+                    app.start(rightWallApp);
+                    app.start(adjustmentApp);
+                    app.start(locationApp);
+                    app.start(DepthFirstSearchApp);
+                    app.start(floorApp);
+                    app.start(victimNotifyApp);
+                    servo.velocity = SPEED;
+                    status = false;
             }
 
             runningWrite();
@@ -52,8 +53,10 @@ void mainApp(App) {
             app.stop(locationApp);
             app.stop(DepthFirstSearchApp);
             app.stop(floorApp);
+            app.stop(AstarApp);
 
             servo.suspend = true;
+            servo.velocity = 0;
             status        = true;
 
             settingWrite();

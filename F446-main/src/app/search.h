@@ -42,25 +42,61 @@ void rightWallApp(App) {
         oldCoordinateY = location.coordinateY;
         DFS            = false;
         app.delay(period);
-
-        if (tof.val[0] < 125) {  // 前に壁が来た時の処理
-            oldmillis      = millis();
-            checkPointX    = location.x;
-            checkPointY    = location.y;
-            DFS            = true;
-            servo.velocity = 0;
-            servo.suspend  = true;
-            app.delay(WAIT);
-            servo.suspend = false;
-            servo.angle -= 90;
-            servo.isCorrectingAngle = 0;
-            app.delay(WAIT * 2);
+        if (abs(gyro.slope) > 10) {
+            servo.suspend  = false;
             servo.velocity = SPEED;
+            app.delay(period);
+        } else {
+            servo.velocity = SPEED;
+            servo.suspend  = false;
+            isRightWallApp = true;
+            oldCoordinateX = location.coordinateX;
+            oldCoordinateY = location.coordinateY;
+            DFS            = false;
+            app.delay(period);
+
+            if (tof.val[0] < 130 && (gyro.North || gyro.East || gyro.South ||
+                                     gyro.West)) {  // 前に壁が来た時の処理
+                oldmillis      = millis();
+                checkPointX    = location.x;
+                checkPointY    = location.y;
+                DFS            = true;
+                servo.velocity = 0;
+                servo.suspend  = true;
+                app.delay(WAIT);
+                servo.suspend = false;
+                servo.angle -= 90;
+                servo.isCorrectingAngle = 0;
+                app.delay(WAIT * 2);
+                servo.velocity = SPEED;
+            } else if (tof.isNotRight) {  // 右壁が消えた時の処理
+                servo.velocity = 0;
+                servo.suspend  = true;
+                app.delay(WAIT);
+                servo.suspend = false;
+                servo.angle += 90;
+                servo.isCorrectingAngle = 0;
+                servo.velocity          = 0;
+                servo.suspend           = true;
+                app.delay(WAIT * 2);
+                servo.suspend = false;
+                while (abs(location.coordinateX - oldCoordinateX) < 280 &&
+                       abs(location.coordinateY - oldCoordinateY) < 280) {
+                    if (tof.val[0] < 125) {
+                        break;
+                    }
+                    servo.velocity = SPEED;
+                    app.delay(period);
+                }
+            }
         }
-        // if (virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN + 1] &&
+        // if (virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN
+        // + 1]
+        // &&
         //     gyro.North) {
         //     if (tof.isNotRight && !location
-        //                                .mapData[location.x + MAP_ORIGIN + 1]
+        //                                .mapData[location.x + MAP_ORIGIN +
+        //                                1]
         //                                        [location.y + MAP_ORIGIN]
         //                                .isPassed) {
         //         oldmillis      = millis();
@@ -75,8 +111,10 @@ void rightWallApp(App) {
         //         servo.isCorrectingAngle = 0;
         //         app.delay(WAIT * 2);
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 280
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 280)
+        //                {
         //             if (tof.val[0] < 125) {
         //                 break;
         //             }
@@ -103,8 +141,10 @@ void rightWallApp(App) {
         //         servo.isCorrectingAngle = 0;
         //         app.delay(WAIT * 2);
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 280
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 280)
+        //                {
         //             if (tof.val[0] < 125) {
         //                 break;
         //             }
@@ -122,7 +162,8 @@ void rightWallApp(App) {
         //                       [location.y + MAP_ORIGIN - 1] &&
         //            gyro.South) {
         //     if (tof.isNotRight && !location
-        //                                .mapData[location.x + MAP_ORIGIN - 1]
+        //                                .mapData[location.x + MAP_ORIGIN -
+        //                                1]
         //                                        [location.y + MAP_ORIGIN]
         //                                .isPassed) {
         //         oldmillis      = millis();
@@ -137,8 +178,10 @@ void rightWallApp(App) {
         //         servo.isCorrectingAngle = 0;
         //         app.delay(WAIT * 2);
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 280
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 280)
+        //                {
         //             if (tof.val[0] < 125) {
         //                 break;
         //             }
@@ -165,8 +208,10 @@ void rightWallApp(App) {
         //         servo.isCorrectingAngle = 0;
         //         app.delay(WAIT * 2);
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 280
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 280)
+        //                {
         //             if (tof.val[0] < 125) {
         //                 break;
         //             }
@@ -185,7 +230,8 @@ void rightWallApp(App) {
         //            gyro.East) {
         //     if (tof.isNotRight && !location
         //                                .mapData[location.x + MAP_ORIGIN]
-        //                                        [location.y + MAP_ORIGIN - 1]
+        //                                        [location.y + MAP_ORIGIN -
+        //                                        1]
         //                                .isPassed) {
         //         oldmillis      = millis();
         //         checkPointX    = location.x;
@@ -199,8 +245,10 @@ void rightWallApp(App) {
         //         servo.isCorrectingAngle = 0;
         //         app.delay(WAIT * 2);
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 280
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 280)
+        //                {
         //             if (tof.val[0] < 125) {
         //                 break;
         //             }
@@ -227,8 +275,10 @@ void rightWallApp(App) {
         //         servo.isCorrectingAngle = 0;
         //         app.delay(WAIT * 2);
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 280
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 280)
+        //                {
         //             if (tof.val[0] < 125) {
         //                 break;
         //             }
@@ -247,7 +297,8 @@ void rightWallApp(App) {
         //            gyro.West) {
         //     if (tof.isNotRight && !location
         //                                .mapData[location.x + MAP_ORIGIN]
-        //                                        [location.y + MAP_ORIGIN + 1]
+        //                                        [location.y + MAP_ORIGIN +
+        //                                        1]
         //                                .isPassed) {
         //         oldmillis      = millis();
         //         checkPointX    = location.x;
@@ -261,8 +312,10 @@ void rightWallApp(App) {
         //         servo.isCorrectingAngle = 0;
         //         app.delay(WAIT * 2);
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 280
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 280)
+        //                {
         //             if (tof.val[0] < 125) {
         //                 break;
         //             }
@@ -290,8 +343,10 @@ void rightWallApp(App) {
         //         servo.isCorrectingAngle = 0;
         //         app.delay(WAIT * 2);
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 280
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 280)
+        //                {
         //             if (tof.val[0] < 125) {
         //                 break;
         //             }
@@ -323,8 +378,10 @@ void rightWallApp(App) {
         //         checkPointY    = location.y;
         //         DFS            = true;
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 200 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 200) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 200
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 200)
+        //                {
         //             if (tof.val[0] < 150) {
         //                 break;
         //             }
@@ -350,8 +407,10 @@ void rightWallApp(App) {
         //         checkPointY    = location.y;
         //         DFS            = true;
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 200 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 200) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 200
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 200)
+        //                {
         //             if (tof.val[0] < 150) {
         //                 break;
         //             }
@@ -377,8 +436,10 @@ void rightWallApp(App) {
         //         checkPointY    = location.y;
         //         DFS            = true;
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 200 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 200) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 200
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 200)
+        //                {
         //             if (tof.val[0] < 150) {
         //                 break;
         //             }
@@ -404,8 +465,10 @@ void rightWallApp(App) {
         //         checkPointY    = location.y;
         //         DFS            = true;
         //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 200 &&
-        //                abs(location.coordinateY - oldCoordinateY) < 200) {
+        //         while (abs(location.coordinateX - oldCoordinateX) < 200
+        //         &&
+        //                abs(location.coordinateY - oldCoordinateY) < 200)
+        //                {
         //             if (tof.val[0] < 150) {
         //                 break;
         //             }
@@ -414,26 +477,6 @@ void rightWallApp(App) {
         //         }
         //     }
         // }
-            if (tof.isNotRight) {  // 右壁が消えた時の処理
-                servo.velocity = 0;
-                servo.suspend  = true;
-                app.delay(WAIT);
-                servo.suspend = false;
-                servo.angle += 90;
-                servo.isCorrectingAngle = 0;
-                servo.velocity          = 0;
-                servo.suspend           = true;
-                app.delay(WAIT * 2);
-                servo.suspend = false;
-                while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-                       abs(location.coordinateY - oldCoordinateY) < 280) {
-                    if (tof.val[0] < 125) {
-                        break;
-                    }
-                    servo.velocity = SPEED;
-                    app.delay(period);
-                }
-            }
     }
 }
 
@@ -562,7 +605,7 @@ void floorApp(App) {
             blueCounter  = 0;
         }
 
-        if (floorSensor.isBlack && blackCounter > 10) {
+        if (floorSensor.isBlack && blackCounter > 5) {
             servo.suspend = true;
             app.stop(rightWallApp);
             app.stop(leftWallApp);
@@ -578,7 +621,7 @@ void floorApp(App) {
             oldCoordinateY = location.coordinateY;
             while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                    abs(location.coordinateY - oldCoordinateY) < 280) {
-                if (tof.val[0] < 125) {
+                if (tof.val[0] < 130) {
                     break;
                 }
                 servo.velocity = SPEED;
@@ -587,15 +630,7 @@ void floorApp(App) {
             servo.suspend = true;
             app.delay(500);
             servo.suspend = false;
-            if (millis() > RETURN_TIME || servo.sumOfRescueKit >= 12) {
-                app.start(AstarApp);
-            } else if (isRightWallApp) {
-                app.start(rightWallApp);
-                blackCounter = 0;
-            } else {
-                app.start(leftWallApp);
-                blackCounter = 0;
-            }
+            app.start(rightWallApp);
             blackCounter = 0;
         }
 
@@ -620,22 +655,11 @@ void floorApp(App) {
             servo.suspend = true;
             app.delay(5500);
             servo.suspend = false;
-            if (millis() > RETURN_TIME || servo.sumOfRescueKit >= 12) {
-                app.start(AstarApp);
-                waitmillis  = millis();
-                oldstate    = true;
-                blueCounter = 0;
-            } else if (isRightWallApp) {
-                app.start(rightWallApp);
-                waitmillis  = millis();
-                oldstate    = true;
-                blueCounter = 0;
-            } else {
-                app.start(leftWallApp);
-                waitmillis  = millis();
-                oldstate    = true;
-                blueCounter = 0;
-            }
+
+            app.start(rightWallApp);
+            waitmillis  = millis();
+            oldstate    = true;
+            blueCounter = 0;
         }
     }
 }

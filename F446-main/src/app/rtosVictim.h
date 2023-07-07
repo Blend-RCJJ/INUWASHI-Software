@@ -16,6 +16,7 @@ extern void floorApp(App);
 #define SPEED 100
 
 void victimNotifyApp(App) {
+    victim.isRightOrLeft = 0;
     while (1) {
         int rescueKitNum = 0;
 
@@ -115,6 +116,9 @@ void victimNotifyApp(App) {
         // } else {
         //     app.start(leftWallApp);
         // }
+
+        
+        victim.isRightOrLeft = 0;
     }
 }
 

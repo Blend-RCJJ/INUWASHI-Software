@@ -18,12 +18,12 @@ void GYRO::init(void) {
 
     sensorPtr->getSensor(&sensor);
 
-    if (bnoID == sensor.sensor_id) {
-        eeAddress += sizeof(long);
-        EEPROM.get(eeAddress, calibrationData);
-        sensorPtr->setSensorOffsets(calibrationData);
-        foundCalib = true;
-    }
+    // if (bnoID == sensor.sensor_id) {
+    //     eeAddress += sizeof(long);
+    //     EEPROM.get(eeAddress, calibrationData);
+    //     sensorPtr->setSensorOffsets(calibrationData);
+    //     foundCalib = true;
+    // }
 
     uint8_t system_status, self_test_results, system_error;
     system_status = self_test_results = system_error = 0;
@@ -44,7 +44,7 @@ int GYRO::read(void) {
         deg = (int)(event.orientation.x - offset + 360) % 360;
     }
 
-    slope = (int)(event.orientation.z - slopeOffset + 360) % 360;
+    slope = (int)(event.orientation.y - slopeOffset + 360) % 360;
 
     if (slope >= 180) {
         slope -= 360;
@@ -70,7 +70,7 @@ void GYRO::setOffset(void) {
         offset = event.orientation.x;
     }
 
-    slopeOffset = event.orientation.z;
+    slopeOffset = event.orientation.y;
 }
 
 void GYRO::direction(void) {

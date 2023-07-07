@@ -200,6 +200,7 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
+        uart1.println(gyro.slope);
         uart3.print(floorSensor.redVal);
         uart3.print("\t");
         uart3.print(floorSensor.blankVal);
