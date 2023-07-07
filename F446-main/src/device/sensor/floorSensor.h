@@ -10,7 +10,7 @@
 
 class FLOOR_SENSOR {
    public:
-    const int brightness = 150;
+    const int brightness = 160;
     int redVal;
     int blankVal;
     int blueVal;

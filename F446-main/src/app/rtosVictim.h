@@ -23,18 +23,22 @@ void victimNotifyApp(App) {
         while (1) {
             if (victim.isRightOrLeft != 0 && ui.toggle == true) {
                 if (victim.place[location.x + 20][location.y + 20] == false) {
-                    if (victim.isRightOrLeft == RIGHT && tof.val[4] < 140 &&
-                        tof.val[5] < 200) {
+                    if (victim.isRightOrLeft == RIGHT && tof.val[4] < 190 &&
+                        tof.val[5] < 220) {
                         break;
                     } else {
                         victim.isRightOrLeft = 0;
+                        camera[0].data       = 'N';
+                        camera[1].data       = 'N';
                     }
 
-                    if (victim.isRightOrLeft == LEFT && tof.val[12] < 140 &&
-                        tof.val[11] < 200) {
+                    if (victim.isRightOrLeft == LEFT && tof.val[12] < 190 &&
+                        tof.val[11] < 220) {
                         break;
                     } else {
                         victim.isRightOrLeft = 0;
+                        camera[0].data       = 'N';
+                        camera[1].data       = 'N';
                     }
                 }
             }
@@ -111,17 +115,20 @@ void victimNotifyApp(App) {
         servo.suspend  = false;
         servo.velocity = SPEED;
 
-        victim.isDetected = false;
+        victim.isDetected    = false;
+        victim.id            = 0;
+        victim.isRightOrLeft = 0;
+        camera[0].data       = 'N';
+        camera[1].data       = 'N';
 
         app.restart(DepthFirstSearchApp);
         app.restart(floorApp);
         // if (isRightWallApp) {
-        app.start(rightWallApp);
+        app.restart(rightWallApp);
         // } else {
         //     app.start(leftWallApp);
         // }
 
-        
         victim.isRightOrLeft = 0;
     }
 }
