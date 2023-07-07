@@ -205,12 +205,9 @@ void monitorApp(App) {
     //     uart1.print("\t");
     //    }
     //    uart1.println("\t");
-        uart3.print(floorSensor.redVal);
-        uart3.print("\t");
-        uart3.print(floorSensor.blankVal);
-        uart3.print("\t");
-        uart3.print(floorSensor.blueVal);
-        uart3.println("\t");
+
+        uart3.println(floorSensor.isBlack);
+        uart1.println(gyro.slope);
         app.delay(100);
         // uart3.print("LEFT:");
         // uart3.write(camera[1].data);
