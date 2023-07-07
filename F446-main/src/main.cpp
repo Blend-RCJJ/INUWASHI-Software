@@ -22,10 +22,10 @@ void setup() {
     app.create(rightWallApp);
     app.create(leftWallApp);
     app.create(locationApp, firstPriority);
-    // app.create(DepthFirstSearchApp, secondPriority); 
-    // app.create(AstarApp, secondPriority);
+    app.create(DepthFirstSearchApp, secondPriority); 
+    app.create(AstarApp, secondPriority);
     app.create(adjustmentApp);
-    app.create(floorApp);
+    // app.create(floorApp);
 
     // 入出力系統
     app.create(sensorApp, secondPriority);
