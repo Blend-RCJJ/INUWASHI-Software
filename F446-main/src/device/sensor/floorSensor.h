@@ -34,7 +34,7 @@ class FLOOR_SENSOR {
     void init(void);
 
     void tof_of_bottom_read(void) {
-        tof_of_bottom = analogRead(PB8);
+        tof_of_bottom = analogRead(PA11);
         // FIXME: 未実装
     };
 
