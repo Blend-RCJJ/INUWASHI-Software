@@ -91,7 +91,7 @@ void rightWallApp(App) {
             count = 0;
             app.delay(10);
         }
-        if (tof.val[0] < 120) {
+        if (tof.val[0] < 125) {
             servo.velocity = 0;
             servo.stop();
             app.delay(500);
