@@ -41,6 +41,9 @@ void mainApp(App) {
                     app.start(DepthFirstSearchApp);
                     app.start(floorApp);
                     app.start(victimNotifyApp);
+                    location.coordinateX = 0;
+                    location.coordinateY = 0;
+                    servo.suspend = false;
                     servo.velocity = SPEED;
                     status = false;
             }

@@ -26,11 +26,15 @@ void victimNotifyApp(App) {
                     if (victim.isRightOrLeft == RIGHT && tof.val[4] < 140 &&
                         tof.val[5] < 200) {
                         break;
+                    } else {
+                        victim.isRightOrLeft = 0;
                     }
 
                     if (victim.isRightOrLeft == LEFT && tof.val[12] < 140 &&
                         tof.val[11] < 200) {
                         break;
+                    } else {
+                        victim.isRightOrLeft = 0;
                     }
                 }
             }

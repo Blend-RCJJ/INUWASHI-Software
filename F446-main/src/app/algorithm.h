@@ -200,7 +200,11 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        uart1.println(gyro.slope);
+    //    for(int i = 0; i < 16; i++){
+    //     uart1.print(tof.val[i]);
+    //     uart1.print("\t");
+    //    }
+    //    uart1.println("\t");
         uart3.print(floorSensor.redVal);
         uart3.print("\t");
         uart3.print(floorSensor.blankVal);
@@ -248,15 +252,15 @@ void DepthFirstSearchApp(App) {  // NOTE 二方向以上進める座標を記録
         //     app.delay(period);
         // }  // 前方+左右に壁があったら反転して左壁追従
 
-        if (!isRightWallApp &&
-            JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN]) {
-            app.stop(leftWallApp);
-            app.start(rightWallApp);
-            isRightWallApp = true;
-        }
-        if (isRightWallApp) {
-            junction();
-        }
+        // if (!isRightWallApp &&
+        //     JCT[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN]) {
+        //     app.stop(leftWallApp);
+        //     app.start(rightWallApp);
+        //     isRightWallApp = true;
+        // }
+        // if (isRightWallApp) {
+        //     junction();
+        // }
 
         if (checkPointX == location.x && checkPointY == location.y &&
             oldmillis + 10000 < millis()) {  // DFS開始地点に戻ってきたら反転
