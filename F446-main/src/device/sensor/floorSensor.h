@@ -19,7 +19,7 @@ class FLOOR_SENSOR {
     unsigned long colorRGB(int red, int green, int blue);
     unsigned long colorHSV(int hue, int saturation, int brightness);
 
-    unsigned long red   = colorRGB(255,0,0);
+    unsigned long red   = colorRGB(255, 0, 0);
     unsigned long green = colorRGB(0, 255, 0);
     unsigned long blue  = colorRGB(0, 0, 255);
     unsigned long white = colorRGB(255, 255, 255);
@@ -33,10 +33,7 @@ class FLOOR_SENSOR {
 
     void init(void);
 
-    void tof_of_bottom_read(void) {
-        tof_of_bottom = analogRead(PA11);
-        // FIXME: 未実装
-    };
+    void tof_of_bottom_read(void);
 
     void setFloorColor(unsigned long color);
     void colorJudgment(void);
