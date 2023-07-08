@@ -20,7 +20,8 @@ void sensorApp(App) {
         tof.read();
         tof.calc(gyro.deg);
 
-        victim.read();
+        // victim.read();
+        camera[0].read();
 
         loadcell.read();
         floorSensor.silverVal = digitalRead(PA11);

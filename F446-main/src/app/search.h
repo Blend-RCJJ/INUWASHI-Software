@@ -104,7 +104,22 @@ RESTART:
             servo.suspend = false;
             servo.angle -= 90;
             app.delay(WAIT * 4);
-                        //色…1,文字…2
+            servo.angle -= 10;
+            app.delay(WAIT * 4);
+            servo.angle += 20;
+            app.delay(WAIT * 4);
+            servo.angle -= 10;
+            app.delay(WAIT * 4);
+            if (camera[0].data == 'H' || camera[0].data == 'R') {
+                uart3.println("3");
+            } else if (camera[0].data == 'S' || camera[0].data == 'Y') {
+                uart3.println("2");
+            } else if (camera[0].data == 'U' || camera[0].data == 'G') {
+                uart3.println("1");
+            } else {
+                uart3.println("0");
+            }
+            // 色…1,文字…2
             servo.angle -= 90;
             app.delay(WAIT * 4);
             oldCoordinateX = location.coordinateX;
@@ -128,7 +143,22 @@ RESTART:
             servo.suspend = false;
             servo.angle -= 90;
             app.delay(WAIT * 4);
-            //色…4,文字…3
+            servo.angle -= 10;
+            app.delay(WAIT * 4);
+            servo.angle += 20;
+            app.delay(WAIT * 4);
+            servo.angle -= 10;
+            app.delay(WAIT * 4);
+            if (camera[0].data == 'H' || camera[0].data == 'R') {
+                uart3.println("3");
+            } else if (camera[0].data == 'S' || camera[0].data == 'Y') {
+                uart3.println("2");
+            } else if (camera[0].data == 'U' || camera[0].data == 'G') {
+                uart3.println("1");
+            } else {
+                uart3.println("0");
+            }
+            // 色…4,文字…3
             servo.angle -= 90;
             app.delay(WAIT * 4);
             oldCoordinateX = location.coordinateX;
@@ -136,7 +166,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 270 &&
                    abs(location.coordinateY - oldCoordinateY) < 270) {
-                if (tof.val[0] < 120) {
+                if (tof.isNotRight) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -194,7 +224,22 @@ RESTART:
             servo.suspend = false;
             servo.angle -= 90;
             app.delay(WAIT * 4);
-            //色…3,文字…4
+            servo.angle -= 10;
+            app.delay(WAIT * 4);
+            servo.angle += 20;
+            app.delay(WAIT * 4);
+            servo.angle -= 10;
+            app.delay(WAIT * 4);
+            if (camera[0].data == 'H' || camera[0].data == 'R') {
+                uart3.println("3");
+            } else if (camera[0].data == 'S' || camera[0].data == 'Y') {
+                uart3.println("2");
+            } else if (camera[0].data == 'U' || camera[0].data == 'G') {
+                uart3.println("1");
+            } else {
+                uart3.println("0");
+            }
+            // 色…3,文字…4
             servo.angle -= 90;
             app.delay(WAIT * 4);
             oldCoordinateX = location.coordinateX;
@@ -218,7 +263,22 @@ RESTART:
             servo.suspend = false;
             servo.angle -= 90;
             app.delay(WAIT * 4);
-            //色…2,文字…1
+            servo.angle -= 10;
+            app.delay(WAIT * 4);
+            servo.angle += 20;
+            app.delay(WAIT * 4);
+            servo.angle -= 10;
+            app.delay(WAIT * 4);
+            if (camera[0].data == 'H' || camera[0].data == 'R') {
+                uart3.println("3");
+            } else if (camera[0].data == 'S' || camera[0].data == 'Y') {
+                uart3.println("2");
+            } else if (camera[0].data == 'U' || camera[0].data == 'G') {
+                uart3.println("1");
+            } else {
+                uart3.println("0");
+            }
+            // 色…2,文字…1
             servo.angle -= 90;
             app.delay(WAIT * 4);
             oldCoordinateX = location.coordinateX;
@@ -226,9 +286,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 280 &&
                    abs(location.coordinateY - oldCoordinateY) < 280) {
-                if (tof.val[0] < 120) {
-                    servo.velocity = -SPEED;
-                    app.delay(100);
+                if (tof.isNotRight) {
                     servo.suspend  = true;
                     servo.velocity = 0;
                     break;
@@ -263,7 +321,7 @@ RESTART:
             app.delay(WAIT);
 
             mazeSearch = false;
-        } else if (!mazeSearch) {//おかえりなさい
+        } else if (!mazeSearch) {  // おかえりなさい
             servo.suspend  = true;
             servo.velocity = 0;
             app.delay(WAIT);

@@ -33,7 +33,7 @@ void setup() {
     // app.create(monitorApp);
 
     // UI系統
-    // app.create(victimNotifyApp);
+    app.create(victimNotifyApp);
     app.create(ledApp);
 
     app.start(mainApp);

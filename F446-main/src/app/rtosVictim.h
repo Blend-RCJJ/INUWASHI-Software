@@ -122,12 +122,8 @@ void victimNotifyApp(App) {
         camera[1].data       = 'N';
 
         app.restart(RestartApp);
-        app.restart(floorApp);
-        // if (isRightWallApp) {
-        app.restart(rightWallApp);
-        // } else {
-        //     app.start(leftWallApp);
-        // }
+        app.start(floorApp);
+        app.start(rightWallApp);
 
         victim.isRightOrLeft = 0;
     }
