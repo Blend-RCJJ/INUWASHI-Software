@@ -10,7 +10,7 @@ extern RTOS_Kit app;
 extern bool isRightWallApp;
 extern void rightWallApp(App);
 extern void leftWallApp(App);
-extern void DepthFirstSearchApp(App);
+extern void RestartApp(App);
 extern void floorApp(App);
 
 #define SPEED 100
@@ -48,7 +48,7 @@ void victimNotifyApp(App) {
 
         app.stop(rightWallApp);
         app.stop(leftWallApp);
-        app.stop(DepthFirstSearchApp);
+        app.stop(RestartApp);
         app.stop(floorApp);
 
         victim.place[location.x + 20][location.y + 20] = true;
@@ -121,7 +121,7 @@ void victimNotifyApp(App) {
         camera[0].data       = 'N';
         camera[1].data       = 'N';
 
-        app.restart(DepthFirstSearchApp);
+        app.restart(RestartApp);
         app.restart(floorApp);
         // if (isRightWallApp) {
         app.restart(rightWallApp);

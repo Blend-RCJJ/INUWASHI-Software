@@ -14,7 +14,7 @@ class FLOOR_SENSOR {
     int redVal;
     int blankVal;
     int blueVal;
-    int tof_of_bottom;
+    int silverVal;
 
     unsigned long colorRGB(int red, int green, int blue);
     unsigned long colorHSV(int hue, int saturation, int brightness);
@@ -25,11 +25,12 @@ class FLOOR_SENSOR {
     unsigned long white = colorRGB(255, 255, 255);
     unsigned long blank = colorRGB(0, 0, 0);
 
-    bool isRed   = false;
-    bool isGreen = false;
-    bool isBlue  = false;
-    bool isBlack = false;
-    bool isWhite = false;
+    bool isRed    = false;
+    bool isGreen  = false;
+    bool isBlue   = false;
+    bool isBlack  = false;
+    bool isWhite  = false;
+    bool isSilver = false;
 
     void init(void);
 

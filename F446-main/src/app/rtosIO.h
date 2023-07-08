@@ -3,9 +3,7 @@
 
 #include "../device/device.h"
 #include "../kit/RTOS-Kit.h"
-
 #include "./algorithm/victim.h"
-#include "../device/device.h"
 
 extern RTOS_Kit app;
 
@@ -25,7 +23,7 @@ void sensorApp(App) {
         victim.read();
 
         loadcell.read();
-        
+        floorSensor.silverVal = digitalRead(PA11);
         floorSensor.setFloorColor(floorSensor.red);
         app.delay(2);
         floorSensor.redVal = analogRead(PC0);
@@ -64,8 +62,8 @@ double mapDouble(double x, double in_min, double in_max, double out_min,
 }
 
 void ledApp(App) {
-    int ledStatus = 0;
-    int victimId = 0;
+    int ledStatus           = 0;
+    int victimId            = 0;
     unsigned long startTime = millis();
     for (int i = 0; i < 4; i++) {
         led.setColor(i, led.cyan);
@@ -86,7 +84,7 @@ void ledApp(App) {
             }
             victimId = 0;
         } else {
-            ledStatus = 2;
+            ledStatus         = 2;
             static bool blink = true;
 
             int brightness;

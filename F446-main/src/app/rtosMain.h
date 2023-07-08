@@ -35,10 +35,10 @@ void mainApp(App) {
     while (1) {
         if (ui.toggle) {
             if (status) {
-                    app.start(rightWallApp);
+                    app.restart(rightWallApp);
                     app.start(adjustmentApp);
                     app.start(locationApp);
-                    app.start(DepthFirstSearchApp);
+                    app.start(RestartApp);
                     app.start(floorApp);
                     app.start(victimNotifyApp);
                     location.coordinateX = 0;
@@ -54,12 +54,13 @@ void mainApp(App) {
             app.stop(leftWallApp);
             app.stop(adjustmentApp);
             app.stop(locationApp);
-            app.stop(DepthFirstSearchApp);
+            app.stop(RestartApp);
             app.stop(floorApp);
             app.stop(AstarApp);
 
             servo.suspend = true;
             servo.velocity = 0;
+            servo.angle = 0;
             status        = true;
 
             settingWrite();

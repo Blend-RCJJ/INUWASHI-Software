@@ -27,15 +27,20 @@ int checkPointY                                  = MAP_ORIGIN;
 static double oldCoordinateX                     = 0;
 static double oldCoordinateY                     = 0;
 static bool locationIsChanged                    = false;
+static bool END                                  = false;
+bool mazeSearch                                  = true;
 
 void AstarApp(App);
 void adjustmentApp(App);
 
 void rightWallApp(App) {
-    static bool mazeSearch = false;
-    mazeSearch             = true;
+RESTART:
+    mazeSearch = true;
     while (1) {
         app.delay(period);
+        if (!ui.toggle) {
+            goto RESTART;
+        }
         if (mazeSearch) {
             oldCoordinateX = location.coordinateX;
             oldCoordinateY = location.coordinateY;
@@ -99,6 +104,7 @@ void rightWallApp(App) {
             servo.suspend = false;
             servo.angle -= 90;
             app.delay(WAIT * 4);
+                        //色…1,文字…2
             servo.angle -= 90;
             app.delay(WAIT * 4);
             oldCoordinateX = location.coordinateX;
@@ -122,13 +128,14 @@ void rightWallApp(App) {
             servo.suspend = false;
             servo.angle -= 90;
             app.delay(WAIT * 4);
+            //色…4,文字…3
             servo.angle -= 90;
             app.delay(WAIT * 4);
             oldCoordinateX = location.coordinateX;
             oldCoordinateY = location.coordinateY;
 
-            while (abs(location.coordinateX - oldCoordinateX) < 300 &&
-                   abs(location.coordinateY - oldCoordinateY) < 300) {
+            while (abs(location.coordinateX - oldCoordinateX) < 270 &&
+                   abs(location.coordinateY - oldCoordinateY) < 270) {
                 if (tof.val[0] < 120) {
                     servo.velocity = -SPEED;
                     app.delay(100);
@@ -187,6 +194,7 @@ void rightWallApp(App) {
             servo.suspend = false;
             servo.angle -= 90;
             app.delay(WAIT * 4);
+            //色…3,文字…4
             servo.angle -= 90;
             app.delay(WAIT * 4);
             oldCoordinateX = location.coordinateX;
@@ -210,6 +218,7 @@ void rightWallApp(App) {
             servo.suspend = false;
             servo.angle -= 90;
             app.delay(WAIT * 4);
+            //色…2,文字…1
             servo.angle -= 90;
             app.delay(WAIT * 4);
             oldCoordinateX = location.coordinateX;
@@ -228,54 +237,41 @@ void rightWallApp(App) {
                 app.delay(period);
             }
 
-            servo.suspend = true;
-            app.delay(WAIT);
-            servo.suspend = false;
-            servo.angle += 90;
-            app.delay(WAIT * 4);
-            oldCoordinateX = location.coordinateX;
-            oldCoordinateY = location.coordinateY;
+            oldCoordinateX = 0;
+            oldCoordinateY = 0;
 
-            while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-                   abs(location.coordinateY - oldCoordinateY) < 280) {
-                if (tof.val[0] < 120) {
-                    servo.velocity = -SPEED;
-                    app.delay(100);
-                    servo.suspend  = true;
-                    servo.velocity = 0;
-                    break;
-                }
-                servo.velocity = SPEED;
-                app.delay(period);
-            }
-
-            servo.suspend = true;
-            app.delay(WAIT);
-            servo.suspend = false;
-            servo.angle += 90;
-            app.delay(WAIT * 4);
-            oldCoordinateX = location.coordinateX;
-            oldCoordinateY = location.coordinateY;
-
-              while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-                   abs(location.coordinateY - oldCoordinateY) < 280) {
-                if (tof.val[0] < 120) {
-                    servo.velocity = -SPEED;
-                    app.delay(100);
-                    servo.suspend  = true;
-                    servo.velocity = 0;
-                    break;
-                }
-                servo.velocity = SPEED;
-                app.delay(period);
-            }
-            servo.suspend = true;
-            servo.velocity = 0;
-
-            mazeSearch = false;
-        } else if (!mazeSearch) {
             servo.suspend  = true;
             servo.velocity = 0;
+            app.delay(WAIT);
+            servo.suspend = false;
+            servo.angle += 90;
+            app.delay(WAIT * 4);
+
+            servo.velocity = SPEED;
+            app.delay(2000);
+            servo.suspend  = true;
+            servo.velocity = 0;
+            app.delay(WAIT);
+            servo.suspend = false;
+            servo.angle += 90;
+            app.delay(WAIT * 4);
+
+            servo.velocity = SPEED;
+            app.delay(1800);
+            servo.suspend  = true;
+            servo.velocity = 0;
+            app.delay(WAIT);
+
+            mazeSearch = false;
+        } else if (!mazeSearch) {//おかえりなさい
+            servo.suspend  = true;
+            servo.velocity = 0;
+            app.delay(WAIT);
+            servo.suspend = false;
+            servo.angle += 180;
+            app.delay(WAIT * 10);
+            servo.suspend = true;
+            break;
         }
     }
 }

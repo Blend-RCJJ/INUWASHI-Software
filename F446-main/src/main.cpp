@@ -22,7 +22,7 @@ void setup() {
     app.create(rightWallApp);
     // app.create(leftWallApp);
     app.create(locationApp, firstPriority);
-    // app.create(DepthFirstSearchApp, secondPriority); 
+    // app.create(RestartApp); 
     // app.create(AstarApp, secondPriority);
     app.create(adjustmentApp);
     // app.create(floorApp);
@@ -30,10 +30,10 @@ void setup() {
     // 入出力系統
     app.create(sensorApp, secondPriority);
     app.create(servoApp, secondPriority);
-    app.create(monitorApp);
+    // app.create(monitorApp);
 
     // UI系統
-    app.create(victimNotifyApp);
+    // app.create(victimNotifyApp);
     app.create(ledApp);
 
     app.start(mainApp);
