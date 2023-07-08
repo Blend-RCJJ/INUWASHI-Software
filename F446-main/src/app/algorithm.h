@@ -200,11 +200,10 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-    //    for(int i = 0; i < 16; i++){
-    //     uart1.print(tof.val[i]);
-    //     uart1.print("\t");
-    //    }
-    //    uart1.println("\t");
+        uart1.print(floorSensor.blankVal);
+        uart1.print("\t");
+        uart1.print(floorSensor.blueVal);
+        uart1.println("\t");
 
         uart1.println(floorSensor.tof_of_bottom);
         app.delay(100);
