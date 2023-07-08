@@ -41,13 +41,14 @@ void rightWallApp(App) {
         // uart3.println("右壁探索中...");
         servo.suspend  = false;
         servo.velocity = SPEED;
+        DFS           = false;
         app.delay(period);
         if (abs(gyro.slope >= 10)) {
             servo.suspend  = false;
             servo.velocity = SPEED;
         }
         while (count == 1) {
-            app.delay(700);
+            app.delay(300);
             count = 0;
         }
 
@@ -90,7 +91,7 @@ void rightWallApp(App) {
             count = 0;
             app.delay(10);
         }
-        if (tof.val[0] < 120) {
+        if (tof.val[0] < 125) {
             servo.velocity = 0;
             servo.stop();
             app.delay(500);

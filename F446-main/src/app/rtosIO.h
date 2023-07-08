@@ -25,6 +25,7 @@ void sensorApp(App) {
         victim.read();
 
         loadcell.read();
+        
         floorSensor.setFloorColor(floorSensor.red);
         app.delay(2);
         floorSensor.redVal = analogRead(PC0);
