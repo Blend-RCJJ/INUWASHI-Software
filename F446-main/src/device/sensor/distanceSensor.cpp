@@ -62,7 +62,7 @@ void DISTANCE_SENSOR::rightWall(void) {
     } else {
         isNotFront = true;
     }
-    if (val[4] > 250 && val[5] > 280) {
+    if (val[4] > 250 && val[5] > 300) {
         isNotRight = true;
     } else {
         isNotRight = false;
@@ -70,7 +70,7 @@ void DISTANCE_SENSOR::rightWall(void) {
 }
 
 void DISTANCE_SENSOR::leftWall(void) {
-    if (val[12] > 250 && val[11] > 280) {
+    if (val[12] > 250 && val[11] > 300) {
         isNotLeft = true;
     } else {
         isNotLeft = false;
