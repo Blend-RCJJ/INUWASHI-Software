@@ -17,6 +17,7 @@ extern RTOS_Kit app;
 #define SOUTH 2
 #define WEST 3
 #define RETURN_TIME 300000  // 帰還開始時間(ms)
+#define DISTANCE 95
 
 bool virtualWall[MAP_ORIGIN * 2][MAP_ORIGIN * 2] = {false};
 bool isRightWallApp                              = false;
@@ -165,7 +166,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 350 &&
                    abs(location.coordinateY - oldCoordinateY) < 350) {
-                if (tof.val[0] < 90) {
+                if (tof.val[0] < DISTANCE) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -185,7 +186,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 1500 &&
                    abs(location.coordinateY - oldCoordinateY) < 1500) {
-                if (tof.val[0] < 90) {
+                if (tof.val[0] < DISTANCE) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -204,9 +205,9 @@ RESTART:
             oldCoordinateX = location.coordinateX;
             oldCoordinateY = location.coordinateY;
 
-            while (abs(location.coordinateX - oldCoordinateX) < 270 &&
-                   abs(location.coordinateY - oldCoordinateY) < 270) {
-                if (tof.isNotRight) {
+            while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                   abs(location.coordinateY - oldCoordinateY) < 300) {
+                if (tof.val[8] > 470) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -227,7 +228,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 750 &&
                    abs(location.coordinateY - oldCoordinateY) < 750) {
-                if (tof.val[0] < 90) {
+                if (tof.val[0] < DISTANCE) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -248,7 +249,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 350 &&
                    abs(location.coordinateY - oldCoordinateY) < 350) {
-                if (tof.val[0] < 90) {
+                if (tof.val[0] < DISTANCE) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -269,7 +270,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 1200 &&
                    abs(location.coordinateY - oldCoordinateY) < 1200) {
-                if (tof.val[0] < 90) {
+                if (tof.val[0] < DISTANCE) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -288,9 +289,9 @@ RESTART:
             oldCoordinateX = location.coordinateX;
             oldCoordinateY = location.coordinateY;
 
-            while (abs(location.coordinateX - oldCoordinateX) < 280 &&
-                   abs(location.coordinateY - oldCoordinateY) < 280) {
-                if (tof.isNotRight) {
+            while (abs(location.coordinateX - oldCoordinateX) < 300 &&
+                   abs(location.coordinateY - oldCoordinateY) < 300) {
+                if (tof.val[8] > 470) {
                     servo.suspend  = true;
                     servo.velocity = 0;
                     break;
@@ -319,25 +320,25 @@ RESTART:
             app.delay(WAIT * 4);
 
             servo.velocity = SPEED;
-            app.delay(1500);
+            app.delay(1200);
             servo.suspend  = true;
             servo.velocity = 0;
             app.delay(WAIT);
 
             mazeSearch = false;
-        } else if (!mazeSearch) {  // おかえりなさい
+        } else {  // おかえりなさい
             servo.suspend = true;
 
+            app.stop(ledApp);
+
             while (1) {
-                for (int i = 0; i < 256; i++) {
+                for (int i = 0; i < 256; i+= 20) {
                     led.setBrightness(TOP, 255 - i);
                     led.setBrightness(UI, 255 - i);
                     led.setColor(TOP, led.yellow);
                     led.setColor(UI, led.yellow);
                     led.showAll();
                     app.delay(1);
-
-                    break;
                 }
             }
         }
