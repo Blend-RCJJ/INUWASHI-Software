@@ -13,7 +13,7 @@ class STS3032 {
     STS3032(HardwareSerial *ptr);
     HardwareSerial *serialPtr;
 
-    const int maximumSpeed = 7000;
+    const int maximumSpeed = 8000;//7000
     const int baudRate = 1000000;
     
     void directDrive(int id, int percent, int acceleration = 0);

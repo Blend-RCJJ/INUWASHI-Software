@@ -11,7 +11,7 @@ void CAMERA::read(void) {
 
         if (temp == 'H' || temp == 'S' || temp == 'U' || temp == 'Y' ||
             temp == 'R' || temp == 'G' || temp == 'N') {
-                this->data = temp;
+            this->data = temp;
         }
 
         while (serialPtr->available() > 0) {

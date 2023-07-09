@@ -6,6 +6,7 @@
 #include "./algorithm/victim.h"
 
 extern RTOS_Kit app;
+extern void counter(void);
 
 const int period = 10;  // 制御周期
 
@@ -22,6 +23,7 @@ void sensorApp(App) {
 
         // victim.read();
         camera[0].read();
+        counter();
 
         loadcell.read();
         floorSensor.silverVal = digitalRead(PA11);

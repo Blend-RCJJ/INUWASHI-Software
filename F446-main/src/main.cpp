@@ -30,7 +30,7 @@ void setup() {
     // 入出力系統
     app.create(sensorApp, secondPriority);
     app.create(servoApp, secondPriority);
-    // app.create(monitorApp);
+    app.create(monitorApp);
 
     // UI系統
     app.create(victimNotifyApp);

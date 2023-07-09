@@ -200,10 +200,12 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-        // uart1.print(floorSensor.blueVal);
-        // uart1.println("\t");
-
-        uart1.println(floorSensor.isSilver);
+        uart3.print(camera[0].Hcounter);
+        uart3.print("\t");
+        uart3.print(camera[0].Scounter);
+        uart3.print("\t");
+        uart3.print(camera[0].Ucounter);
+        uart3.println("\t");
         app.delay(100);
         // uart3.print("LEFT:");
         // uart3.write(camera[1].data);
