@@ -33,9 +33,86 @@ bool mazeSearch                                  = true;
 void AstarApp(App);
 void adjustmentApp(App);
 
+int readRescueKitNum(void) {
+    while (true) {
+        if (uart2.available()) {
+            char tmp = uart2.read();
+            switch (tmp) {
+                case '0':
+                    return 0;
+                    break;
+                case '1':
+                    return 1;
+                    break;
+                case '2':
+                    return 2;
+                    break;
+                case '3':
+                    return 3;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+void drop(void) {
+    servo.suspend = true;
+    app.delay(WAIT);
+    servo.suspend      = false;
+    servo.velocity     = 0;
+    camera[0].Hcounter = 0;
+    camera[0].Scounter = 0;
+    camera[0].Ucounter = 0;
+    servo.angle -= 90;
+    app.delay(WAIT * 2);
+    servo.angle -= 10;
+    app.delay(WAIT * 2);
+    servo.angle += 20;
+    app.delay(WAIT * 2);
+    servo.angle -= 10;
+    app.delay(WAIT * 2);
+
+    if (camera[0].Hcounter > camera[0].Scounter &&
+        camera[0].Hcounter > camera[0].Ucounter) {
+        uart2.println('3');
+    } else if (camera[0].Scounter > camera[0].Hcounter &&
+               camera[0].Scounter > camera[0].Ucounter) {
+        uart2.println('2');
+    } else if (camera[0].Ucounter > camera[0].Hcounter &&
+               camera[0].Ucounter > camera[0].Scounter) {
+        uart2.println('1');
+    } else {
+        uart2.println('0');
+    }
+
+    app.stop(servoApp);
+    servo.driveAngularVelocity(-30, -45);
+    app.delay(500);
+    servo.driveAngularVelocity(-30, 45);
+    app.delay(300);
+    servo.driveAngularVelocity(30, 45);
+    app.delay(500);
+    servo.driveAngularVelocity(30, -45);
+    app.delay(300);
+    app.start(servoApp);
+
+    servo.rescueKit(readRescueKitNum(), RIGHT);
+}
+
+void clearBuffer(void) {
+    while (uart2.available()) {
+        uart2.read();
+    }
+}
+
 void rightWallApp(App) {
 RESTART:
     mazeSearch = true;
+    clearBuffer();
+
     while (1) {
         app.delay(period);
         if (!ui.toggle) {
@@ -99,65 +176,7 @@ RESTART:
                 app.delay(period);
             }
 
-            servo.suspend = true;
-            app.delay(WAIT);
-            servo.suspend      = false;
-            camera[0].Hcounter = 0;
-            camera[0].Scounter = 0;
-            camera[0].Ucounter = 0;
-            servo.angle -= 90;
-            app.delay(WAIT * 2);
-            servo.angle -= 10;
-            app.delay(WAIT * 2);
-            servo.angle += 20;
-            app.delay(WAIT * 2);
-            servo.angle -= 10;
-            app.delay(WAIT * 2);
-            if (camera[0].Hcounter > camera[0].Scounter &&
-                camera[0].Hcounter > camera[0].Ucounter) {
-                uart2.println("3");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(3, RIGHT);
-            } else if (camera[0].Scounter > camera[0].Hcounter &&
-                       camera[0].Scounter > camera[0].Ucounter) {
-                uart2.println("2");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(2, RIGHT);
-            } else if (camera[0].Ucounter > camera[0].Hcounter &&
-                       camera[0].Ucounter > camera[0].Scounter) {
-                uart2.println("1");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(1, RIGHT);
-            } else {
-                uart2.println("0");
-            }
+            drop();
             // 色…1,文字…2
             servo.angle -= 90;
             app.delay(WAIT * 4);
@@ -177,66 +196,8 @@ RESTART:
                 app.delay(period);
             }
 
-            servo.suspend = true;
-            app.delay(WAIT);
-            servo.suspend      = false;
-            camera[0].Hcounter = 0;
-            camera[0].Scounter = 0;
-            camera[0].Ucounter = 0;
-            servo.angle -= 90;
-            app.delay(WAIT * 2);
-            servo.angle -= 10;
-            app.delay(WAIT * 2);
-            servo.angle += 20;
-            app.delay(WAIT * 2);
-            servo.angle -= 10;
-            app.delay(WAIT * 2);
+            drop();
 
-            if (camera[0].Hcounter > camera[0].Scounter &&
-                camera[0].Hcounter > camera[0].Ucounter) {
-                uart2.println("3");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(3, RIGHT);
-            } else if (camera[0].Scounter > camera[0].Hcounter &&
-                       camera[0].Scounter > camera[0].Ucounter) {
-                uart2.println("2");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(2, RIGHT);
-            } else if (camera[0].Ucounter > camera[0].Hcounter &&
-                       camera[0].Ucounter > camera[0].Scounter) {
-                uart2.println("1");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(1, RIGHT);
-            } else {
-                uart2.println("0");
-            }
             // 色…4,文字…3
             servo.angle -= 90;
             app.delay(WAIT * 4);
@@ -298,65 +259,8 @@ RESTART:
                 app.delay(period);
             }
 
-            servo.suspend = true;
-            app.delay(WAIT);
-            servo.suspend      = false;
-            camera[0].Hcounter = 0;
-            camera[0].Scounter = 0;
-            camera[0].Ucounter = 0;
-            servo.angle -= 90;
-            app.delay(WAIT * 2);
-            servo.angle -= 10;
-            app.delay(WAIT * 2);
-            servo.angle += 20;
-            app.delay(WAIT * 2);
-            servo.angle -= 10;
-            app.delay(WAIT * 2);
-            if (camera[0].Hcounter > camera[0].Scounter &&
-                camera[0].Hcounter > camera[0].Ucounter) {
-                uart2.println("3");
-                servo.rescueKit(3, RIGHT);
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-            } else if (camera[0].Scounter > camera[0].Hcounter &&
-                       camera[0].Scounter > camera[0].Ucounter) {
-                uart2.println("2");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(2, RIGHT);
-            } else if (camera[0].Ucounter > camera[0].Hcounter &&
-                       camera[0].Ucounter > camera[0].Scounter) {
-                uart2.println("1");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(1, RIGHT);
-            } else {
-                uart2.println("0");
-            }
+            drop();
+
             // 色…3,文字…4
             servo.angle -= 90;
             app.delay(WAIT * 4);
@@ -376,65 +280,8 @@ RESTART:
                 app.delay(period);
             }
 
-            servo.suspend = true;
-            app.delay(WAIT);
-            servo.suspend      = false;
-            camera[0].Hcounter = 0;
-            camera[0].Scounter = 0;
-            camera[0].Ucounter = 0;
-            servo.angle -= 90;
-            app.delay(WAIT * 2);
-            servo.angle -= 10;
-            app.delay(WAIT * 2);
-            servo.angle += 20;
-            app.delay(WAIT * 2);
-            servo.angle -= 10;
-            app.delay(WAIT * 2);
-            if (camera[0].Hcounter > camera[0].Scounter &&
-                camera[0].Hcounter > camera[0].Ucounter) {
-                uart2.println("3");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(3, RIGHT);
-            } else if (camera[0].Scounter > camera[0].Hcounter &&
-                       camera[0].Scounter > camera[0].Ucounter) {
-                uart2.println("2");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(2, RIGHT);
-            } else if (camera[0].Ucounter > camera[0].Hcounter &&
-                       camera[0].Ucounter > camera[0].Scounter) {
-                uart2.println("1");
-                app.stop(servoApp);
-                servo.driveAngularVelocity(-30, -45);
-                app.delay(500);
-                servo.driveAngularVelocity(-30, 45);
-                app.delay(300);
-                servo.driveAngularVelocity(30, 45);
-                app.delay(500);
-                servo.driveAngularVelocity(30, -45);
-                app.delay(300);
-                app.start(servoApp);
-                servo.rescueKit(1, RIGHT);
-            } else {
-                uart2.println("0");
-            }
+            drop();
+
             // 色…2,文字…1
             servo.angle -= 90;
             app.delay(WAIT);
@@ -463,7 +310,7 @@ RESTART:
             app.delay(WAIT * 4);
 
             servo.velocity = SPEED;
-            app.delay(1900);
+            app.delay(1800);
             servo.suspend  = true;
             servo.velocity = 0;
             app.delay(WAIT * 4);
@@ -472,21 +319,27 @@ RESTART:
             app.delay(WAIT * 4);
 
             servo.velocity = SPEED;
-            app.delay(1700);
+            app.delay(1500);
             servo.suspend  = true;
             servo.velocity = 0;
             app.delay(WAIT);
 
             mazeSearch = false;
         } else if (!mazeSearch) {  // おかえりなさい
-            servo.suspend  = true;
-            servo.velocity = 0;
-            app.delay(WAIT * 4);
-            servo.suspend = false;
-            servo.angle += 180;
-            app.delay(WAIT * 15);
             servo.suspend = true;
-            break;
+
+            while (1) {
+                for (int i = 0; i < 256; i++) {
+                    led.setBrightness(TOP, 255 - i);
+                    led.setBrightness(UI, 255 - i);
+                    led.setColor(TOP, led.yellow);
+                    led.setColor(UI, led.yellow);
+                    led.showAll();
+                    app.delay(1);
+
+                    break;
+                }
+            }
         }
     }
 }
