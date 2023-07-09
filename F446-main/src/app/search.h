@@ -46,7 +46,7 @@ RESTART:
             oldCoordinateY = location.coordinateY;
             while (abs(location.coordinateX - oldCoordinateX) < 350 &&
                    abs(location.coordinateY - oldCoordinateY) < 350) {
-                if (tof.val[0] < 120) {
+                if (tof.val[0] < 130) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -67,7 +67,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 350 &&
                    abs(location.coordinateY - oldCoordinateY) < 350) {
-                if (tof.val[0] < 120) {
+                if (tof.val[0] < 130) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -88,7 +88,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 350 &&
                    abs(location.coordinateY - oldCoordinateY) < 350) {
-                if (tof.val[0] < 100) {
+                if (tof.val[0] < 90) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -107,24 +107,57 @@ RESTART:
             camera[0].Ucounter = 0;
             servo.angle -= 90;
             app.delay(WAIT * 2);
-            servo.angle -= 7;
+            servo.angle -= 10;
             app.delay(WAIT * 2);
-            servo.angle += 14;
+            servo.angle += 20;
             app.delay(WAIT * 2);
-            servo.angle -= 7;
+            servo.angle -= 10;
             app.delay(WAIT * 2);
-            // if (camera[0].Hcounter > camera[0].Scounter && camera[0].Hcounter
-            // > camera[0].Ucounter) {
-            //     uart3.println("3");
-            // } else if (camera[0].Scounter > camera[0].Hcounter &&
-            // camera[0].Scounter > camera[0].Ucounter) {
-            //     uart3.println("2");
-            // } else if (camera[0].Ucounter > camera[0].Hcounter &&
-            // camera[0].Ucounter > camera[0].Scounter) {
-            //     uart3.println("1");
-            // } else {
-            //     uart3.println("0");
-            // }
+            if (camera[0].Hcounter > camera[0].Scounter &&
+                camera[0].Hcounter > camera[0].Ucounter) {
+                uart2.println("3");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(3, RIGHT);
+            } else if (camera[0].Scounter > camera[0].Hcounter &&
+                       camera[0].Scounter > camera[0].Ucounter) {
+                uart2.println("2");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(2, RIGHT);
+            } else if (camera[0].Ucounter > camera[0].Hcounter &&
+                       camera[0].Ucounter > camera[0].Scounter) {
+                uart2.println("1");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(1, RIGHT);
+            } else {
+                uart2.println("0");
+            }
             // 色…1,文字…2
             servo.angle -= 90;
             app.delay(WAIT * 4);
@@ -133,7 +166,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 1500 &&
                    abs(location.coordinateY - oldCoordinateY) < 1500) {
-                if (tof.val[0] < 100) {
+                if (tof.val[0] < 90) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -152,24 +185,58 @@ RESTART:
             camera[0].Ucounter = 0;
             servo.angle -= 90;
             app.delay(WAIT * 2);
-            servo.angle -= 7;
+            servo.angle -= 10;
             app.delay(WAIT * 2);
-            servo.angle += 14;
+            servo.angle += 20;
             app.delay(WAIT * 2);
-            servo.angle -= 7;
+            servo.angle -= 10;
             app.delay(WAIT * 2);
-            // if (camera[0].Hcounter > camera[0].Scounter && camera[0].Hcounter
-            // > camera[0].Ucounter) {
-            //     uart3.println("3");
-            // } else if (camera[0].Scounter > camera[0].Hcounter &&
-            // camera[0].Scounter > camera[0].Ucounter) {
-            //     uart3.println("2");
-            // } else if (camera[0].Ucounter > camera[0].Hcounter &&
-            // camera[0].Ucounter > camera[0].Scounter) {
-            //     uart3.println("1");
-            // } else {
-            //     uart3.println("0");
-            // }
+
+            if (camera[0].Hcounter > camera[0].Scounter &&
+                camera[0].Hcounter > camera[0].Ucounter) {
+                uart2.println("3");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(3, RIGHT);
+            } else if (camera[0].Scounter > camera[0].Hcounter &&
+                       camera[0].Scounter > camera[0].Ucounter) {
+                uart2.println("2");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(2, RIGHT);
+            } else if (camera[0].Ucounter > camera[0].Hcounter &&
+                       camera[0].Ucounter > camera[0].Scounter) {
+                uart2.println("1");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(1, RIGHT);
+            } else {
+                uart2.println("0");
+            }
             // 色…4,文字…3
             servo.angle -= 90;
             app.delay(WAIT * 4);
@@ -199,7 +266,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 750 &&
                    abs(location.coordinateY - oldCoordinateY) < 750) {
-                if (tof.val[0] < 120) {
+                if (tof.val[0] < 90) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -220,7 +287,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 350 &&
                    abs(location.coordinateY - oldCoordinateY) < 350) {
-                if (tof.val[0] < 100) {
+                if (tof.val[0] < 90) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -239,24 +306,57 @@ RESTART:
             camera[0].Ucounter = 0;
             servo.angle -= 90;
             app.delay(WAIT * 2);
-            servo.angle -= 7;
+            servo.angle -= 10;
             app.delay(WAIT * 2);
-            servo.angle += 14;
+            servo.angle += 20;
             app.delay(WAIT * 2);
-            servo.angle -= 7;
+            servo.angle -= 10;
             app.delay(WAIT * 2);
-            // if (camera[0].Hcounter > camera[0].Scounter && camera[0].Hcounter
-            // > camera[0].Ucounter) {
-            //     uart3.println("3");
-            // } else if (camera[0].Scounter > camera[0].Hcounter &&
-            // camera[0].Scounter > camera[0].Ucounter) {
-            //     uart3.println("2");
-            // } else if (camera[0].Ucounter > camera[0].Hcounter &&
-            // camera[0].Ucounter > camera[0].Scounter) {
-            //     uart3.println("1");
-            // } else {
-            //     uart3.println("0");
-            // }
+            if (camera[0].Hcounter > camera[0].Scounter &&
+                camera[0].Hcounter > camera[0].Ucounter) {
+                uart2.println("3");
+                servo.rescueKit(3, RIGHT);
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+            } else if (camera[0].Scounter > camera[0].Hcounter &&
+                       camera[0].Scounter > camera[0].Ucounter) {
+                uart2.println("2");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(2, RIGHT);
+            } else if (camera[0].Ucounter > camera[0].Hcounter &&
+                       camera[0].Ucounter > camera[0].Scounter) {
+                uart2.println("1");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(1, RIGHT);
+            } else {
+                uart2.println("0");
+            }
             // 色…3,文字…4
             servo.angle -= 90;
             app.delay(WAIT * 4);
@@ -265,7 +365,7 @@ RESTART:
 
             while (abs(location.coordinateX - oldCoordinateX) < 1200 &&
                    abs(location.coordinateY - oldCoordinateY) < 1200) {
-                if (tof.val[0] < 100) {
+                if (tof.val[0] < 90) {
                     servo.velocity = -SPEED;
                     app.delay(100);
                     servo.suspend  = true;
@@ -284,24 +384,57 @@ RESTART:
             camera[0].Ucounter = 0;
             servo.angle -= 90;
             app.delay(WAIT * 2);
-            servo.angle -= 17;
+            servo.angle -= 10;
             app.delay(WAIT * 2);
-            servo.angle += 14;
+            servo.angle += 20;
             app.delay(WAIT * 2);
-            servo.angle -= 7;
+            servo.angle -= 10;
             app.delay(WAIT * 2);
-            // if (camera[0].Hcounter > camera[0].Scounter && camera[0].Hcounter
-            // > camera[0].Ucounter) {
-            //     uart3.println("3");
-            // } else if (camera[0].Scounter > camera[0].Hcounter &&
-            // camera[0].Scounter > camera[0].Ucounter) {
-            //     uart3.println("2");
-            // } else if (camera[0].Ucounter > camera[0].Hcounter &&
-            // camera[0].Ucounter > camera[0].Scounter) {
-            //     uart3.println("1");
-            // } else {
-            //     uart3.println("0");
-            // }
+            if (camera[0].Hcounter > camera[0].Scounter &&
+                camera[0].Hcounter > camera[0].Ucounter) {
+                uart2.println("3");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(3, RIGHT);
+            } else if (camera[0].Scounter > camera[0].Hcounter &&
+                       camera[0].Scounter > camera[0].Ucounter) {
+                uart2.println("2");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(2, RIGHT);
+            } else if (camera[0].Ucounter > camera[0].Hcounter &&
+                       camera[0].Ucounter > camera[0].Scounter) {
+                uart2.println("1");
+                app.stop(servoApp);
+                servo.driveAngularVelocity(-30, -45);
+                app.delay(500);
+                servo.driveAngularVelocity(-30, 45);
+                app.delay(300);
+                servo.driveAngularVelocity(30, 45);
+                app.delay(500);
+                servo.driveAngularVelocity(30, -45);
+                app.delay(300);
+                app.start(servoApp);
+                servo.rescueKit(1, RIGHT);
+            } else {
+                uart2.println("0");
+            }
             // 色…2,文字…1
             servo.angle -= 90;
             app.delay(WAIT);
@@ -417,29 +550,29 @@ void adjustmentApp(App) {
         static bool isHit = false;
         if (tof.val[4] + tof.val[12] < 300) {
             if (tof.val[4] > tof.val[12]) {
-                servo.isCorrectingAngle = 5;
+                servo.isCorrectingAngle = 7;
             }
             if (tof.val[12] > tof.val[4]) {
-                servo.isCorrectingAngle = -5;
+                servo.isCorrectingAngle = -7;
             }
             app.delay(50);
         } else {
             if (tof.val[12] < 120) {
-                servo.isCorrectingAngle = 5;
+                servo.isCorrectingAngle = 7;
             }
             if (tof.val[4] < 120) {
-                servo.isCorrectingAngle = -5;
+                servo.isCorrectingAngle = -7;
             }
         }
 
         if (tof.val[4] > 300 && tof.val[12] < 300) {
             if (tof.val[12] > 120) {
-                servo.isCorrectingAngle = -5;
+                servo.isCorrectingAngle = -7;
             }
         }
         if (tof.val[12] > 300 && tof.val[4] < 300) {
             if (tof.val[4] > 120) {
-                servo.isCorrectingAngle = 5;
+                servo.isCorrectingAngle = 7;
             }
         }
 
