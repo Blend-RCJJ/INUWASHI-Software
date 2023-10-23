@@ -177,3 +177,40 @@ void DISTANCE_SENSOR::direction(void) {
         }
     }
 }
+
+void DISTANCE_SENSOR::wallCondition(void) {
+
+    if (!isNorthWall && !isEastWall && !isSouthWall && !isWestWall) {
+        wallStatus = 0;
+    } else if (isNorthWall && !isEastWall && !isSouthWall && !isWestWall) {
+        wallStatus = 1;
+    } else if (!isNorthWall && isEastWall && !isSouthWall && !isWestWall) {
+        wallStatus = 2;
+    } else if (!isNorthWall && !isEastWall && isSouthWall && !isWestWall) {
+        wallStatus = 3;
+    } else if (!isNorthWall && !isEastWall && !isSouthWall && isWestWall){
+        wallStatus = 4;
+    }else if(isNorthWall && isEastWall && !isSouthWall && !isWestWall){
+        wallStatus = 5;
+    }else if(isNorthWall && !isEastWall && isSouthWall && !isWestWall){
+        wallStatus = 6;
+    }else if(isNorthWall && !isEastWall && !isSouthWall && isWestWall){
+        wallStatus = 7;
+    }else if(!isNorthWall && isEastWall && isSouthWall && !isWestWall){
+        wallStatus = 8;
+    }else if(!isNorthWall && isEastWall && !isSouthWall && isWestWall){
+        wallStatus = 9;
+    }else if(!isNorthWall && !isEastWall && isSouthWall && isWestWall){
+        wallStatus = 10;
+    }else if(isNorthWall && isEastWall && isSouthWall && !isWestWall){
+        wallStatus = 11;
+    }else if(isNorthWall && isEastWall && !isSouthWall && isWestWall){
+        wallStatus = 12;
+    }else if(isNorthWall && !isEastWall && isSouthWall && isWestWall){
+        wallStatus = 13;
+    }else if(!isNorthWall && isEastWall && isSouthWall && isWestWall){
+        wallStatus = 14;
+    }else if(isNorthWall && isEastWall && isSouthWall && isWestWall){
+        wallStatus = 15;
+    }
+}

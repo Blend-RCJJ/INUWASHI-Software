@@ -27,11 +27,14 @@ class DISTANCE_SENSOR {
     bool isSouthWall = false;
     bool isWestWall  = false;
 
+    int wallStatus = 0;
+
     int read(void);
     void calc(int angle);  // 定義しときました〜
     void leftWall(void);
     void direction(void);
     void rightWall(void);
+    void wallCondition(void);
 
    private:
     int _valTemp[16] = {0};

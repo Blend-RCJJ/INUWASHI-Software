@@ -200,21 +200,16 @@ void AstarApp(App) {  // NOTE 動いた
 
 void monitorApp(App) {
     while (1) {
-    //    for(int i = 0; i < 16; i++){
-    //     uart1.print(tof.val[i]);
-    //     uart1.print("\t");
-    //    }
-    //    uart1.println("\t");
-
-        uart1.println(floorSensor.tof_of_bottom);
-        app.delay(100);
-        // uart3.print("LEFT:");
-        // uart3.write(camera[1].data);
-        // uart3.print("\t");
-        // uart3.print("RIGHT:");
-        // uart3.write(camera[0].data);
-        // uart3.print("\n");
-        // app.delay(100);
+        uart1.print(tof.isNorthWall);
+        uart1.print("\t");
+        uart1.print(tof.isEastWall);
+        uart1.print("\t");
+        uart1.print(tof.isSouthWall);
+        uart1.print("\t");
+        uart1.print(tof.isWestWall);
+        uart1.print("\t");
+        uart1.println(tof.wallStatus);
+        app.delay(1000);
     }
 }
 

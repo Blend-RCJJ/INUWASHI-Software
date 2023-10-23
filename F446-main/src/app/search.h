@@ -30,462 +30,75 @@ static bool locationIsChanged                    = false;
 
 void AstarApp(App);
 void adjustmentApp(App);
+void turnRight(void);
+void turnLeft(void);
+void turnReverse(void);
 
 void rightWallApp(App) {
-    static bool DFS = false;
-    int count       = 0;
-    int val8        = 0;
-    int val0        = 0;
-    app.delay(WAIT);
+    double oldCoordinateX = 0;
+    double oldCoordinateY = 0;
     while (1) {
-        // uart3.println("右壁探索中...");
-        servo.suspend  = false;
-        servo.velocity = SPEED;
-        DFS           = false;
-        app.delay(period);
-        if (abs(gyro.slope >= 10)) {
-            servo.suspend  = false;
-            servo.velocity = SPEED;
-        }
-        while (count == 1) {
-            app.delay(300);
-            count = 0;
-        }
+        servo.suspend = true;
+        servo.velocity = 0;
+        oldCoordinateX = location.coordinateX;
+        oldCoordinateY = location.coordinateY;
 
-        while (count == 0) {
-            val8  = tof.val[8];
-            val0  = tof.val[0];
-            count = 2;
-            app.delay(10);
-        }
+        tof.wallCondition();
 
-        if (tof.val[4] > 200) {
-            count = 2;
-            if (val8 > 600) {
-                if ((val0 - 100) > tof.val[0]) {
-                    servo.velocity = 0;
-                    servo.stop();
-                    app.delay(500);
-                    servo.angle += 90;
-                    servo.velocity = 0;
-                    servo.stop();
-                    app.delay(500);
-                    count          = 0;
-                    servo.velocity = SPEED;
-                    app.delay(1500);
-                }
-            } else if ((val8 + 100) < tof.val[8]) {
-                servo.velocity = 0;
-                servo.stop();
-                app.delay(500);
-                servo.angle += 90;
-                servo.velocity = 0;
-                servo.stop();
-                app.delay(500);
-                count          = 0;
-                servo.velocity = SPEED;
-                app.delay(1500);
+        switch (tof.wallStatus) {
+            case 0:
+                turnRight();
+                break;
+            case 1:
+                turnRight();
+                break;
+            case 2:
+                break;
+            case 3:
+                turnRight();
+                break;
+            case 4:
+                turnRight();
+                break;
+            case 5:
+                turnLeft();
+                break;
+            case 6:
+                turnRight();
+                break;
+            case 7:
+                turnRight();
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                turnRight();
+                break;
+            case 11:
+                turnLeft();
+                break;
+            case 12:
+                turnReverse();
+                break;
+            case 13:
+                turnRight();
+                break;
+            case 14:
+                break;
+            default:
+                break;
+        }
+          while (abs(location.coordinateX - oldCoordinateX) < 280 &&
+               abs(location.coordinateY - oldCoordinateY) < 280) {
+            if (tof.val[0] < 130) {
+                break;
             }
-
-        } else {
-            count = 0;
-            app.delay(10);
-        }
-        if (tof.val[0] < 125) {
-            servo.velocity = 0;
-            servo.stop();
-            app.delay(500);
-            servo.angle -= 90;
-            count = 1;
-            app.delay(900);
-        }
-        // if (virtualWall[location.x + MAP_ORIGIN][location.y + MAP_ORIGIN
-        // + 1]
-        // &&
-        //     gyro.North) {
-        //     if (tof.isNotRight && !location
-        //                                .mapData[location.x + MAP_ORIGIN +
-        //                                1]
-        //                                        [location.y + MAP_ORIGIN]
-        //                                .isPassed) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = 0;
-        //         servo.suspend  = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //         servo.angle += 90;
-        //         servo.isCorrectingAngle = 0;
-        //         app.delay(WAIT * 2);
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280)
-        //                {
-        //             if (tof.val[0] < 125) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //         servo.suspend = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //     } else if (tof.isNotLeft &&
-        //                !location
-        //                     .mapData[location.x + MAP_ORIGIN - 1]
-        //                             [location.y + MAP_ORIGIN]
-        //                     .isPassed) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = 0;
-        //         servo.suspend  = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //         servo.angle -= 90;
-        //         servo.isCorrectingAngle = 0;
-        //         app.delay(WAIT * 2);
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280)
-        //                {
-        //             if (tof.val[0] < 125) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //         servo.suspend = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //     } else {
-        //         app.delay(period);
-        //     }
-        //     app.delay(period);
-        // } else if (virtualWall[location.x + MAP_ORIGIN]
-        //                       [location.y + MAP_ORIGIN - 1] &&
-        //            gyro.South) {
-        //     if (tof.isNotRight && !location
-        //                                .mapData[location.x + MAP_ORIGIN -
-        //                                1]
-        //                                        [location.y + MAP_ORIGIN]
-        //                                .isPassed) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = 0;
-        //         servo.suspend  = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //         servo.angle += 90;
-        //         servo.isCorrectingAngle = 0;
-        //         app.delay(WAIT * 2);
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280)
-        //                {
-        //             if (tof.val[0] < 125) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //         servo.suspend = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //     } else if (tof.isNotLeft &&
-        //                !location
-        //                     .mapData[location.x + MAP_ORIGIN + 1]
-        //                             [location.y + MAP_ORIGIN]
-        //                     .isPassed) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = 0;
-        //         servo.suspend  = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //         servo.angle -= 90;
-        //         servo.isCorrectingAngle = 0;
-        //         app.delay(WAIT * 2);
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280)
-        //                {
-        //             if (tof.val[0] < 125) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //         servo.suspend = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //     } else {
-        //         app.delay(period);
-        //     }
-        //     app.delay(period);
-        // } else if (virtualWall[location.x + MAP_ORIGIN + 1]
-        //                       [location.y + MAP_ORIGIN] &&
-        //            gyro.East) {
-        //     if (tof.isNotRight && !location
-        //                                .mapData[location.x + MAP_ORIGIN]
-        //                                        [location.y + MAP_ORIGIN -
-        //                                        1]
-        //                                .isPassed) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = 0;
-        //         servo.suspend  = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //         servo.angle += 90;
-        //         servo.isCorrectingAngle = 0;
-        //         app.delay(WAIT * 2);
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280)
-        //                {
-        //             if (tof.val[0] < 125) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //         servo.suspend = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //     } else if (tof.isNotLeft &&
-        //                !location
-        //                     .mapData[location.x + MAP_ORIGIN]
-        //                             [location.y + MAP_ORIGIN + 1]
-        //                     .isPassed) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = 0;
-        //         servo.suspend  = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //         servo.angle -= 90;
-        //         servo.isCorrectingAngle = 0;
-        //         app.delay(WAIT * 2);
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280)
-        //                {
-        //             if (tof.val[0] < 125) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //         servo.suspend = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //     } else {
-        //         app.delay(period);
-        //     }
-        //     app.delay(period);
-        // } else if (virtualWall[location.x + MAP_ORIGIN - 1]
-        //                       [location.y + MAP_ORIGIN] &&
-        //            gyro.West) {
-        //     if (tof.isNotRight && !location
-        //                                .mapData[location.x + MAP_ORIGIN]
-        //                                        [location.y + MAP_ORIGIN +
-        //                                        1]
-        //                                .isPassed) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = 0;
-        //         servo.suspend  = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //         servo.angle += 90;
-        //         servo.isCorrectingAngle = 0;
-        //         app.delay(WAIT * 2);
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280)
-        //                {
-        //             if (tof.val[0] < 125) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //         servo.suspend = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-
-        //     } else if (tof.isNotLeft &&
-        //                !location
-        //                     .mapData[location.x + MAP_ORIGIN]
-        //                             [location.y + MAP_ORIGIN - 1]
-        //                     .isPassed) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = 0;
-        //         servo.suspend  = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //         servo.angle -= 90;
-        //         servo.isCorrectingAngle = 0;
-        //         app.delay(WAIT * 2);
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 280
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 280)
-        //                {
-        //             if (tof.val[0] < 125) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //         servo.suspend = true;
-        //         app.delay(WAIT);
-        //         servo.suspend = false;
-        //     } else {
-        //         app.delay(period);
-        //     }
-        //     app.delay(period);
-        // } else if (!virtualWall[location.x + MAP_ORIGIN]
-        //                        [location.y + MAP_ORIGIN + 1] &&
-        //            gyro.North &&
-        //            (virtualWall[location.x + MAP_ORIGIN - 1]
-        //                        [location.y + MAP_ORIGIN] ||
-        //             tof.isWestWall) &&
-        //            (virtualWall[location.x + MAP_ORIGIN + 1]
-        //                        [location.y + MAP_ORIGIN] ||
-        //             tof.isEastWall) &&
-        //            (virtualWall[location.x + MAP_ORIGIN]
-        //                        [location.y + MAP_ORIGIN - 1] ||
-        //             tof.isSouthWall)) {
-        //     if (!tof.isNorthWall) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 200
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 200)
-        //                {
-        //             if (tof.val[0] < 150) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //     }
-        // } else if (!virtualWall[location.x + MAP_ORIGIN]
-        //                        [location.y + MAP_ORIGIN - 1] &&
-        //            gyro.South &&
-        //            (virtualWall[location.x + MAP_ORIGIN + 1]
-        //                        [location.y + MAP_ORIGIN] ||
-        //             tof.isEastWall) &&
-        //            (virtualWall[location.x + MAP_ORIGIN - 1]
-        //                        [location.y + MAP_ORIGIN] ||
-        //             tof.isWestWall) &&
-        //            (virtualWall[location.x + MAP_ORIGIN]
-        //                        [location.y + MAP_ORIGIN + 1] ||
-        //             tof.isNorthWall)) {
-        //     if (!tof.isSouthWall) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 200
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 200)
-        //                {
-        //             if (tof.val[0] < 150) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //     }
-        // } else if (!virtualWall[location.x + MAP_ORIGIN + 1]
-        //                        [location.y + MAP_ORIGIN] &&
-        //            gyro.East &&
-        //            (virtualWall[location.x + MAP_ORIGIN]
-        //                        [location.y + MAP_ORIGIN - 1] ||
-        //             tof.isSouthWall) &&
-        //            (virtualWall[location.x + MAP_ORIGIN]
-        //                        [location.y + MAP_ORIGIN + 1] ||
-        //             tof.isNorthWall) &&
-        //            (virtualWall[location.x + MAP_ORIGIN - 1]
-        //                        [location.y + MAP_ORIGIN] ||
-        //             tof.isWestWall)) {
-        //     if (!tof.isEastWall) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 200
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 200)
-        //                {
-        //             if (tof.val[0] < 150) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //     }
-        // } else if (!virtualWall[location.x + MAP_ORIGIN - 1]
-        //                        [location.y + MAP_ORIGIN] &&
-        //            gyro.West &&
-        //            (virtualWall[location.x + MAP_ORIGIN]
-        //                        [location.y + MAP_ORIGIN + 1] ||
-        //             tof.isNorthWall) &&
-        //            (virtualWall[location.x + MAP_ORIGIN]
-        //                        [location.y + MAP_ORIGIN - 1] ||
-        //             tof.isSouthWall) &&
-        //            (virtualWall[location.x + MAP_ORIGIN + 1]
-        //                        [location.y + MAP_ORIGIN] ||
-        //             tof.isEastWall)) {
-        //     if (!tof.isWestWall) {
-        //         oldmillis      = millis();
-        //         checkPointX    = location.x;
-        //         checkPointY    = location.y;
-        //         DFS            = true;
-        //         servo.velocity = SPEED;
-        //         while (abs(location.coordinateX - oldCoordinateX) < 200
-        //         &&
-        //                abs(location.coordinateY - oldCoordinateY) < 200)
-        //                {
-        //             if (tof.val[0] < 150) {
-        //                 break;
-        //             }
-        //             servo.velocity = SPEED;
-        //             app.delay(period);
-        //         }
-        //     }
-        // }
+            servo.suspend = false;
+            servo.velocity = SPEED;
+            app.delay(period);
+        }  // 次のタイルまで前進
     }
 }
 
@@ -716,4 +329,30 @@ void floorApp(App) {
     }
 }
 
+void turnRight(void) {
+    servo.suspend = true;
+    app.delay(WAIT);
+    servo.suspend = false;
+    servo.angle += 90;
+    servo.isCorrectingAngle = 0;
+    app.delay(WAIT * 2);
+}
+
+void turnLeft(void) {
+    servo.suspend = true;
+    app.delay(WAIT);
+    servo.suspend = false;
+    servo.angle -= 90;
+    servo.isCorrectingAngle = 0;
+    app.delay(WAIT * 2);
+}
+
+void turnReverse(void) {
+    servo.suspend = true;
+    app.delay(WAIT);
+    servo.suspend = false;
+    servo.angle += 180;
+    servo.isCorrectingAngle = 0;
+    app.delay(WAIT * 3);
+}
 #endif
