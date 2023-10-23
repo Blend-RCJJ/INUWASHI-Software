@@ -178,39 +178,62 @@ void DISTANCE_SENSOR::direction(void) {
     }
 }
 
+void DISTANCE_SENSOR::relativeDirection(void){
+    if(val[0] < 150){
+        isFrontWall = true;
+    }else{
+        isFrontWall = false;
+    }
+    if(val[4] < 150){
+        isRightWall = true;
+}else {
+        isRightWall = false;
+    }
+    if(val[8] < 150){
+        isBehindWall = true;
+    }else{
+        isBehindWall = false;
+    }
+    if(val[12] < 150){
+        isLeftWall = true;
+    }else{
+        isLeftWall = false;
+    }
+}
+
 void DISTANCE_SENSOR::wallCondition(void) {
 
-    if (!isNorthWall && !isEastWall && !isSouthWall && !isWestWall) {
+    if (!isFrontWall && !isRightWall && !isBehindWall && !isLeftWall) {
         wallStatus = 0;
-    } else if (isNorthWall && !isEastWall && !isSouthWall && !isWestWall) {
+    } else if (isFrontWall && !isRightWall && !isBehindWall && !isLeftWall) {
         wallStatus = 1;
-    } else if (!isNorthWall && isEastWall && !isSouthWall && !isWestWall) {
+    } else if (!isFrontWall && isRightWall && !isBehindWall && !isLeftWall) {
         wallStatus = 2;
-    } else if (!isNorthWall && !isEastWall && isSouthWall && !isWestWall) {
+    } else if (!isFrontWall && !isRightWall && isBehindWall && !isLeftWall) {
         wallStatus = 3;
-    } else if (!isNorthWall && !isEastWall && !isSouthWall && isWestWall){
+    } else if (!isFrontWall && !isRightWall && !isBehindWall && isLeftWall) {
         wallStatus = 4;
-    }else if(isNorthWall && isEastWall && !isSouthWall && !isWestWall){
+    }else if(isFrontWall && isRightWall && !isBehindWall && !isLeftWall){
         wallStatus = 5;
-    }else if(isNorthWall && !isEastWall && isSouthWall && !isWestWall){
+    }else if(isFrontWall && !isRightWall && isBehindWall && !isLeftWall){
         wallStatus = 6;
-    }else if(isNorthWall && !isEastWall && !isSouthWall && isWestWall){
+    }else if(isFrontWall && !isRightWall && !isBehindWall && isLeftWall){
         wallStatus = 7;
-    }else if(!isNorthWall && isEastWall && isSouthWall && !isWestWall){
+    }else if(!isFrontWall && isRightWall && isBehindWall && !isLeftWall){
         wallStatus = 8;
-    }else if(!isNorthWall && isEastWall && !isSouthWall && isWestWall){
+    }else if(!isFrontWall && isRightWall && !isBehindWall && isLeftWall){
         wallStatus = 9;
-    }else if(!isNorthWall && !isEastWall && isSouthWall && isWestWall){
+    }else if(!isFrontWall && !isRightWall && isBehindWall && isLeftWall){
         wallStatus = 10;
-    }else if(isNorthWall && isEastWall && isSouthWall && !isWestWall){
+    }else if(isFrontWall && isRightWall && isBehindWall && !isLeftWall){
         wallStatus = 11;
-    }else if(isNorthWall && isEastWall && !isSouthWall && isWestWall){
+    }else if(isFrontWall && isRightWall && !isBehindWall && isLeftWall){
         wallStatus = 12;
-    }else if(isNorthWall && !isEastWall && isSouthWall && isWestWall){
+    }else if(isFrontWall && !isRightWall && isBehindWall && isLeftWall){
         wallStatus = 13;
-    }else if(!isNorthWall && isEastWall && isSouthWall && isWestWall){
+    }else if(!isFrontWall && isRightWall && isBehindWall && isLeftWall){
         wallStatus = 14;
-    }else if(isNorthWall && isEastWall && isSouthWall && isWestWall){
+    }else if(isFrontWall && isRightWall && isBehindWall && isLeftWal){
         wallStatus = 15;
     }
 }

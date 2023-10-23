@@ -38,6 +38,7 @@ void rightWallApp(App) {
     double oldCoordinateX = 0;
     double oldCoordinateY = 0;
     while (1) {
+        app.delay(period);
         servo.suspend = true;
         servo.velocity = 0;
         oldCoordinateX = location.coordinateX;
